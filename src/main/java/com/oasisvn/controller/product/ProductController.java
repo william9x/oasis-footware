@@ -1,14 +1,19 @@
-package com.oasisvn.controller.category;
+package com.oasisvn.controller.product;
 
 import com.oasisvn.dto.category.CategoryDTO;
+import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.io.request.category.CategoryCreateRequest;
 import com.oasisvn.io.request.category.CategoryUpdateRequest;
-import com.oasisvn.io.response.SuccessResponse;
-import com.oasisvn.io.response.category.CategoryCreateResponse;
+import com.oasisvn.io.request.product.ProductCreateRequest;
+import com.oasisvn.io.request.product.ProductUpdateRequest;
 import com.oasisvn.io.response.ErrorResponse;
 import com.oasisvn.io.response.OperationStatus;
+import com.oasisvn.io.response.SuccessResponse;
+import com.oasisvn.io.response.category.CategoryCreateResponse;
 import com.oasisvn.io.response.category.CategoryDetailsResponse;
-import com.oasisvn.service.category.ICategoryService;
+import com.oasisvn.io.response.product.ProductCreateResponse;
+import com.oasisvn.io.response.product.ProductDetailsResponse;
+import com.oasisvn.service.product.IProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,99 +28,99 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("api/category")
-@Api(value = "Category API")
-public class CategoryController {
+@RequestMapping("api/product")
+@Api(value = "Product API")
+public class ProductController {
 
     @Autowired
-    private ICategoryService categoryService;
+    private IProductService productService;
 
-    @ApiOperation(value = "Get all category", response = OperationStatus.class, responseContainer = "List")
+    @ApiOperation(value = "Get all product", response = OperationStatus.class, responseContainer = "List")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping
-    public ResponseEntity<?> getCategory(){
+    public ResponseEntity<?> getProduct(){
         OperationStatus operationStatus;
 
-        ArrayList<CategoryDTO> categoryDTOS = categoryService.getCategory();
+        ArrayList<ProductDTO> productDTOS = productService.getProduct();
 
-        if (null == categoryDTOS) {
+        if (null == productDTOS) {
             operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
                     ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
 
         } else {
-            ArrayList<CategoryDetailsResponse> categoryResponses = new ArrayList<>();
+            ArrayList<ProductDetailsResponse> productResponses = new ArrayList<>();
 
-            for (CategoryDTO categoryDTO : categoryDTOS) {
-                CategoryDetailsResponse categoryResponse = new CategoryDetailsResponse();
-                BeanUtils.copyProperties(categoryDTO, categoryResponse);
-                categoryResponses.add(categoryResponse);
+            for (ProductDTO productDTO : productDTOS) {
+                ProductDetailsResponse productResponse = new ProductDetailsResponse();
+                BeanUtils.copyProperties(productDTO, productResponse);
+                productResponses.add(productResponse);
             }
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponses);
+                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), productResponses);
 
             return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
         }
     }
 
-    @ApiOperation(value = "Get a category by id", response = OperationStatus.class)
+    @ApiOperation(value = "Get a product by id", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getCategory(@PathVariable long id){
+    public ResponseEntity<?> getProduct(@PathVariable long id){
         OperationStatus operationStatus;
 
-        CategoryDTO categoryDTO = categoryService.getCategory(id);
+        ProductDTO productDTO = productService.getProduct(id);
 
-        if (null == categoryDTO) {
+        if (null == productDTO) {
             operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
                     ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
 
         } else {
-            CategoryDetailsResponse categoryResponse = new CategoryDetailsResponse();
-            BeanUtils.copyProperties(categoryDTO, categoryResponse);
+            ProductDetailsResponse productResponse = new ProductDetailsResponse();
+            BeanUtils.copyProperties(productDTO, productResponse);
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponse);
+                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), productResponse);
 
             return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
         }
     }
 
-    @ApiOperation(value = "Create a category", response = OperationStatus.class)
+    @ApiOperation(value = "Create a product", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryCreateRequest request){
+    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductCreateRequest request){
         OperationStatus operationStatus;
 
-        CategoryDTO categoryDTO = new CategoryDTO();
-        BeanUtils.copyProperties(request, categoryDTO);
+        ProductDTO productDTO = new ProductDTO();
+        BeanUtils.copyProperties(request, productDTO);
 
-        CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
+        ProductDTO createdProduct = productService.createProduct(productDTO);
 
-        if (null == createdCategory) {
+        if (null == createdProduct) {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
                     ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
         } else {
-            CategoryCreateResponse returnValue = new CategoryCreateResponse();
-            BeanUtils.copyProperties(createdCategory, returnValue);
+            ProductCreateResponse returnValue = new ProductCreateResponse();
+            BeanUtils.copyProperties(createdProduct, returnValue);
 
             operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
                     SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
@@ -124,30 +129,30 @@ public class CategoryController {
         }
     }
 
-    @ApiOperation(value = "Update a category", response = OperationStatus.class)
+    @ApiOperation(value = "Update a product", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Updated"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
+    public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid ProductUpdateRequest updateRequest){
         OperationStatus operationStatus;
 
-        CategoryDTO categoryDTO = new CategoryDTO();
-        BeanUtils.copyProperties(updateRequest, categoryDTO);
+        ProductDTO productDTO = new ProductDTO();
+        BeanUtils.copyProperties(updateRequest, productDTO);
 
-        CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
+        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
 
-        if (null == updatedCategory) {
+        if (null == updatedProduct) {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
                     ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
 
         } else {
-            CategoryDetailsResponse returnValue = new CategoryDetailsResponse();
-            BeanUtils.copyProperties(updatedCategory, returnValue);
+            ProductUpdateRequest returnValue = new ProductUpdateRequest();
+            BeanUtils.copyProperties(updatedProduct, returnValue);
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
                     SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
@@ -156,19 +161,19 @@ public class CategoryController {
         }
     }
 
-    @ApiOperation(value = "Delete category by id", response = OperationStatus.class)
+    @ApiOperation(value = "Delete product by id", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable long id){
+    public ResponseEntity<?> deleteProduct(@PathVariable long id){
         OperationStatus operationStatus;
 
-        boolean deletedCategory = categoryService.deleteCategory(id);
+        boolean deletedProduct = productService.deleteProduct(id);
 
-        if (false == deletedCategory) {
+        if (false == deletedProduct) {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
                     ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage(), null);
 

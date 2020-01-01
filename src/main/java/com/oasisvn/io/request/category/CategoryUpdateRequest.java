@@ -14,8 +14,6 @@ public class CategoryUpdateRequest {
 
     @NotBlank(message = "Title required")
     @NotNull(message = "Title required")
-    @NotBlank(message = "Title required")
-    @NotNull(message = "Title required")
     @Size(max = 100, message = "Title can only have maximum 100 characters")
     @ApiModelProperty(
             example="Leather",
