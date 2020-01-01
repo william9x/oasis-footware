@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Products Table </h4>
+        <button type="button" class="btn btn-primary" (click)="toCreatePage()"><i class="fa fa-plus" aria-hidden="true"></i>
+          Create new Product</button>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class=" text-primary">
+              <th>
+                Image
+              </th>
+              <th>
+                Name
+              </th>
+              <th>
+                Category
+              </th>
+              <th class = 'text-center'>
+                Action
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products">
+                <td>
+                </td>
+                <td>
+                  {{ product.name }}
+                </td>
+                <td>
+                  {{ product.category }}
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-outline-primary btn-round btn-sm mr-1">
+                    <i class="fa fa-pencil-square-o"></i> Edit
+                  </button>
+                  <button class="btn btn-outline-primary btn-round btn-sm">
+                    <i class="fa fa-trash-o"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
