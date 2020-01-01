@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 // import { ToastrModule } from "ngx-toastr";
 // import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -28,6 +29,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     // ToastrModule.forRoot(),
     FooterModule,
     // FontAwesomeModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
