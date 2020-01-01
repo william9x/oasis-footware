@@ -17,7 +17,7 @@ public class Swagger2Config {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("simpleapi2"))
+                .apis(RequestHandlerSelectors.basePackage("com.oasisvn"))
                 .paths(PathSelectors.regex("/.*"))
                 .build()
                 .apiInfo(apiEndPointsInfo());
@@ -25,8 +25,8 @@ public class Swagger2Config {
 
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder()
-                .title("User Management REST API")
-                .description("User Management REST API")
+                .title("Oasisvn REST API")
+                .description("Oasisvn REST API")
                 .contact(new Contact("Le Hoang Nam", "", "lehoangnam197@gmail.com"))
                 .version("1.0.0")
                 .build();
