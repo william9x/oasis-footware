@@ -2,17 +2,21 @@ package com.oasisvn.service.product;
 
 import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.entity.product.ProductEntity;
+import com.oasisvn.repository.category.ICategoryRepository;
 import com.oasisvn.repository.product.IProductRepository;
+import com.oasisvn.service.category.ICategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 class ProductServiceTest {
@@ -26,6 +30,9 @@ class ProductServiceTest {
     @Mock
     IProductRepository productRepository;
 
+    @Mock
+    ICategoryRepository categoryRepository;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -34,7 +41,13 @@ class ProductServiceTest {
         productDTO.setTitle("test DTO");
 
         productEntity = new ProductEntity();
-        productEntity.setTitle("test Entity");
+        productEntity.setCategoryId(1);
+        productEntity.setTitle("Test Entity");
+        productEntity.setSubTitle("Test");
+        productEntity.setContent("Test");
+        productEntity.setUnitCost(1);
+        productEntity.setUnitPrice(1);
+        productEntity.setGender("male");
     }
 
     @Test
@@ -50,7 +63,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetAllProduct_null() {
+    void testGetAllProduct_returnNull() {
         when(productRepository.findAllByTitleNotNull()).thenReturn(new ArrayList<>());
 
         ArrayList<ProductDTO> productDTOS = productService.getProduct();
@@ -61,18 +74,95 @@ class ProductServiceTest {
     @Test
     void testGetProduct() {
 
-        //when(productRepository.findById(any(Long.class))).thenReturn(productEntity);
+        when(productRepository.findById(1)).thenReturn(productEntity);
+
+        ProductDTO testProductDTO = productService.getProduct(1);
+
+        assertEquals(testProductDTO.getTitle(), productEntity.getTitle());
+    }
+
+    @Test
+    void testGetProduct_returnNull() {
+
+        when(productRepository.findById(1)).thenReturn(null);
+
+        ProductDTO testProductDTO = productService.getProduct(1);
+
+        assertNull(testProductDTO);
     }
 
     @Test
     void createProduct() {
+
+        when(productRepository.existsByTitle(anyString())).thenReturn(false);
+        when(categoryRepository.existsById(any(Long.class))).thenReturn(true);
+        when(productRepository.save(any(ProductEntity.class))).thenReturn(productEntity);
+
+        ProductDTO testProductDTO = productService.createProduct(productDTO);
+
+        assertEquals(testProductDTO.getTitle(), productEntity.getTitle());
+    }
+
+    @Test
+    void createProduct_returnNullWhenProductExisted() {
+
+        when(productRepository.existsByTitle(anyString())).thenReturn(true);
+
+        ProductDTO testProductDTO = productService.createProduct(productDTO);
+
+        assertNull(testProductDTO);
+    }
+
+    @Test
+    void createProduct_returnNullWhenCategoryIdNotExisted() {
+
+        when(categoryRepository.existsById(any(Long.class))).thenReturn(false);
+
+        ProductDTO testProductDTO = productService.createProduct(productDTO);
+
+        assertNull(testProductDTO);
     }
 
     @Test
     void updateProduct() {
+
+        when(productRepository.findById(1)).thenReturn(productEntity);
+        when(productRepository.save(any(ProductEntity.class))).thenReturn(productEntity);
+
+        ProductDTO testProductDTO = productService.updateProduct(1, productDTO);
+
+        assertEquals(testProductDTO.getTitle(), productEntity.getTitle());
+    }
+
+    @Test
+    void updateProduct_returnNull() {
+
+        when(productRepository.findById(1)).thenReturn(null);
+
+        ProductDTO testProductDTO = productService.updateProduct(1, productDTO);
+
+        assertNull(testProductDTO);
     }
 
     @Test
     void deleteProduct() {
+
+        when(productRepository.findById(1)).thenReturn(productEntity);
+
+        boolean testDeleteProduct = productService.deleteProduct(1);
+
+        assertTrue(testDeleteProduct);
+
+    }
+
+    @Test
+    void deleteProduct_returnNull() {
+
+        when(productRepository.findById(1)).thenReturn(null);
+
+        boolean testDeleteProduct = productService.deleteProduct(1);
+
+        assertFalse(testDeleteProduct);
+
     }
 }
