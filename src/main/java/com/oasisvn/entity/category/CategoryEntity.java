@@ -1,20 +1,18 @@
 package com.oasisvn.entity.category;
 
+import com.oasisvn.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity(name = "category")
-public class CategoryEntity {
+public class CategoryEntity extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -22,13 +20,5 @@ public class CategoryEntity {
 
     @Column(nullable = false, unique = true)
     private String title;
-
-    @Column
-    @CreatedDate
-    private Date created_at;
-
-    @Column
-    @LastModifiedDate
-    private Date updated_at;
 
 }
