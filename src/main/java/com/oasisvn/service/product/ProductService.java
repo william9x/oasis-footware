@@ -52,7 +52,7 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO createProduct(ProductDTO productDTO) {
-        if (isProductExist(productDTO.getTitle())) return null;
+        if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategoryId())) return null;
         else {
             ProductEntity productEntity = new ProductEntity();
             BeanUtils.copyProperties(productDTO, productEntity);
@@ -77,7 +77,8 @@ public class ProductService implements IProductService {
         ProductEntity productEntity = productRepository.findById(id);
         if (null == productEntity) return null;
         else {
-            if (productEntity.getCategoryId() != updateCategoryId) {
+            if (productEntity.getCategoryId() != updateCategoryId
+                    && isCategoryExist(updateCategoryId)) {
                 productEntity.setCategoryId(updateCategoryId);
             }
             if (null != updateTitle && !isProductExist(updateTitle)) {
