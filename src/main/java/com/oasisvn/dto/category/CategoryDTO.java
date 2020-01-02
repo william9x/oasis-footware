@@ -3,11 +3,13 @@ package com.oasisvn.dto.category;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class CategoryDTO {
     private long id;
     private String title;
-    private String created_at;
-    private String updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
