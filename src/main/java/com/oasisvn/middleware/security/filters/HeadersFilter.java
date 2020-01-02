@@ -2,31 +2,29 @@
 //
 //import com.oasisvn.io.response.ErrorResponse;
 //import org.springframework.http.HttpStatus;
+//import org.springframework.stereotype.Component;
 //
 //import javax.servlet.*;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 //import java.io.IOException;
 //
-//public class AuthenticationFilter implements Filter {
-//
-//    private final String API_KEY = "simple_api_key_for_authentication";
+//@Component
+//public class HeadersFilter implements Filter {
 //
 //    @Override
 //    public void doFilter(ServletRequest request,
 //                         ServletResponse response,
 //                         FilterChain chain) throws IOException, ServletException {
+//
 //        HttpServletRequest req = (HttpServletRequest) request;
 //        HttpServletResponse res = (HttpServletResponse) response;
 //
-//        String authenticationHeader = req.getHeader("Authentication");
+//        String contentType = req.getHeader("Content-Type");
 //
-//        if (null == authenticationHeader || false == authenticationHeader.equals(API_KEY)) {
-//            res.sendError(HttpStatus.UNAUTHORIZED.value(), ErrorResponse.AUTHENTICATION_FAILED.getErrorMessage());
+//        if (null == contentType || false == contentType.equals("application/json")) {
+//            res.sendError(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), ErrorResponse.UNSUPPORTED_MEDIA_TYPE.getErrorMessage());
 //            return;
 //        }
-//
-//
-//        chain.doFilter(request, response);
 //    }
 //}
