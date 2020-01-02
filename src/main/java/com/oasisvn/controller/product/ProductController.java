@@ -102,6 +102,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 415, message = "Unsupported Media Type"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PostMapping
@@ -133,6 +134,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Updated"),
             @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 415, message = "Unsupported Media Type"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
