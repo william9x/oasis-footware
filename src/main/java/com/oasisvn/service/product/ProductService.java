@@ -62,34 +62,34 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO updateProduct(long id, ProductDTO productDTO) {
-        String updateCategoryId = productDTO.getCategory_id();
+        String updateCategoryId = productDTO.getCategoryId();
         String updateTitle = productDTO.getTitle();
-        String updateTitleSubTitle = productDTO.getSub_title();
+        String updateTitleSubTitle = productDTO.getSubTitle();
         String updateContent = productDTO.getContent();
-        double updatedUnitCost = productDTO.getUnit_cost();
-        double updatedUnitPrice = productDTO.getUnit_price();
+        double updatedUnitCost = productDTO.getUnitCost();
+        double updatedUnitPrice = productDTO.getUnitPrice();
         String updatedGender = productDTO.getGender();
 
         ProductEntity productEntity = productRepository.findById(id);
         if (null == productEntity) return null;
         else {
             if (null != updateCategoryId) {
-                productEntity.setCategory_id(updateCategoryId);
+                productEntity.setCategoryId(updateCategoryId);
             }
             if (null != updateTitle && !isProductExist(updateTitle)) {
                 productEntity.setTitle(updateTitle);
             }
             if (null != updateTitleSubTitle) {
-                productEntity.setSub_title(updateTitleSubTitle);
+                productEntity.setSubTitle(updateTitleSubTitle);
             }
             if (null != updateContent) {
                 productEntity.setContent(updateContent);
             }
-            if (productEntity.getUnit_cost() != updatedUnitCost) {
-                productEntity.setUnit_cost(updatedUnitCost);
+            if (productEntity.getUnitCost() != updatedUnitCost) {
+                productEntity.setUnitCost(updatedUnitCost);
             }
-            if (productEntity.getUnit_price() != updatedUnitPrice) {
-                productEntity.setUnit_price(updatedUnitPrice);
+            if (productEntity.getUnitPrice() != updatedUnitPrice) {
+                productEntity.setUnitPrice(updatedUnitPrice);
             }
             if (null != updatedGender) {
                 productEntity.setGender(updatedGender);
