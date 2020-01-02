@@ -19,7 +19,7 @@ public class ProductUpdateRequest {
             notes = "Category id cannot be empty",
             required = true
     )
-    private String category_id;
+    private String categoryId;
 
     @NotBlank(message = "Title required")
     @NotNull(message = "Title required")
@@ -39,7 +39,7 @@ public class ProductUpdateRequest {
             notes = "Sub title cannot be empty",
             required = true
     )
-    private String sub_title;
+    private String subTitle;
 
     @NotBlank(message = "Content required")
     @NotNull(message = "Content required")
@@ -56,7 +56,7 @@ public class ProductUpdateRequest {
             notes = "Unit cost cannot be empty",
             required = true
     )
-    private double unit_cost;
+    private double unitCost;
 
     @NotNull(message = "Unit price required")
     @ApiModelProperty(
@@ -64,7 +64,7 @@ public class ProductUpdateRequest {
             notes = "Unit price cannot be empty",
             required = true
     )
-    private double unit_price;
+    private double unitPrice;
 
     @NotBlank(message = "Gender required")
     @NotNull(message = "Gender required")

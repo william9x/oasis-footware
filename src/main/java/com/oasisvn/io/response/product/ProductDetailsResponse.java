@@ -9,13 +9,13 @@ import java.util.Date;
 @Setter
 public class ProductDetailsResponse {
     private long id;
-    private String category_id;
+    private String categoryId;
     private String title;
-    private String sub_title;
+    private String subTitle;
     private String content;
-    private double unit_cost;
-    private double unit_price;
+    private double unitCost;
+    private double unitPrice;
     private String gender;
-    private Date created_at;
-    private Date updated_at;
+    private Date createdAt;
+    private Date updatedAt;
 }
