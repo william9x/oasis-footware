@@ -153,7 +153,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
 
         } else {
-            ProductUpdateRequest returnValue = new ProductUpdateRequest();
+            ProductDetailsResponse returnValue = new ProductDetailsResponse();
             BeanUtils.copyProperties(updatedProduct, returnValue);
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,

@@ -2,6 +2,7 @@ package com.oasisvn.service.product;
 
 import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.entity.product.ProductEntity;
+import com.oasisvn.repository.category.ICategoryRepository;
 import com.oasisvn.repository.product.IProductRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class ProductService implements IProductService {
 
     @Autowired
     private IProductRepository productRepository;
+
+    @Autowired
+    private ICategoryRepository categoryRepository;
 
     @Override
     public ArrayList<ProductDTO> getProduct() {
@@ -62,18 +66,18 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO updateProduct(long id, ProductDTO productDTO) {
-        String updateCategoryId = productDTO.getCategoryId();
+        long updateCategoryId = productDTO.getCategoryId();
         String updateTitle = productDTO.getTitle();
         String updateTitleSubTitle = productDTO.getSubTitle();
         String updateContent = productDTO.getContent();
+        String updatedGender = productDTO.getGender();
         double updatedUnitCost = productDTO.getUnitCost();
         double updatedUnitPrice = productDTO.getUnitPrice();
-        String updatedGender = productDTO.getGender();
 
         ProductEntity productEntity = productRepository.findById(id);
         if (null == productEntity) return null;
         else {
-            if (null != updateCategoryId) {
+            if (productEntity.getCategoryId() != updateCategoryId) {
                 productEntity.setCategoryId(updateCategoryId);
             }
             if (null != updateTitle && !isProductExist(updateTitle)) {
@@ -85,14 +89,14 @@ public class ProductService implements IProductService {
             if (null != updateContent) {
                 productEntity.setContent(updateContent);
             }
+            if (null != updatedGender) {
+                productEntity.setGender(updatedGender);
+            }
             if (productEntity.getUnitCost() != updatedUnitCost) {
                 productEntity.setUnitCost(updatedUnitCost);
             }
             if (productEntity.getUnitPrice() != updatedUnitPrice) {
                 productEntity.setUnitPrice(updatedUnitPrice);
-            }
-            if (null != updatedGender) {
-                productEntity.setGender(updatedGender);
             }
 
             ProductDTO returnValue = new ProductDTO();
@@ -115,6 +119,10 @@ public class ProductService implements IProductService {
 
     private Boolean isProductExist(String title) {
         return productRepository.existsByTitle(title);
+    }
+
+    private Boolean isCategoryExist(long id) {
+        return categoryRepository.existsById(id);
     }
 
 }

@@ -13,7 +13,7 @@ public enum ErrorResponse {
     COULD_NOT_CREATE_RECORD("Could not create record"),
     COULD_NOT_UPDATE_RECORD("Could not update record"),
     COULD_NOT_DELETE_RECORD("Could not delete record"),
-    UNSUPPORTED_MEDIA_TYPE("Unsupported media type, try add Content-Type: application header.");
+    UNSUPPORTED_MEDIA_TYPE("Unsupported media type, try adding Content-Type: application header.");
 
     private String errorMessage;
     ErrorResponse(String errorMessage){

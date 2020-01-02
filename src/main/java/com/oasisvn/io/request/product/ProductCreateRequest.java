@@ -12,14 +12,13 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class ProductCreateRequest {
-    @NotBlank(message = "Category id required")
-    @NotNull(message = "Category id required")
+
     @ApiModelProperty(
             example = "1",
             notes = "Category id cannot be empty",
             required = true
     )
-    private String categoryId;
+    private long categoryId;
 
     @NotBlank(message = "Title required")
     @NotNull(message = "Title required")
