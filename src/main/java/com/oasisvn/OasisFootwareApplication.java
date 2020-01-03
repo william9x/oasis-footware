@@ -19,7 +19,7 @@ public class OasisFootwareApplication {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("*").allowedOrigins("*");
+                registry.addMapping("/api/*/*").allowedOrigins("*");
             }
         };
     }
