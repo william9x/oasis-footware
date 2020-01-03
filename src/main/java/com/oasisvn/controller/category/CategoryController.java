@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("api/category")
 @Api(value = "Category API")
 public class CategoryController {
