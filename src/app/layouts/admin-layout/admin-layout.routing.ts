@@ -6,8 +6,9 @@ import { TableComponent } from "../../pages/table/table.component";
 import { ProductsComponent } from "src/app/pages/products/products.component";
 import { CreateProductComponent } from "src/app/pages/create-product/create-product.component";
 import { CategoryComponent } from "src/app/pages/category/category.component";
-import { CreateCategoryComponent } from "src/app/pages/create-category/create-category.component";
+import { CreateCategoryComponent } from "../../pages/create-category/create-category.component";
 import { ReportComponent } from 'src/app/pages/report/report.component';
+import { CategoryUpdateComponent } from 'src/app/pages/category/category-update/category-update.component';
 
 export const AdminLayoutRoutes: Routes = [
   { path: "dashboard", component: DashboardComponent },
@@ -17,5 +18,6 @@ export const AdminLayoutRoutes: Routes = [
   { path: "product/create", component: CreateProductComponent },
   { path: "category", component: CategoryComponent },
   { path: "category/create", component: CreateCategoryComponent },
+  { path: "category/edit/:id", component: CategoryUpdateComponent },
   { path: "report", component: ReportComponent }
 ];
