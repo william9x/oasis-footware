@@ -30,12 +30,12 @@ export class CreateProductComponent implements OnInit {
   }
 
   onSubmit() {
-    const formData: any = new FormData();
-    formData.append("file", this.fileData);
-    this.http.post("https://api.imgur.com/3/upload", formData).subscribe(res => {
-      console.log(res);
-      this.uploadedFilePath = res.data.filePath;
-      alert("SUCCESS !!");
-    });
+    // const formData: any = new FormData();
+    // formData.append("file", this.fileData);
+    // this.http.post("https://api.imgur.com/3/upload", formData).subscribe(res => {
+    //   console.log(res);
+    //   this.uploadedFilePath = res.data.data.filePath;
+    //   alert("SUCCESS !!");
+    // });
   }
 }

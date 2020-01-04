@@ -10,12 +10,12 @@ import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { UserComponent } from '../../pages/user/user.component';
 import { TableComponent } from '../../pages/table/table.component';
 import { ProductsComponent } from '../../pages/products/products.component';
-import { CreateProductComponent } from '../../pages/create-product/create-product.component';
 import { CategoryComponent } from 'src/app/pages/category/category.component';
 import { CreateCategoryComponent } from 'src/app/pages/create-category/create-category.component';
-
+import { ProductCreateComponent } from 'src/app/pages/products/product-create/product-create.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportComponent } from 'src/app/pages/report/report.component';
+
 
 
 
@@ -32,7 +32,7 @@ import { ReportComponent } from 'src/app/pages/report/report.component';
     UserComponent,
     TableComponent,
     ProductsComponent,
-    CreateProductComponent,
+    ProductCreateComponent,
     CategoryComponent,
     CreateCategoryComponent,
     ReportComponent

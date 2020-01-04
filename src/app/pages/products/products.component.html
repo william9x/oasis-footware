@@ -2,9 +2,10 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title"> Products Table </h4>
-        <button type="button" class="btn btn-primary" (click)="toCreatePage()"><i class="fa fa-plus" aria-hidden="true"></i>
-          Create new Product</button>
+        <h4 class="card-title">Products Table</h4>
+        <button type="button" class="btn btn-primary" (click)="toCreatePage()">
+          <i class="fa fa-plus" aria-hidden="true"></i> Create new Product
+        </button>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -14,24 +15,47 @@
                 Image
               </th>
               <th>
-                Name
+                Title
               </th>
               <th>
-                Category
+                Subtitle
               </th>
-              <th class = 'text-center'>
+              <th>
+                Description
+              </th>
+              <th>
+                Cost price
+              </th>
+              <th>
+                Price
+              </th>
+              <th>
+                Gender
+              </th>
+              <th class="text-center">
                 Action
               </th>
             </thead>
             <tbody>
               <tr *ngFor="let product of products">
+                <td></td>
                 <td>
+                  {{ product.title }}
                 </td>
                 <td>
-                  {{ product.name }}
+                  {{ product.subTitle }}
                 </td>
                 <td>
-                  {{ product.category }}
+                  {{ product.content }}
+                </td>
+                <td>
+                  {{ product.unitCost }}
+                </td>
+                <td>
+                  {{ product.unitPrice }}
+                </td>
+                <td>
+                  {{ product.gender }}
                 </td>
                 <td class="text-center">
                   <button class="btn btn-outline-primary btn-round btn-sm mr-1">
@@ -48,3 +72,4 @@
       </div>
     </div>
   </div>
+</div>

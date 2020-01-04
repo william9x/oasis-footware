@@ -1,16 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-export class Product {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-  quantity: number;
-  category: string;
-}
-
+import { ApiService } from './products.service';
 
 @Component({
   selector: 'app-products',
@@ -18,34 +8,32 @@ export class Product {
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  products : Product[] = [
-    {
-      id: 1,
-      name: "Product item number 1",
-      description: "Description for product item number 1",
-      image: "https://cdn.shopify.com/s/files/1/1241/4530/products/MateriaBootBlackPerfil_800x.jpg?v=1570440626",
-      price: 5950000,
-      quantity: 2,
-      category: "sport"
-    },
-    {
-      id: 2,
-      name: "Product item number 2",
-      description: "Description for product item number 2",
-      image: "https://cdn.shopify.com/s/files/1/1241/4530/products/MateriaBootBlackPerfil_800x.jpg?v=1570440626",
-      price: 9100000,
-      quantity: 1,
-      category: "sport"
-    }
-  ];
 
-  constructor(private router: Router) { }
+  products;
+
+  constructor(private router: Router, private apiService: ApiService) {
+    this.products = [];
+  }
 
   ngOnInit() {
+    this.getAllProducts();
   }
 
   toCreatePage() {
-    this.router.navigate(['/product/create']);
+    this.router.navigate(["/product/create"]);
   }
+
+  getAllProducts() {
+    this.apiService.getAllProducts().subscribe(
+      res => {
+        console.log(res.data);
+        this.products = res.data;
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
 
 }
