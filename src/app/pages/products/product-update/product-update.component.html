@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
-        <h5 class="card-title">Add New Product</h5>
+        <h5 class="card-title">Update Product</h5>
       </div>
       <div class="card-body">
         <form>
@@ -85,9 +85,10 @@
           </div> -->
           <div class="row">
             <div class="update ml-auto mr-auto form-group">
-              <button class="btn btn-primary btn-round" (click)="createProduct()">Confirm</button>
+              <button class="btn btn-primary btn-round" (click)="updateProduct()">Confirm</button>
+              <button class="btn btn-secondary btn-round" [routerLink]="[ '/product']">Cancel</button>
             </div>
-          </div>
+            </div>
         </form>
       </div>
     </div>

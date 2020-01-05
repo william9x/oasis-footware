@@ -58,10 +58,10 @@
                   {{ product.gender }}
                 </td>
                 <td class="text-center">
-                  <button class="btn btn-outline-primary btn-round btn-sm mr-1">
-                    <i class="fa fa-pencil-square-o"></i> Edit
+                  <button class="btn btn-outline-primary btn-round btn-sm mr-1" [routerLink]="['/product/edit',product.id]">
+                    <i class="fa fa-pencil-square-o" ></i> Edit
                   </button>
-                  <button class="btn btn-outline-primary btn-round btn-sm">
+                  <button class="btn btn-outline-primary btn-round btn-sm"  (click)="deleteProduct(product.id)">
                     <i class="fa fa-trash-o"></i> Delete
                   </button>
                 </td>
@@ -73,3 +73,11 @@
     </div>
   </div>
 </div>
+
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="default"
+  type="ball-spin-clockwise"
+>
+  <p style="color: white">Please Wait.</p>
+</ngx-spinner>

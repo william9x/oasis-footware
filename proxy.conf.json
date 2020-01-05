@@ -1,0 +1,8 @@
+{
+  "/travellers/*": {
+    "target": "hhttps://oasis-footware.herokuapp.com",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+ }

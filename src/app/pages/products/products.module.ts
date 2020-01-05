@@ -4,7 +4,7 @@ export class Products {
   title: string;
   subTitle: string;
   content: string;
-  unistCost: number;
+  unitCost: number;
   unitPrice: number;
   gender: string;
   data: any;

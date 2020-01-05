@@ -13,8 +13,15 @@ import { ProductsComponent } from '../../pages/products/products.component';
 import { CategoryComponent } from 'src/app/pages/category/category.component';
 import { CreateCategoryComponent } from 'src/app/pages/create-category/create-category.component';
 import { ProductCreateComponent } from 'src/app/pages/products/product-create/product-create.component';
+import { CategoryUpdateComponent } from 'src/app/pages/category/category-update/category-update.component';
+import { ProductUpdateComponent } from 'src/app/pages/products/product-update/product-update.component';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportComponent } from 'src/app/pages/report/report.component';
+
+import { NgxSpinnerModule } from "ngx-spinner";
+
+
 
 
 
@@ -25,7 +32,8 @@ import { ReportComponent } from 'src/app/pages/report/report.component';
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
-    NgbModule
+    NgbModule,
+    NgxSpinnerModule
   ],
   declarations: [
     DashboardComponent,
@@ -35,7 +43,9 @@ import { ReportComponent } from 'src/app/pages/report/report.component';
     ProductCreateComponent,
     CategoryComponent,
     CreateCategoryComponent,
-    ReportComponent
+    ReportComponent,
+    CategoryUpdateComponent,
+    ProductUpdateComponent
   ]
 })
 

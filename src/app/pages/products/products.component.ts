@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from './products.service';
+import { CreateProductService } from './products.service';
+import { NgxSpinnerService } from "ngx-spinner";;
 
 @Component({
   selector: 'app-products',
@@ -11,7 +12,10 @@ export class ProductsComponent implements OnInit {
 
   products;
 
-  constructor(private router: Router, private apiService: ApiService) {
+  constructor(
+    private router: Router,
+    private apiService: CreateProductService,
+    private SpinnerService: NgxSpinnerService) {
     this.products = [];
   }
 
@@ -32,7 +36,22 @@ export class ProductsComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    );
+  }
+
+  deleteProduct(id: any) {
+    this.SpinnerService.show();
+    this.apiService.deleteProduct(id).subscribe(
+      res => {
+        console.log(res);
+        this.getAllProducts();
+        this.SpinnerService.hide();
+      },
+      error => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
   }
 
 
