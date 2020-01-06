@@ -19,7 +19,7 @@ import { ProductUpdateComponent } from 'src/app/pages/products/product-update/pr
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReportComponent } from 'src/app/pages/report/report.component';
 
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 

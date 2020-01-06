@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
 
-  test : Date = new Date();
+  test: Date = new Date();
 
 }

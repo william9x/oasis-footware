@@ -8,12 +8,12 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: '/dashboard',     title: 'Dashboard',         icon:'nc-bank',       class: '' },
-  { path: '/user',          title: 'User Profile',      icon:'nc-single-02',  class: '' },
+  { path: '/dashboard',     title: 'Dashboard',         icon: 'nc-bank',       class: '' },
+  { path: '/user',          title: 'User Profile',      icon: 'nc-single-02',  class: '' },
   // { path: '/table',         title: 'Table',        icon:'nc-tile-56',    class: '' },
-  { path: '/product',          title: 'Product',      icon:'nc-shop',  class: '' },
-  { path: '/category',          title: 'Category',      icon:'nc-bullet-list-67',  class: '' },
-  { path: '/report',          title: 'Report',      icon:'nc-paper',  class: '' },
+  { path: '/product',          title: 'Product',      icon: 'nc-shop',  class: '' },
+  { path: '/category',          title: 'Category',      icon: 'nc-bullet-list-67',  class: '' },
+  { path: '/report',          title: 'Report',      icon: 'nc-paper',  class: '' },
 ];
 
 @Component({

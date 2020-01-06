@@ -58,10 +58,16 @@
                   {{ product.gender }}
                 </td>
                 <td class="text-center">
-                  <button class="btn btn-outline-primary btn-round btn-sm mr-1" [routerLink]="['/product/edit',product.id]">
-                    <i class="fa fa-pencil-square-o" ></i> Edit
+                  <button
+                    class="btn btn-outline-primary btn-round btn-sm mr-1"
+                    [routerLink]="['/product/edit', product.id]"
+                  >
+                    <i class="fa fa-pencil-square-o"></i> Edit
                   </button>
-                  <button class="btn btn-outline-primary btn-round btn-sm"  (click)="deleteProduct(product.id)">
+                  <button
+                    class="btn btn-outline-primary btn-round btn-sm"
+                    (click)="deleteProduct(product.id)"
+                  >
                     <i class="fa fa-trash-o"></i> Delete
                   </button>
                 </td>

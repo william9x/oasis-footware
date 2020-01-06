@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
-import { CreateProductService } from "../products.service";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Router, ActivatedRoute } from '@angular/router';
+import { CreateProductService } from '../products.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Products } from '../products.module';
-import { ApiService } from '../../category/category.service'
+import { ApiService } from '../../category/category.service';
 
 
 @Component({
@@ -21,15 +21,15 @@ export class ProductUpdateComponent implements OnInit {
     private createProductService: CreateProductService,
     private apiService: ApiService,
     private SpinnerService: NgxSpinnerService,
-    public activatedRoute: ActivatedRoute,) {
+    public activatedRoute: ActivatedRoute) {
       this.data = new Products();
      }
 
   ngOnInit() {
     this.SpinnerService.show();
-    this.id = this.activatedRoute.snapshot.params["id"];
-        //get product details using id
-        this.createProductService.getProductDetail(this.id).subscribe(response => {
+    this.id = this.activatedRoute.snapshot.params.id;
+        // get product details using id
+    this.createProductService.getProductDetail(this.id).subscribe(response => {
           console.log(response);
           this.data = response.data;
           this.SpinnerService.hide();
@@ -52,12 +52,12 @@ export class ProductUpdateComponent implements OnInit {
 
   updateProduct() {
     this.SpinnerService.show();
-    //Update item by taking id and updated data object
+    // Update item by taking id and updated data object
     this.createProductService.updateProductDetail(this.id, this.data).subscribe(
       res => {
         console.log(res);
         this.SpinnerService.hide();
-        this.router.navigate(["product"]);
+        this.router.navigate(['product']);
       },
       error => {
         console.log(error);

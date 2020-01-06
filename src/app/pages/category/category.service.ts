@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Category } from "./category.model";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Category } from './category.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class ApiService {
   // API path
-  apiURL: string = "https://oasis-footware.herokuapp.com/api/";
+  apiURL = 'https://oasis-footware.herokuapp.com/api/';
 
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     })
   };
 
@@ -22,7 +22,7 @@ export class ApiService {
   // Get All Category
   public getCategories(): Observable<Category> {
     return this.httpClient.get<Category>(
-      this.apiURL + "category",
+      this.apiURL + 'category',
       this.httpOptions
     );
   }
@@ -30,7 +30,7 @@ export class ApiService {
   // Get Item By Id
   public getItem(id): Observable<Category> {
     return this.httpClient.get<Category>(
-      this.apiURL + "category/" + id,
+      this.apiURL + 'category/' + id,
       this.httpOptions
     );
   }
@@ -38,7 +38,7 @@ export class ApiService {
   // Delete Item By Id
   public deleteItem(id: any): Observable<any> {
     return this.httpClient.delete(
-      this.apiURL + "category" + `/${id}`,
+      this.apiURL + 'category' + `/${id}`,
       this.httpOptions
     );
   }
@@ -46,7 +46,7 @@ export class ApiService {
   // Update Item By Id
   public updateItem(id: any, item): Observable<any> {
     return this.httpClient.put(
-      this.apiURL + "category" + `/${id}`,
+      this.apiURL + 'category' + `/${id}`,
       JSON.stringify(item),
       this.httpOptions
     );

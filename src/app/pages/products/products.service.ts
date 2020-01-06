@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { Products } from "./products.module";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Products } from './products.module';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class CreateProductService {
   // API path
-  apiURL: string = "https://oasis-footware.herokuapp.com/api/";
+  apiURL = 'https://oasis-footware.herokuapp.com/api/';
 
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     })
   };
 
@@ -22,7 +22,7 @@ export class CreateProductService {
   // Get All Products
   public getAllProducts(): Observable<Products> {
     return this.httpClient.get<Products>(
-      this.apiURL + "product",
+      this.apiURL + 'product',
       this.httpOptions
     );
   }
@@ -30,7 +30,7 @@ export class CreateProductService {
   // Get Item By Id
   public getProductDetail(id): Observable<any> {
     return this.httpClient.get<any>(
-      this.apiURL + "product/" + id,
+      this.apiURL + 'product/' + id,
       this.httpOptions
     );
   }
@@ -47,7 +47,7 @@ export class CreateProductService {
   // Update Product Detail By Id
   public updateProductDetail(id: any, item): Observable<any> {
     return this.httpClient.put(
-      this.apiURL + "product" + `/${id}`,
+      this.apiURL + 'product' + `/${id}`,
       JSON.stringify(item),
       this.httpOptions
     );
@@ -56,7 +56,7 @@ export class CreateProductService {
   // Delete Item By Id
   public deleteProduct(id: any): Observable<any> {
     return this.httpClient.delete(
-      this.apiURL + "product" + `/${id}`,
+      this.apiURL + 'product' + `/${id}`,
       this.httpOptions
     );
   }

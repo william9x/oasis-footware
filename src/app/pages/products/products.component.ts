@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CreateProductService } from './products.service';
-import { NgxSpinnerService } from "ngx-spinner";;
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-products',
@@ -9,13 +9,13 @@ import { NgxSpinnerService } from "ngx-spinner";;
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-
   products;
 
   constructor(
     private router: Router,
     private apiService: CreateProductService,
-    private SpinnerService: NgxSpinnerService) {
+    private SpinnerService: NgxSpinnerService
+  ) {
     this.products = [];
   }
 
@@ -24,7 +24,7 @@ export class ProductsComponent implements OnInit {
   }
 
   toCreatePage() {
-    this.router.navigate(["/product/create"]);
+    this.router.navigate(['/product/create']);
   }
 
   getAllProducts() {
@@ -53,6 +53,4 @@ export class ProductsComponent implements OnInit {
       }
     );
   }
-
-
 }

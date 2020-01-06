@@ -1,17 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ApiService } from "./category.service";
-import { NgxSpinnerService } from "ngx-spinner";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from './category.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: "app-category",
-  templateUrl: "./category.component.html",
-  styleUrls: ["./category.component.css"]
+  selector: 'app-category',
+  templateUrl: './category.component.html',
+  styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
   categories;
 
-  constructor(private router: Router, private apiService: ApiService,  private SpinnerService: NgxSpinnerService) {
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    private SpinnerService: NgxSpinnerService
+  ) {
     this.categories = [];
   }
 
@@ -32,7 +36,7 @@ export class CategoryComponent implements OnInit {
   }
 
   toCreatePage() {
-    this.router.navigate(["/category/create"]);
+    this.router.navigate(['/category/create']);
   }
 
   deleteCategory(id: any) {

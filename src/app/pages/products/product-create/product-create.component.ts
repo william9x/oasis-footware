@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../category/category.service';
 import { CreateProductService } from '../products.service';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { Products } from '../products.module';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-product-create',
@@ -51,7 +51,7 @@ export class ProductCreateComponent implements OnInit {
         console.log(error);
         this.SpinnerService.hide();
       }
-    )
+    );
   }
 
 

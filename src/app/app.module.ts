@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { routes } from './app-routing.module';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
