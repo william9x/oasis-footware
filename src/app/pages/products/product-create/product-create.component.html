@@ -50,7 +50,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Gender: </label>
-                <select class="form-control" id="inputGroupSelect01" [(ngModel)]="data.gender" name="gender">
+                <select class="form-control" [(ngModel)]="data.gender" name="gender">
                   <option selected>Choose...</option>
                   <option value="Female" >Female</option>
                   <option value="Male" >Male</option>
@@ -62,30 +62,46 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Category: </label>
-                <select class="form-control" id="inputGroupSelect02"  [(ngModel)]="data.categoryId" name="categoryId">
+                <select class="form-control"  [(ngModel)]="data.categoryId" name="categoryId">
                   <option selected>Choose...</option>
                   <option value="{{ category.id }}" *ngFor="let category of categories" >{{category.title}}</option>
                 </select>
               </div>
             </div>
           </div>
-          <!-- <div class="row">
+          <div class="row">
             <div class="col-md-12">
-              <div class="form-group">
-                <label>Upload image:</label>
-                <div class="custom-file">
-                  <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                  <div class="image-preview mb-3" *ngIf="previewUrl">
-                    <img [src]="previewUrl" height="300" />
+                <label >Image: </label>
+                  <div class="custom-file ">
+                    <input
+                    type="file"
+                    class="custom-file-input"
+                    name = 'image'
+                    (change)="handleFileInput($event.target.files)"
+                  />
+                  <label class="custom-file-label" for="inputGroupFile01"
+                    >Choose file</label>
+                  </div>
+                <!-- <div *ngIf="fileUploadProgress">
+                  Upload progress: {{ fileUploadProgress }}
+                </div> -->
+                <!-- <div class="image-preview mb-3" *ngIf="previewUrl">
+                  <img [src]="previewUrl" height="300" />
                 </div>
-                </div>
-              </div>
+
+                <div class="mb-3" *ngIf="uploadedFilePath">
+                  {{ uploadedFilePath }}
+                </div> -->
             </div>
-          </div> -->
+          </div>
           <div class="row">
             <div class="update ml-auto mr-auto form-group">
-              <button class="btn btn-primary btn-round" (click)="createProduct()">Confirm</button>
+              <button
+                class="btn btn-primary btn-round"
+                (click)="createProduct()"
+              >
+                Confirm
+              </button>
             </div>
           </div>
         </form>

@@ -10,20 +10,31 @@ export class CreateProductService {
   // API path
   apiURL = 'https://oasis-footware.herokuapp.com/api/';
 
+  // Imgur API path
+  imgurApiUrl = 'https://api.imgur.com/3/image';
+
+
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      Authorization: 'Client-ID e16d35e275b6885',
+      'Content-Type': 'multipart/form-data'
     })
   };
 
-  constructor(private httpClient: HttpClient) {}
+  httpHeader = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
+  constructor(private httpClient: HttpClient) { }
 
   // Get All Products
   public getAllProducts(): Observable<Products> {
     return this.httpClient.get<Products>(
       this.apiURL + 'product',
-      this.httpOptions
+      this.httpHeader
     );
   }
 
@@ -31,7 +42,7 @@ export class CreateProductService {
   public getProductDetail(id): Observable<any> {
     return this.httpClient.get<any>(
       this.apiURL + 'product/' + id,
-      this.httpOptions
+      this.httpHeader
     );
   }
 
@@ -40,7 +51,20 @@ export class CreateProductService {
     return this.httpClient.post<Products>(
       this.apiURL + item,
       JSON.stringify(data),
-      this.httpOptions
+      this.httpHeader
+    );
+  }
+
+  // Upload image
+  public uploadImage(fileToUpload: File): Observable<any> {
+    // const formData: FormData = new FormData();
+    // formData.append('file', fileToUpload);
+    // console.log('formData' , formData);
+    return this.httpClient.post(
+      this.imgurApiUrl,
+      // formData,
+      fileToUpload,
+      this.httpOptions,
     );
   }
 
@@ -49,7 +73,7 @@ export class CreateProductService {
     return this.httpClient.put(
       this.apiURL + 'product' + `/${id}`,
       JSON.stringify(item),
-      this.httpOptions
+      this.httpHeader
     );
   }
 
@@ -57,7 +81,7 @@ export class CreateProductService {
   public deleteProduct(id: any): Observable<any> {
     return this.httpClient.delete(
       this.apiURL + 'product' + `/${id}`,
-      this.httpOptions
+      this.httpHeader
     );
   }
 }
