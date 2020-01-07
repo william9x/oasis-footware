@@ -1,13 +1,11 @@
 package com.oasisvn.entity.image;
 
 import com.oasisvn.entity.BaseEntity;
+import com.oasisvn.entity.product.ProductEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
@@ -27,6 +25,8 @@ public class ImageEntity extends BaseEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String image_id;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     @Column(nullable = false)
-    private String product_id;
+    private ProductEntity product;
 }
