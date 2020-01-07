@@ -8,11 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Entity(name = "category")
-public class CategoryEntity extends BaseEntity {
+public class CategoryEntity extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = -5696608064487143293L;
 
     @Id
     @GeneratedValue
