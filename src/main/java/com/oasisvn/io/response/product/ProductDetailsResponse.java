@@ -4,7 +4,6 @@ import com.oasisvn.io.response.category.CategoryCreateResponse;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +19,4 @@ public class ProductDetailsResponse {
     private double unitPrice;
     private String gender;
     private List<ProductImageResponse> images = new ArrayList<>();
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

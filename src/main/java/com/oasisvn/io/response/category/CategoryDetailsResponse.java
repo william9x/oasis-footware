@@ -14,6 +14,4 @@ public class CategoryDetailsResponse {
     private long id;
     private String title;
     private List<ProductDetailsResponse> products = new ArrayList<>();
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

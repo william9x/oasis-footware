@@ -10,6 +10,4 @@ import java.time.LocalDateTime;
 public class CategoryCreateResponse {
     private long id;
     private String title;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
