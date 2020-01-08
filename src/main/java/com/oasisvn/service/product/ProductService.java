@@ -44,8 +44,6 @@ public class ProductService implements IProductService {
         } catch (Exception e) {
             return null;
         }
-
-
     }
 
     @Override
@@ -68,8 +66,8 @@ public class ProductService implements IProductService {
     public ProductDTO createProduct(ProductDTO productDTO) {
         if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategoryId())) return null;
         else {
-            for (int i = 0; i < productDTO.getImages().size(); i++) {
-                ProductImageDTO image = productDTO.getImages().get(i);
+
+            for (ProductImageDTO image : productDTO.getImages()) {
                 image.setProduct(productDTO);
             }
 
@@ -90,37 +88,46 @@ public class ProductService implements IProductService {
     @Override
     public ProductDTO updateProduct(long id, ProductDTO productDTO) {
 
+        //Update information
         long updateCategoryId = productDTO.getCategoryId();
         String updateTitle = productDTO.getTitle();
         List<ProductImageDTO> updateImages = productDTO.getImages();
 
+        //Old information
         ProductEntity productEntity = productRepository.findById(id);
+        long oldId = productEntity.getId();
         long oldCategoryId = productEntity.getCategoryId();
+        String oldTitle = productEntity.getTitle();
         List<ProductImageEntity> oldImages = productEntity.getImages();
 
         if (null == productEntity) return null;
         else {
-            if (oldCategoryId != updateCategoryId
-                    && isCategoryExist(updateCategoryId)) {
-                productEntity.setCategoryId(updateCategoryId);
+
+            if (false == isCategoryExist(updateCategoryId)) {
+                productDTO.setCategoryId(oldCategoryId);
             }
-            if (null != updateTitle && !isProductExist(updateTitle)) {
-                productEntity.setTitle(updateTitle);
+            if (isProductExist(updateTitle)) {
+                productDTO.setTitle(oldTitle);
             }
-            if (null != updateImages && !updateImages.isEmpty()) {
-                for (int i = 0; i < updateImages.size(); i++) {
-                    ProductImageDTO updateImage = updateImages.get(i);
-//                    if ()
+            if (null != updateImages && 0 != updateImages.size()) {
+                for (ProductImageDTO updateImage : updateImages) {
                     updateImage.setProduct(productDTO);
+                }
+            } else {
+                for (ProductImageEntity oldImage : oldImages) {
+                    updateImages.add(modelMapper.map(oldImage, ProductImageDTO.class));
                 }
             }
 
+            ProductEntity updateProduct = modelMapper.map(productDTO, ProductEntity.class);
+            updateProduct.setId(oldId);
+
             try {
-                ProductEntity updatedProduct = productRepository.save(productEntity);
+                ProductEntity updatedProduct = productRepository.save(updateProduct);
                 ProductDTO returnValue = modelMapper.map(updatedProduct, ProductDTO.class);
 
                 return returnValue;
-            } catch (Exception e){
+            } catch (Exception e) {
                 return null;
             }
         }
@@ -132,8 +139,12 @@ public class ProductService implements IProductService {
 
         if (null == productEntity) return false;
         else {
-            productRepository.delete(productEntity);
-            return true;
+            try {
+                productRepository.delete(productEntity);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
 
