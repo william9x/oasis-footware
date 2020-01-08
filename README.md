@@ -1,1 +1,3 @@
-E chưa có file README.md cô thông cảm nha hihi
+### For backend development: See branch be
+
+### For frontend development: See branch fe
