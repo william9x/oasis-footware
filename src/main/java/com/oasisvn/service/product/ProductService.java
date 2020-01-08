@@ -2,16 +2,16 @@ package com.oasisvn.service.product;
 
 import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.dto.product.ProductImageDTO;
-import com.oasisvn.entity.product.ProductImageEntity;
 import com.oasisvn.entity.product.ProductEntity;
+import com.oasisvn.entity.product.ProductImageEntity;
 import com.oasisvn.repository.category.ICategoryRepository;
 import com.oasisvn.repository.product.IProductRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductService implements IProductService {
@@ -26,31 +26,41 @@ public class ProductService implements IProductService {
 
     @Override
     public ArrayList<ProductDTO> getProduct() {
-        ArrayList<ProductEntity> productEntities = productRepository.findAll();
 
-        if (productEntities.isEmpty()) return null;
-        else {
-            ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        try {
+            ArrayList<ProductEntity> productEntities = productRepository.findAll();
 
-            for (ProductEntity productEntity : productEntities) {
-                ProductDTO productDTO = new ProductDTO();
-                BeanUtils.copyProperties(productEntity, productDTO);
-                productDTOS.add(productDTO);
+            if (productEntities.isEmpty()) return null;
+            else {
+                ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+
+                for (ProductEntity productEntity : productEntities) {
+                    ProductDTO productDTO = modelMapper.map(productEntity, ProductDTO.class);
+                    productDTOS.add(productDTO);
+                }
+
+                return productDTOS;
             }
-
-            return productDTOS;
+        } catch (Exception e) {
+            return null;
         }
+
+
     }
 
     @Override
     public ProductDTO getProduct(long id) {
-        ProductEntity productEntity = productRepository.findById(id);
 
-        if (null == productEntity) return null;
-        else {
-            ProductDTO returnValue = modelMapper.map(productEntity, ProductDTO.class);
+        try {
+            ProductEntity productEntity = productRepository.findById(id);
 
-            return returnValue;
+            if (null == productEntity) return null;
+            else {
+                ProductDTO returnValue = modelMapper.map(productEntity, ProductDTO.class);
+                return returnValue;
+            }
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -58,60 +68,61 @@ public class ProductService implements IProductService {
     public ProductDTO createProduct(ProductDTO productDTO) {
         if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategoryId())) return null;
         else {
-
-            for (int i = 0; i < productDTO.getImages().size(); i++){
+            for (int i = 0; i < productDTO.getImages().size(); i++) {
                 ProductImageDTO image = productDTO.getImages().get(i);
                 image.setProduct(productDTO);
             }
+
             ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
 
-            ProductEntity savedProduct = productRepository.save(productEntity);
-            ProductDTO returnValue = modelMapper.map(savedProduct, ProductDTO.class);
+            try {
+                ProductEntity savedProduct = productRepository.save(productEntity);
+                ProductDTO returnValue = modelMapper.map(savedProduct, ProductDTO.class);
 
-            return returnValue;
+                return returnValue;
+
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 
     @Override
     public ProductDTO updateProduct(long id, ProductDTO productDTO) {
+
         long updateCategoryId = productDTO.getCategoryId();
         String updateTitle = productDTO.getTitle();
-        String updateTitleSubTitle = productDTO.getSubTitle();
-        String updateContent = productDTO.getContent();
-        String updatedGender = productDTO.getGender();
-        double updatedUnitCost = productDTO.getUnitCost();
-        double updatedUnitPrice = productDTO.getUnitPrice();
+        List<ProductImageDTO> updateImages = productDTO.getImages();
 
         ProductEntity productEntity = productRepository.findById(id);
+        long oldCategoryId = productEntity.getCategoryId();
+        List<ProductImageEntity> oldImages = productEntity.getImages();
+
         if (null == productEntity) return null;
         else {
-            if (productEntity.getCategoryId() != updateCategoryId
+            if (oldCategoryId != updateCategoryId
                     && isCategoryExist(updateCategoryId)) {
                 productEntity.setCategoryId(updateCategoryId);
             }
             if (null != updateTitle && !isProductExist(updateTitle)) {
                 productEntity.setTitle(updateTitle);
             }
-            if (null != updateTitleSubTitle) {
-                productEntity.setSubTitle(updateTitleSubTitle);
-            }
-            if (null != updateContent) {
-                productEntity.setContent(updateContent);
-            }
-            if (null != updatedGender) {
-                productEntity.setGender(updatedGender);
-            }
-            if (productEntity.getUnitCost() != updatedUnitCost) {
-                productEntity.setUnitCost(updatedUnitCost);
-            }
-            if (productEntity.getUnitPrice() != updatedUnitPrice) {
-                productEntity.setUnitPrice(updatedUnitPrice);
+            if (null != updateImages && !updateImages.isEmpty()) {
+                for (int i = 0; i < updateImages.size(); i++) {
+                    ProductImageDTO updateImage = updateImages.get(i);
+//                    if ()
+                    updateImage.setProduct(productDTO);
+                }
             }
 
-            ProductDTO returnValue = new ProductDTO();
-            BeanUtils.copyProperties(productRepository.save(productEntity), returnValue);
+            try {
+                ProductEntity updatedProduct = productRepository.save(productEntity);
+                ProductDTO returnValue = modelMapper.map(updatedProduct, ProductDTO.class);
 
-            return returnValue;
+                return returnValue;
+            } catch (Exception e){
+                return null;
+            }
         }
     }
 

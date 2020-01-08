@@ -10,6 +10,4 @@ import java.time.LocalDateTime;
 public class ProductImageResponse {
     private String imageUrl;
     private String imageUID;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
