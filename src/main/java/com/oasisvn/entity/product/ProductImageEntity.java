@@ -1,7 +1,6 @@
 package com.oasisvn.entity.product;
 
 import com.oasisvn.entity.BaseEntity;
-import com.oasisvn.entity.product.ProductEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

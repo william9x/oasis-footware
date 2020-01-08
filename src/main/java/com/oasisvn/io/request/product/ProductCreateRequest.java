@@ -67,15 +67,12 @@ public class ProductCreateRequest {
     )
     private double unitPrice;
 
-    @NotBlank(message = "Gender required")
-    @NotNull(message = "Gender required")
-    @Size(max = 6, message = "Gender can only have maximum 6 characters")
     @ApiModelProperty(
-            example = "Female",
-            notes = "Gender cannot be empty",
+            example = "1",
+            notes = "1 -> male, 2 -> female",
             required = true
     )
-    private String gender;
+    private byte gender;
 
     @NotEmpty(message = "images required")
     @NotNull(message = "images required")

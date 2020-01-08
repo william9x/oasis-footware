@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -67,15 +66,12 @@ public class ProductUpdateRequest {
     )
     private double unitPrice;
 
-    @NotBlank(message = "Gender required")
-    @NotNull(message = "Gender required")
-    @Size(max = 6, message = "Gender can only have maximum 6 characters")
     @ApiModelProperty(
-            example = "Female",
-            notes = "Gender cannot be empty",
+            example = "1",
+            notes = "1 -> male, 2 -> female",
             required = true
     )
-    private String gender;
+    private byte gender;
 
     @ApiModelProperty(
             notes = "images can be empty"

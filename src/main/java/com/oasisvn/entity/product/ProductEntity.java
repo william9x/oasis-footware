@@ -2,7 +2,10 @@ package com.oasisvn.entity.product;
 
 import com.oasisvn.entity.BaseEntity;
 import com.oasisvn.entity.category.CategoryEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,8 +40,8 @@ public class ProductEntity extends BaseEntity implements Serializable {
     @Column(nullable = false, name = "unit_price")
     private double unitPrice;
 
-    @Column(nullable = false, length = 6)
-    private String gender;
+    @Column(nullable = false, length = 1)
+    private byte gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private CategoryEntity category;

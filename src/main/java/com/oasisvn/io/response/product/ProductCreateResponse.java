@@ -17,6 +17,6 @@ public class ProductCreateResponse {
     private String content;
     private double unitCost;
     private double unitPrice;
-    private String gender;
+    private byte gender;
     private List<ProductImageResponse> images = new ArrayList<>();
 }

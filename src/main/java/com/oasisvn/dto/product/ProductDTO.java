@@ -20,7 +20,7 @@ public class ProductDTO implements Serializable {
     private String content;
     private double unitCost;
     private double unitPrice;
-    private String gender;
+    private byte gender;
     private List<ProductImageDTO> images = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
