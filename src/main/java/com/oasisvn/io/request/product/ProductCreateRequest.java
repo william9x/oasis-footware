@@ -77,5 +77,11 @@ public class ProductCreateRequest {
     )
     private String gender;
 
+    @NotEmpty(message = "images required")
+    @NotNull(message = "images required")
+    @ApiModelProperty(
+            notes = "images cannot be empty",
+            required = true
+    )
     private List<ProductImagesRequest> images = new ArrayList<>();
 }
