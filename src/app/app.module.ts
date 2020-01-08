@@ -1,38 +1,32 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-// import { ToastrModule } from "ngx-toastr";
-// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { SidebarModule } from './sidebar/sidebar.module';
-import { HeaderModule } from './shared/header/header.module';
-import { FooterModule } from './shared/footer/footer.module';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { routes } from './app-routing.module';
-
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FooterComponent } from './shared/footer/footer.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { HomepageComponent } from './pages/homepage/homepage.component';
+import { ProductListComponent } from './pages/product-list/product-list.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
+import { AboutComponent } from './pages/about/about.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { BlogComponent } from './pages/blog/blog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
+    FooterComponent,
+    HeaderComponent,
+    HomepageComponent,
+    ProductListComponent,
+    ProductDetailComponent,
+    AboutComponent,
+    ContactComponent,
+    BlogComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes, {
-      useHash: false
-    }),
-    SidebarModule,
-    HeaderModule,
-    // ToastrModule.forRoot(),
-    FooterModule,
-    // FontAwesomeModule
-    HttpClientModule,
-    NgxSpinnerModule,
-    BrowserAnimationsModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
