@@ -18,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,8 @@ public class ProductController {
 
     @Autowired
     private IProductService productService;
+
+    private ModelMapper modelMapper = new ModelMapper();
 
     @ApiOperation(value = "Get all product", response = OperationStatus.class, responseContainer = "List")
     @ApiResponses({
@@ -57,8 +60,7 @@ public class ProductController {
             ArrayList<ProductDetailsResponse> productResponses = new ArrayList<>();
 
             for (ProductDTO productDTO : productDTOS) {
-                ProductDetailsResponse productResponse = new ProductDetailsResponse();
-                BeanUtils.copyProperties(productDTO, productResponse);
+                ProductDetailsResponse productResponse = modelMapper.map(productDTO, ProductDetailsResponse.class);
                 productResponses.add(productResponse);
             }
 
@@ -88,8 +90,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
 
         } else {
-            ProductDetailsResponse productResponse = new ProductDetailsResponse();
-            BeanUtils.copyProperties(productDTO, productResponse);
+            ProductDetailsResponse productResponse = modelMapper.map(productDTO, ProductDetailsResponse.class);
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
                     SuccessResponse.FOUND_RECORD.getSuccessResponse(), productResponse);
@@ -109,9 +110,7 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@RequestBody @Valid ProductCreateRequest request){
         OperationStatus operationStatus;
 
-        ProductDTO productDTO = new ProductDTO();
-        BeanUtils.copyProperties(request, productDTO);
-
+        ProductDTO productDTO = modelMapper.map(request, ProductDTO.class);
         ProductDTO createdProduct = productService.createProduct(productDTO);
 
         if (null == createdProduct) {
@@ -120,8 +119,7 @@ public class ProductController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
         } else {
-            ProductCreateResponse returnValue = new ProductCreateResponse();
-            BeanUtils.copyProperties(createdProduct, returnValue);
+            ProductCreateResponse returnValue = modelMapper.map(createdProduct, ProductCreateResponse.class);
 
             operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
                     SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
@@ -141,9 +139,7 @@ public class ProductController {
     public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid ProductUpdateRequest updateRequest){
         OperationStatus operationStatus;
 
-        ProductDTO productDTO = new ProductDTO();
-        BeanUtils.copyProperties(updateRequest, productDTO);
-
+        ProductDTO productDTO = modelMapper.map(updateRequest, ProductDTO.class);
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
 
         if (null == updatedProduct) {
@@ -153,8 +149,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
 
         } else {
-            ProductDetailsResponse returnValue = new ProductDetailsResponse();
-            BeanUtils.copyProperties(updatedProduct, returnValue);
+            ProductDetailsResponse returnValue = modelMapper.map(updatedProduct, ProductDetailsResponse.class);
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
                     SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);

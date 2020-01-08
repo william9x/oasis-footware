@@ -5,7 +5,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ public class ProductDTO implements Serializable {
     private double unitCost;
     private double unitPrice;
     private String gender;
+    private List<ProductImageDTO> images = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

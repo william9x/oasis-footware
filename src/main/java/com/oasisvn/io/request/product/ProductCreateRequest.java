@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -74,4 +76,6 @@ public class ProductCreateRequest {
             required = true
     )
     private String gender;
+
+    private List<ProductImagesRequest> images = new ArrayList<>();
 }
