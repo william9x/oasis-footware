@@ -1,14 +1,14 @@
 package com.oasisvn.entity.category;
 
 import com.oasisvn.entity.BaseEntity;
+import com.oasisvn.entity.product.ProductEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +23,12 @@ public class CategoryEntity extends BaseEntity implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String title;
+
+    @OneToMany(
+            mappedBy = "category",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<ProductEntity> products = new ArrayList<>();
 
 }

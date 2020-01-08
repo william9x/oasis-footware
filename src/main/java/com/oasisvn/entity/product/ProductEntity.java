@@ -1,12 +1,10 @@
 package com.oasisvn.entity.product;
 
 import com.oasisvn.entity.BaseEntity;
+import com.oasisvn.entity.category.CategoryEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,6 @@ public class ProductEntity extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue
     private long id;
-
-    @Column(nullable = false, name = "category_id")
-    private long categoryId;
 
     @Column(nullable = false, unique = true)
     private String title;
@@ -45,21 +40,14 @@ public class ProductEntity extends BaseEntity implements Serializable {
     @Column(nullable = false, length = 6)
     private String gender;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CategoryEntity category;
+
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<ProductImageEntity> images = new ArrayList<>();
-
-    public void addImage(ProductImageEntity image) {
-        images.add(image);
-        image.setProduct(this);
-    }
-
-    public void removeImage(ProductImageEntity image) {
-        images.remove(image);
-        image.setProduct(null);
-    }
 
 }

@@ -54,8 +54,7 @@ public class ProductService implements IProductService {
 
             if (null == productEntity) return null;
             else {
-                ProductDTO returnValue = modelMapper.map(productEntity, ProductDTO.class);
-                return returnValue;
+                return modelMapper.map(productEntity, ProductDTO.class);
             }
         } catch (Exception e) {
             return null;
@@ -64,32 +63,33 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDTO createProduct(ProductDTO productDTO) {
-        if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategoryId())) return null;
-        else {
 
-            for (ProductImageDTO image : productDTO.getImages()) {
-                image.setProduct(productDTO);
-            }
+        try {
+            if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategory().getId())) return null;
+            else {
 
-            ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
+                for (ProductImageDTO image : productDTO.getImages()) {
+                    image.setProduct(productDTO);
+                }
 
-            try {
+                ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
                 ProductEntity savedProduct = productRepository.save(productEntity);
-                ProductDTO returnValue = modelMapper.map(savedProduct, ProductDTO.class);
 
-                return returnValue;
-
-            } catch (Exception e) {
-                return null;
+                return modelMapper.map(savedProduct, ProductDTO.class);
             }
+
+        } catch (Exception e) {
+            return null;
         }
+
+
     }
 
     @Override
     public ProductDTO updateProduct(long id, ProductDTO productDTO) {
 
         //Update information
-        long updateCategoryId = productDTO.getCategoryId();
+        long updateCategoryId = productDTO.getCategory().getId();
         String updateTitle = productDTO.getTitle();
         List<ProductImageDTO> updateImages = productDTO.getImages();
 
@@ -97,18 +97,19 @@ public class ProductService implements IProductService {
             //Old information
             ProductEntity productEntity = productRepository.findById(id);
             long oldId = productEntity.getId();
-            long oldCategoryId = productEntity.getCategoryId();
+            long oldCategoryId = productEntity.getCategory().getId();
             String oldTitle = productEntity.getTitle();
             List<ProductImageEntity> oldImages = productEntity.getImages();
 
             if (null == productEntity) return null;
             else {
                 if (false == isCategoryExist(updateCategoryId)) {
-                    productDTO.setCategoryId(oldCategoryId);
+                    productDTO.getCategory().setId(oldCategoryId);
                 }
                 if (isProductExist(updateTitle)) {
                     productDTO.setTitle(oldTitle);
                 }
+
                 if (null != updateImages && 0 != updateImages.size()) {
                     for (ProductImageDTO updateImage : updateImages) {
                         updateImage.setProduct(productDTO);
@@ -123,9 +124,8 @@ public class ProductService implements IProductService {
                 updateProduct.setId(oldId);
 
                 ProductEntity updatedProduct = productRepository.save(updateProduct);
-                ProductDTO returnValue = modelMapper.map(updatedProduct, ProductDTO.class);
 
-                return returnValue;
+                return modelMapper.map(updatedProduct, ProductDTO.class);
             }
         } catch (Exception e) {
             return null;
@@ -134,25 +134,37 @@ public class ProductService implements IProductService {
 
     @Override
     public boolean deleteProduct(long id) {
-        ProductEntity productEntity = productRepository.findById(id);
 
-        if (null == productEntity) return false;
-        else {
-            try {
+        try {
+            ProductEntity productEntity = productRepository.findById(id);
+
+            if (null == productEntity) return false;
+            else {
                 productRepository.delete(productEntity);
                 return true;
-            } catch (Exception e) {
-                return false;
             }
+        } catch (Exception e) {
+            return false;
         }
+
     }
 
     private Boolean isProductExist(String title) {
-        return productRepository.existsByTitle(title);
+
+        try {
+            return productRepository.existsByTitle(title);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Boolean isCategoryExist(long id) {
-        return categoryRepository.existsById(id);
+
+        try {
+            return categoryRepository.existsById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

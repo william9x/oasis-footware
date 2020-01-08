@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @Repository
 public interface ICategoryRepository extends CrudRepository<CategoryEntity, Long> {
-    ArrayList<CategoryEntity> findAllByTitleNotNull();
+    ArrayList<CategoryEntity> findAll();
     CategoryEntity findById(long id);
     Boolean existsByTitle(String title);
 }
