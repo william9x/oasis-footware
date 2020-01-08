@@ -1,16 +1,14 @@
 package com.oasisvn.entity.product;
 
 import com.oasisvn.entity.BaseEntity;
-import com.oasisvn.entity.image.ImageEntity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 @Getter
 @Setter
@@ -43,8 +41,5 @@ public class ProductEntity extends BaseEntity implements Serializable {
 
     @Column(nullable = false, length = 6)
     private String gender;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private Collection<ImageEntity> images;
 
 }
