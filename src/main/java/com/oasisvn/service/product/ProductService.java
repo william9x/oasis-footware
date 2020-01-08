@@ -93,43 +93,42 @@ public class ProductService implements IProductService {
         String updateTitle = productDTO.getTitle();
         List<ProductImageDTO> updateImages = productDTO.getImages();
 
-        //Old information
-        ProductEntity productEntity = productRepository.findById(id);
-        long oldId = productEntity.getId();
-        long oldCategoryId = productEntity.getCategoryId();
-        String oldTitle = productEntity.getTitle();
-        List<ProductImageEntity> oldImages = productEntity.getImages();
+        try {
+            //Old information
+            ProductEntity productEntity = productRepository.findById(id);
+            long oldId = productEntity.getId();
+            long oldCategoryId = productEntity.getCategoryId();
+            String oldTitle = productEntity.getTitle();
+            List<ProductImageEntity> oldImages = productEntity.getImages();
 
-        if (null == productEntity) return null;
-        else {
-
-            if (false == isCategoryExist(updateCategoryId)) {
-                productDTO.setCategoryId(oldCategoryId);
-            }
-            if (isProductExist(updateTitle)) {
-                productDTO.setTitle(oldTitle);
-            }
-            if (null != updateImages && 0 != updateImages.size()) {
-                for (ProductImageDTO updateImage : updateImages) {
-                    updateImage.setProduct(productDTO);
+            if (null == productEntity) return null;
+            else {
+                if (false == isCategoryExist(updateCategoryId)) {
+                    productDTO.setCategoryId(oldCategoryId);
                 }
-            } else {
-                for (ProductImageEntity oldImage : oldImages) {
-                    updateImages.add(modelMapper.map(oldImage, ProductImageDTO.class));
+                if (isProductExist(updateTitle)) {
+                    productDTO.setTitle(oldTitle);
                 }
-            }
+                if (null != updateImages && 0 != updateImages.size()) {
+                    for (ProductImageDTO updateImage : updateImages) {
+                        updateImage.setProduct(productDTO);
+                    }
+                } else {
+                    for (ProductImageEntity oldImage : oldImages) {
+                        updateImages.add(modelMapper.map(oldImage, ProductImageDTO.class));
+                    }
+                }
 
-            ProductEntity updateProduct = modelMapper.map(productDTO, ProductEntity.class);
-            updateProduct.setId(oldId);
+                ProductEntity updateProduct = modelMapper.map(productDTO, ProductEntity.class);
+                updateProduct.setId(oldId);
 
-            try {
                 ProductEntity updatedProduct = productRepository.save(updateProduct);
                 ProductDTO returnValue = modelMapper.map(updatedProduct, ProductDTO.class);
 
                 return returnValue;
-            } catch (Exception e) {
-                return null;
             }
+        } catch (Exception e) {
+            return null;
         }
     }
 
