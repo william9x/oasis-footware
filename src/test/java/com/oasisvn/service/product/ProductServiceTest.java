@@ -42,7 +42,7 @@ class ProductServiceTest {
         ArrayList<ProductEntity> productEntities = new ArrayList<>();
         productEntities.add(productEntity);
 
-        when(productRepository.findAllByTitleNotNull()).thenReturn(productEntities);
+        when(productRepository.findAll()).thenReturn(productEntities);
 
         ArrayList<ProductDTO> productDTOS = productService.getProduct();
 
@@ -51,7 +51,7 @@ class ProductServiceTest {
 
     @Test
     void testGetAllProduct_null() {
-        when(productRepository.findAllByTitleNotNull()).thenReturn(new ArrayList<>());
+        when(productRepository.findAll()).thenReturn(new ArrayList<>());
 
         ArrayList<ProductDTO> productDTOS = productService.getProduct();
 

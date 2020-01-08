@@ -1,9 +1,12 @@
 package com.oasisvn.service.product;
 
 import com.oasisvn.dto.product.ProductDTO;
+import com.oasisvn.dto.product.ProductImageDTO;
+import com.oasisvn.entity.product.ProductImageEntity;
 import com.oasisvn.entity.product.ProductEntity;
 import com.oasisvn.repository.category.ICategoryRepository;
 import com.oasisvn.repository.product.IProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +22,11 @@ public class ProductService implements IProductService {
     @Autowired
     private ICategoryRepository categoryRepository;
 
+    private ModelMapper modelMapper = new ModelMapper();
+
     @Override
     public ArrayList<ProductDTO> getProduct() {
-        ArrayList<ProductEntity> productEntities = productRepository.findAllByTitleNotNull();
+        ArrayList<ProductEntity> productEntities = productRepository.findAll();
 
         if (productEntities.isEmpty()) return null;
         else {
@@ -43,8 +48,7 @@ public class ProductService implements IProductService {
 
         if (null == productEntity) return null;
         else {
-            ProductDTO returnValue = new ProductDTO();
-            BeanUtils.copyProperties(productEntity, returnValue);
+            ProductDTO returnValue = modelMapper.map(productEntity, ProductDTO.class);
 
             return returnValue;
         }
@@ -54,11 +58,15 @@ public class ProductService implements IProductService {
     public ProductDTO createProduct(ProductDTO productDTO) {
         if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategoryId())) return null;
         else {
-            ProductEntity productEntity = new ProductEntity();
-            BeanUtils.copyProperties(productDTO, productEntity);
 
-            ProductDTO returnValue = new ProductDTO();
-            BeanUtils.copyProperties(productRepository.save(productEntity), returnValue);
+            for (int i = 0; i < productDTO.getImages().size(); i++){
+                ProductImageDTO image = productDTO.getImages().get(i);
+                image.setProduct(productDTO);
+            }
+            ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
+
+            ProductEntity savedProduct = productRepository.save(productEntity);
+            ProductDTO returnValue = modelMapper.map(savedProduct, ProductDTO.class);
 
             return returnValue;
         }
