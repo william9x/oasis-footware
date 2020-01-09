@@ -1,16 +1,12 @@
 package com.oasisvn.controller.invoice;
 
 import com.oasisvn.dto.invoice.InvoiceDTO;
-import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.io.request.invoice.InvoiceCreateRequest;
-import com.oasisvn.io.request.product.ProductCreateRequest;
-import com.oasisvn.io.request.product.ProductUpdateRequest;
+import com.oasisvn.io.request.invoice.InvoiceUpdateRequest;
 import com.oasisvn.io.response.ErrorResponse;
 import com.oasisvn.io.response.OperationStatus;
 import com.oasisvn.io.response.SuccessResponse;
 import com.oasisvn.io.response.invoice.InvoiceDetailsResponse;
-import com.oasisvn.io.response.product.ProductCreateResponse;
-import com.oasisvn.io.response.product.ProductDetailsResponse;
 import com.oasisvn.service.invoice.IInvoiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -125,35 +121,35 @@ public class InvoiceController {
         }
     }
 
-//    @ApiOperation(value = "Update an invoice", response = OperationStatus.class)
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "Updated"),
-//            @ApiResponse(code = 403, message = "Forbidden"),
-//            @ApiResponse(code = 415, message = "Unsupported Media Type"),
-//            @ApiResponse(code = 500, message = "Internal Server Error"),
-//    })
-//    @PutMapping(path = "{id}")
-//    public ResponseEntity<?> updateInvoice(@PathVariable long id, @RequestBody @Valid ProductUpdateRequest updateRequest){
-//        OperationStatus operationStatus;
-//
-//        ProductDTO productDTO = modelMapper.map(updateRequest, ProductDTO.class);
-//        ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
-//
-//        if (null == updatedProduct) {
-//            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-//                    ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
-//
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
-//
-//        } else {
-//            ProductDetailsResponse returnValue = modelMapper.map(updatedProduct, ProductDetailsResponse.class);
-//
-//            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-//                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
-//
-//            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
-//        }
-//    }
+    @ApiOperation(value = "Update an invoice", response = OperationStatus.class)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Updated"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 415, message = "Unsupported Media Type"),
+            @ApiResponse(code = 500, message = "Internal Server Error"),
+    })
+    @PutMapping(path = "{id}")
+    public ResponseEntity<?> updateInvoice(@PathVariable long id, @RequestBody @Valid InvoiceUpdateRequest updateRequest){
+        OperationStatus operationStatus;
+
+        InvoiceDTO invoiceDTO = modelMapper.map(updateRequest, InvoiceDTO.class);
+        InvoiceDTO updatedInvoice = invoiceService.updateInvoice(id, invoiceDTO);
+
+        if (null == updatedInvoice) {
+            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
+                    ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+
+        } else {
+            InvoiceDetailsResponse returnValue = modelMapper.map(updatedInvoice, InvoiceDetailsResponse.class);
+
+            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
+                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
+
+            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+        }
+    }
 
 
     @ApiOperation(value = "Delete invoice by id", response = OperationStatus.class)

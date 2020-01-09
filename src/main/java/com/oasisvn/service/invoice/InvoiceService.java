@@ -1,12 +1,7 @@
 package com.oasisvn.service.invoice;
 
-import com.oasisvn.dto.category.CategoryDTO;
 import com.oasisvn.dto.invoice.InvoiceDTO;
-import com.oasisvn.dto.product.ProductDTO;
-import com.oasisvn.dto.product.ProductImageDTO;
-import com.oasisvn.entity.category.CategoryEntity;
 import com.oasisvn.entity.invoice.InvoiceEntity;
-import com.oasisvn.entity.product.ProductEntity;
 import com.oasisvn.repository.invoice.IInvoiceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +70,24 @@ public class InvoiceService implements IInvoiceService {
 
     @Override
     public InvoiceDTO updateInvoice(long id, InvoiceDTO invoiceDTO) {
-        return null;
+
+        try {
+            //Old information
+            InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
+
+            if (null == invoiceEntity) return null;
+            else {
+
+                InvoiceEntity updateInvoice = modelMapper.map(invoiceDTO, InvoiceEntity.class);
+                updateInvoice.setId(invoiceEntity.getId());
+
+                InvoiceEntity updatedInvoice = invoiceRepository.save(updateInvoice);
+
+                return modelMapper.map(updatedInvoice, InvoiceDTO.class);
+            }
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

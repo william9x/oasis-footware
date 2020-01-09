@@ -3,8 +3,6 @@ package com.oasisvn.io.response.invoice;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 public class InvoiceDetailsResponse {
@@ -17,6 +15,4 @@ public class InvoiceDetailsResponse {
     private String orderEmail;
     private String orderPhone;
     private String orderAddress;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

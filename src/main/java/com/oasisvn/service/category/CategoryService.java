@@ -73,17 +73,25 @@ public class CategoryService implements ICategoryService {
     @Override
     public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
 
+        //Update information
         String updateTitle = categoryDTO.getTitle();
 
         try {
+            //Old information
             CategoryEntity categoryEntity = categoryRepository.findById(id);
+            String oldTitle = categoryEntity.getTitle();
+            long oldId = categoryEntity.getId();
+
             if (null == categoryEntity) return null;
             else {
-                if (null != updateTitle && !isCategoryExist(updateTitle)) {
-                    categoryEntity.setTitle(updateTitle);
+                if (isCategoryExist(updateTitle)) {
+                    categoryDTO.setTitle(oldTitle);
                 }
 
-                CategoryEntity updatedCategory = categoryRepository.save(categoryEntity);
+                CategoryEntity updateCategory = modelMapper.map(categoryDTO, CategoryEntity.class);
+                updateCategory.setId(oldId);
+
+                CategoryEntity updatedCategory = categoryRepository.save(updateCategory);
 
                 return modelMapper.map(updatedCategory, CategoryDTO.class);
             }
