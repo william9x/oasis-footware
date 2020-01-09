@@ -1,12 +1,10 @@
 package com.oasisvn.controller.invoice;
 
 import com.oasisvn.dto.invoice.InvoiceDTO;
-import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.io.response.ErrorResponse;
 import com.oasisvn.io.response.OperationStatus;
 import com.oasisvn.io.response.SuccessResponse;
 import com.oasisvn.io.response.invoice.InvoiceDetailsResponse;
-import com.oasisvn.io.response.product.ProductDetailsResponse;
 import com.oasisvn.service.invoice.IInvoiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,9 +1,7 @@
 package com.oasisvn.service.invoice;
 
 import com.oasisvn.dto.invoice.InvoiceDTO;
-import com.oasisvn.dto.product.ProductDTO;
 import com.oasisvn.entity.invoice.InvoiceEntity;
-import com.oasisvn.entity.product.ProductEntity;
 import com.oasisvn.repository.invoice.IInvoiceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

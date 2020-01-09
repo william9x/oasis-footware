@@ -3,9 +3,7 @@ package com.oasisvn.io.request.invoice;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 
 @Getter
