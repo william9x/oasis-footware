@@ -1,28 +1,28 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.component";
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
   {
-    path: "",
-    redirectTo: "dashboard",
-    pathMatch: "full"
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
   },
   {
-    path: "",
+    path: '',
     component: AdminLayoutComponent,
     children: [
       {
-        path: "",
+        path: '',
         loadChildren:
-          "./layouts/admin-layout/admin-layout.module#AdminLayoutModule"
+          './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
       }
     ]
   },
   {
-    path: "**",
-    redirectTo: "dashboard"
+    path: '**',
+    redirectTo: 'dashboard'
   }
 ];
 
@@ -30,4 +30,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
