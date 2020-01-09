@@ -2,20 +2,21 @@ package com.oasisvn.entity.product;
 
 import com.oasisvn.entity.BaseEntity;
 import com.oasisvn.entity.category.CategoryEntity;
-import lombok.AllArgsConstructor;
+import com.oasisvn.entity.invoice.InvoiceEntity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity(name = "product")
 public class ProductEntity extends BaseEntity implements Serializable {
 
@@ -28,7 +29,7 @@ public class ProductEntity extends BaseEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String title;
 
-    @Column(nullable   = false, name = "sub_title")
+    @Column(nullable = false, name = "sub_title")
     private String subTitle;
 
     @Column(nullable = false)
@@ -41,6 +42,8 @@ public class ProductEntity extends BaseEntity implements Serializable {
     private double unitPrice;
 
     @Column(nullable = false, length = 1)
+    @Min(1)
+    @Max(2)
     private byte gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,4 +56,6 @@ public class ProductEntity extends BaseEntity implements Serializable {
     )
     private List<ProductImageEntity> images = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "products")
+    Set<InvoiceEntity> invoices = new HashSet<>();
 }

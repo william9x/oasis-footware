@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +69,8 @@ public class ProductCreateRequest {
             notes = "1 -> male, 2 -> female",
             required = true
     )
+    @Min(1)
+    @Max(2)
     private byte gender;
 
     @NotEmpty(message = "images required")
