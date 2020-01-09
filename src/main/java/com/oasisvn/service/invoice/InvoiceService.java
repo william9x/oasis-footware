@@ -1,7 +1,12 @@
 package com.oasisvn.service.invoice;
 
+import com.oasisvn.dto.category.CategoryDTO;
 import com.oasisvn.dto.invoice.InvoiceDTO;
+import com.oasisvn.dto.product.ProductDTO;
+import com.oasisvn.dto.product.ProductImageDTO;
+import com.oasisvn.entity.category.CategoryEntity;
 import com.oasisvn.entity.invoice.InvoiceEntity;
+import com.oasisvn.entity.product.ProductEntity;
 import com.oasisvn.repository.invoice.IInvoiceRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +46,31 @@ public class InvoiceService implements IInvoiceService {
 
     @Override
     public InvoiceDTO getInvoice(long id) {
-        return null;
+
+        try {
+            InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
+
+            if (null == invoiceEntity) return null;
+            else {
+                return modelMapper.map(invoiceEntity, InvoiceDTO.class);
+            }
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public boolean deleteInvoice(long id) {
-        return false;
+    public InvoiceDTO createInvoice(InvoiceDTO invoiceDTO) {
+
+        try {
+            InvoiceEntity invoiceEntity = modelMapper.map(invoiceDTO, InvoiceEntity.class);
+            InvoiceEntity createdInvoice = invoiceRepository.save(invoiceEntity);
+
+            return modelMapper.map(createdInvoice, InvoiceDTO.class);
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -55,7 +79,17 @@ public class InvoiceService implements IInvoiceService {
     }
 
     @Override
-    public InvoiceDTO createInvoice(InvoiceDTO invoiceDTO) {
-        return null;
+    public boolean deleteInvoice(long id) {
+        try {
+            InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
+
+            if (null == invoiceEntity) return false;
+            else {
+                invoiceRepository.delete(invoiceEntity);
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
