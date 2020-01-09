@@ -1,16 +1,16 @@
 package com.oasisvn.entity.invoice;
 
 import com.oasisvn.entity.BaseEntity;
+import com.oasisvn.entity.product.ProductEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,4 +48,14 @@ public class InvoiceEntity extends BaseEntity implements Serializable {
 
     @Column(nullable = false, length = 100, name = "order_address")
     private String orderAddress;
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(
+            name = "invoice_product",
+            joinColumns = @JoinColumn(name = "invoice_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    Set<ProductEntity> products = new HashSet<>();
 }

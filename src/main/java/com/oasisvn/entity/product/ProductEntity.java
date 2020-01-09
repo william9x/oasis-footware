@@ -2,6 +2,7 @@ package com.oasisvn.entity.product;
 
 import com.oasisvn.entity.BaseEntity;
 import com.oasisvn.entity.category.CategoryEntity;
+import com.oasisvn.entity.invoice.InvoiceEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -53,4 +56,6 @@ public class ProductEntity extends BaseEntity implements Serializable {
     )
     private List<ProductImageEntity> images = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "products")
+    Set<InvoiceEntity> invoices = new HashSet<>();
 }
