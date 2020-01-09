@@ -1,6 +1,6 @@
 package com.oasisvn.controller;
 
-import com.oasisvn.io.response.ErrorJson;
+import com.oasisvn.io.response.OperationStatus;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,14 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -50,10 +46,10 @@ public class CustomErrorController implements ErrorController {
     private ErrorAttributes errorAttributes;
 
     @RequestMapping(value = PATH)
-    ResponseEntity<ErrorJson> error(WebRequest webRequest, HttpServletResponse response){
+    ResponseEntity<OperationStatus> error(WebRequest webRequest, HttpServletResponse response){
         return ResponseEntity.status(response.getStatus())
                 .body(
-                        new ErrorJson(response.getStatus(), getErrorAttributes(webRequest, debug)
+                        new OperationStatus(response.getStatus(), getErrorAttributes(webRequest, debug)
                         )
                 );
     }
