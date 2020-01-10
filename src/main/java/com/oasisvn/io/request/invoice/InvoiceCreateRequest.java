@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -80,4 +82,13 @@ public class InvoiceCreateRequest {
     @NotNull(message = "Order address can not be empty")
     @NotBlank(message = "Order address can not be empty")
     private String orderAddress;
+
+    @ApiModelProperty(
+            example = "[1, 2, 3]",
+            notes = "productIds cannot be empty",
+            required = true
+    )
+    @NotNull(message = "productIds can not be empty")
+    @NotEmpty(message = "productIds can not be empty")
+    private List<Integer> productIds;
 }
