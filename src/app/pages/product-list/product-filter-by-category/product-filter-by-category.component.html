@@ -214,7 +214,7 @@
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4 p-b-50"
-            *ngFor="let product of products"
+            *ngFor="let product of category"
           >
             <!-- Block2 -->
             <div class="block2">
@@ -258,11 +258,11 @@
                   href="product-detail"
                   class="block2-name dis-block s-text3 p-b-5"
                 >
-                  {{ product.title }}
+                  {{ category.title }}
                 </a>
 
                 <span class="block2-price m-text6 p-r-5">
-                  {{ product.unitPrice }} $
+                  {{ category.unitPrice }} $
                 </span>
               </div>
             </div>

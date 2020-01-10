@@ -1,6 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { Select2Module } from 'ng2-select2';
+import { HttpClientModule } from '@angular/common/http';
+
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +17,7 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail.co
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { BlogComponent } from './pages/blog/blog.component';
+import { ProductFilterByCategoryComponent } from './pages/product-list/product-filter-by-category/product-filter-by-category.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +29,17 @@ import { BlogComponent } from './pages/blog/blog.component';
     ProductDetailComponent,
     AboutComponent,
     ContactComponent,
-    BlogComponent
+    BlogComponent,
+    ProductFilterByCategoryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    Select2Module,
+    HttpClientModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
