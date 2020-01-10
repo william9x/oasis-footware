@@ -2,18 +2,24 @@ package com.oasisvn.service.invoice;
 
 import com.oasisvn.dto.invoice.InvoiceDTO;
 import com.oasisvn.entity.invoice.InvoiceEntity;
+import com.oasisvn.entity.product.ProductEntity;
+import com.oasisvn.io.response.ErrorResponse;
 import com.oasisvn.repository.invoice.IInvoiceRepository;
+import com.oasisvn.repository.product.IProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.*;
 
 @Service
 public class InvoiceService implements IInvoiceService {
 
     @Autowired
     private IInvoiceRepository invoiceRepository;
+
+    @Autowired
+    private IProductRepository productRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -59,6 +65,13 @@ public class InvoiceService implements IInvoiceService {
 
         try {
             InvoiceEntity invoiceEntity = modelMapper.map(invoiceDTO, InvoiceEntity.class);
+
+            for (Integer id : invoiceDTO.getProductIds()) {
+                ProductEntity product = productRepository.findById(id);
+                if (null == product) throw new RuntimeException(String.valueOf(ErrorResponse.NO_RECORD_FOUND));
+                invoiceEntity.addProduct(product);
+            }
+
             InvoiceEntity createdInvoice = invoiceRepository.save(invoiceEntity);
 
             return modelMapper.map(createdInvoice, InvoiceDTO.class);
@@ -74,6 +87,7 @@ public class InvoiceService implements IInvoiceService {
         try {
             //Old information
             InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
+            Set<ProductEntity> oldProducts = invoiceEntity.getProducts();
 
             if (null == invoiceEntity) return null;
             else {
@@ -81,8 +95,19 @@ public class InvoiceService implements IInvoiceService {
                 InvoiceEntity updateInvoice = modelMapper.map(invoiceDTO, InvoiceEntity.class);
                 updateInvoice.setId(invoiceEntity.getId());
 
-                InvoiceEntity updatedInvoice = invoiceRepository.save(updateInvoice);
+                List<Integer> updateProductIds = invoiceDTO.getProductIds();
+                if (null != updateProductIds && 0 != updateProductIds.size()) {
+                    for (Integer productId : updateProductIds) {
+                        ProductEntity product = productRepository.findById(productId);
+                        if (null == product) throw new RuntimeException(String.valueOf(ErrorResponse.NO_RECORD_FOUND));
+                        updateInvoice.addProduct(product);
+                    }
+                } else {
+                    updateInvoice.setProducts(oldProducts);
+                }
 
+
+                InvoiceEntity updatedInvoice = invoiceRepository.save(updateInvoice);
                 return modelMapper.map(updatedInvoice, InvoiceDTO.class);
             }
         } catch (Exception e) {

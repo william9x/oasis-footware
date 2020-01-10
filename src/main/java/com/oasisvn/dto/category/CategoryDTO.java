@@ -1,6 +1,6 @@
 package com.oasisvn.dto.category;
 
-import com.oasisvn.io.response.product.ProductDetailsResponse;
+import com.oasisvn.dto.product.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +15,7 @@ public class CategoryDTO implements Serializable {
     private static final long serialVersionUID = -2683088575543840719L;
     private long id;
     private String title;
-    private List<ProductDetailsResponse> products = new ArrayList<>();
+    private List<ProductDTO> products = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

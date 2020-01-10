@@ -1,10 +1,14 @@
 package com.oasisvn.dto.invoice;
 
+import com.oasisvn.dto.product.ProductDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,6 +23,8 @@ public class InvoiceDTO implements Serializable {
     private String orderEmail;
     private String orderPhone;
     private String orderAddress;
+    private Set<ProductDTO> products = new HashSet<>();
+    private List<Integer> productIds;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

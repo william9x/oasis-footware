@@ -58,4 +58,14 @@ public class InvoiceEntity extends BaseEntity implements Serializable {
             joinColumns = @JoinColumn(name = "invoice_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     Set<ProductEntity> products = new HashSet<>();
+
+    public void addProduct(ProductEntity product) {
+        products.add(product);
+        product.getInvoices().add(this);
+    }
+
+    public void removeTag(ProductEntity product) {
+        products.remove(product);
+        product.getInvoices().remove(this);
+    }
 }

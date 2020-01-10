@@ -9,4 +9,5 @@ public interface IProductRepository extends CrudRepository<ProductEntity, Long> 
     ArrayList<ProductEntity> findAll();
     ProductEntity findById(long id);
     Boolean existsByTitle(String title);
+
 }

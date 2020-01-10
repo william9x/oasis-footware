@@ -102,16 +102,18 @@ public class ProductService implements IProductService {
             if (null == productEntity) return null;
             else {
                 if (false == isCategoryExist(updateCategoryId)) {
-                    productDTO.getCategory().setId(oldCategoryId);
+                    throw new RuntimeException("Category does not exist");
                 }
-                if (isProductExist(updateTitle)) {
-                    productDTO.setTitle(oldTitle);
+                if (false == updateTitle.equals(oldTitle)) {
+                    if (isProductExist(updateTitle)) {
+                        throw new RuntimeException("Product title already exist");
+                    }
                 }
 
                 if (null != updateImages && 0 != updateImages.size()) {
-                    for (ProductImageDTO updateImage : updateImages) {
-                        updateImage.setProduct(productDTO);
-                    }
+                        for (ProductImageDTO updateImage : updateImages) {
+                            updateImage.setProduct(productDTO);
+                        }
                 } else {
                     for (ProductImageEntity oldImage : oldImages) {
                         updateImages.add(modelMapper.map(oldImage, ProductImageDTO.class));
