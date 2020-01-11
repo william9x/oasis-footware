@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { CategoryService } from '../../../services/category.service';
 
 @Component({
@@ -15,23 +16,36 @@ export class ProductFilterByCategoryComponent implements OnInit {
   constructor(
     public activatedRoute: ActivatedRoute,
     public categoryService: CategoryService,
+    private router: Router
   ) {
   }
 
   ngOnInit() {
+    // this.id = this.activatedRoute.snapshot.params.id;
+    // this.categoryService.getItem(this.id).subscribe(res => {
+    //   console.log('productWithCategoryId', this.id);
+    // });
 
     this.getAllCategories();
+    // this.getProductByCategoryId(this.id);
+    // console.log('categoryId', this.id);
 
-    this.id = this.activatedRoute.snapshot.params.id;
-    this.categoryService.getItem(this.id).subscribe(res => {
-      console.log('productWithCategoryId', res.data.products);
-    });
+    this.toAnotherPagesFilter();
+
+  }
+
+  toAnotherPagesFilter() {
+
+    // this.getAllCategories();
+    // this.getProductByCategoryId(this.id);
+    // this.router.navigate(['/product/filterByCategory', this.id]);
+    console.log('categoryId', this.categories);
   }
 
   getAllCategories() {
     this.categoryService.getCategories().subscribe(
       res => {
-        console.log(res.data);
+        console.log('All categories', res.data);
         this.categories = res.data;
       },
       error => {
@@ -43,8 +57,8 @@ export class ProductFilterByCategoryComponent implements OnInit {
   getProductByCategoryId(id) {
     this.categoryService.getItem(id).subscribe(
       res => {
-        this.category = res.data;
         console.log('data', res.data);
+        this.category = res.data.products;
       },
       error => {
         console.log(error);

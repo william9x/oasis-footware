@@ -24,10 +24,7 @@
 
           <ul class="p-b-54">
             <li class="p-t-4" *ngFor="let category of categories">
-              <a
-                class="s-text13 active1"
-                [routerLink]="['/product/filterByCategory', category.id]"
-              >
+              <a class="s-text13 active1" (click)="toAnotherPagesFilter()">
                 {{ category.title }}
               </a>
             </li>
@@ -214,7 +211,7 @@
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4 p-b-50"
-            *ngFor="let product of category"
+            *ngFor="let item of category"
           >
             <!-- Block2 -->
             <div class="block2">
@@ -222,7 +219,7 @@
                 class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew"
               >
                 <img
-                  *ngFor="let image of product.images"
+                  *ngFor="let image of item.images"
                   [src]="image.imageUrl"
                   alt="IMG-PRODUCT"
                 />
@@ -258,7 +255,7 @@
                   href="product-detail"
                   class="block2-name dis-block s-text3 p-b-5"
                 >
-                  {{ category.title }}
+                  {{ item.title }}
                 </a>
 
                 <span class="block2-price m-text6 p-r-5">
