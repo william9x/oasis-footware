@@ -28,8 +28,8 @@ export class ProductService {
     }
 
     // Get Item By Id
-    public getProductDetail(id): Observable<any> {
-        return this.httpClient.get<any>(
+    public getProductDetail(id): Observable<Products> {
+        return this.httpClient.get<Products>(
             this.apiURL + 'product/' + id,
             this.httpHeader
         );

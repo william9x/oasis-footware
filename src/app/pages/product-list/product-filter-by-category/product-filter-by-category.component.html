@@ -24,7 +24,11 @@
 
           <ul class="p-b-54">
             <li class="p-t-4" *ngFor="let category of categories">
-              <a class="s-text13 active1" (click)="toAnotherPagesFilter()">
+              <a
+                style="cursor: pointer"
+                class="s-text13 active1"
+                (click)="toAnotherPagesFilter(category.id)"
+              >
                 {{ category.title }}
               </a>
             </li>
@@ -259,7 +263,7 @@
                 </a>
 
                 <span class="block2-price m-text6 p-r-5">
-                  {{ category.unitPrice }} $
+                  {{ item.unitPrice }} $
                 </span>
               </div>
             </div>

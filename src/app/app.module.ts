@@ -13,7 +13,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
-import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
+import { ProductDetailComponent } from './pages/product-list/product-detail/product-detail.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { BlogComponent } from './pages/blog/blog.component';

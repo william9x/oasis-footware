@@ -21,24 +21,22 @@ export class ProductFilterByCategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.id = this.activatedRoute.snapshot.params.id;
-    // this.categoryService.getItem(this.id).subscribe(res => {
-    //   console.log('productWithCategoryId', this.id);
-    // });
+    this.id = this.activatedRoute.snapshot.params.id;
+    this.categoryService.getItem(this.id).subscribe(
+      res => {
+        console.log('productWithCategoryId', this.id);
+        this.category = res.data.products;
+      }, error => {
+        console.log(error);
+      });
 
     this.getAllCategories();
-    // this.getProductByCategoryId(this.id);
-    // console.log('categoryId', this.id);
-
-    this.toAnotherPagesFilter();
-
+    console.log('categoryId', this.id);
   }
 
-  toAnotherPagesFilter() {
-
-    // this.getAllCategories();
-    // this.getProductByCategoryId(this.id);
-    // this.router.navigate(['/product/filterByCategory', this.id]);
+  toAnotherPagesFilter(id) {
+    this.getProductByCategoryId(id);
+    this.router.navigate(['/product/filterByCategory', id]);
     console.log('categoryId', this.categories);
   }
 
