@@ -13,7 +13,7 @@ export class HomepageComponent implements OnInit {
   products;
 
   slideConfig = {
-    "slidesToShow": 4, "slidesToScroll": 1,
+    slidesToShow: 4, slidesToScroll: 1,
   };
 
   constructor(
