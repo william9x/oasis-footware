@@ -30,6 +30,7 @@ public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
 
+    private OperationStatus operationStatus = new OperationStatus();
     private ModelMapper modelMapper = new ModelMapper();
 
     @ApiOperation(value = "Get all category", response = OperationStatus.class, responseContainer = "List")
@@ -40,7 +41,6 @@ public class CategoryController {
     })
     @GetMapping
     public ResponseEntity<?> getCategory(){
-        OperationStatus operationStatus;
 
         ArrayList<CategoryDTO> categoryDTOS = categoryService.getCategory();
 
@@ -73,7 +73,6 @@ public class CategoryController {
     })
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getCategory(@PathVariable long id){
-        OperationStatus operationStatus;
 
         CategoryDTO categoryDTO = categoryService.getCategory(id);
 
@@ -102,7 +101,6 @@ public class CategoryController {
     })
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryCreateRequest request){
-        OperationStatus operationStatus;
 
         CategoryDTO categoryDTO = modelMapper.map(request, CategoryDTO.class);
         CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
@@ -131,7 +129,6 @@ public class CategoryController {
     })
     @PutMapping(path = "{id}")
     public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
-        OperationStatus operationStatus;
 
         CategoryDTO categoryDTO = modelMapper.map(updateRequest, CategoryDTO.class);
         CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
@@ -160,7 +157,6 @@ public class CategoryController {
     })
     @DeleteMapping(path = "{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable long id){
-        OperationStatus operationStatus;
 
         boolean deletedCategory = categoryService.deleteCategory(id);
 

@@ -2,6 +2,7 @@ package com.oasisvn.model.io.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class OperationStatus {
     private int status;
     private boolean success;

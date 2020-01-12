@@ -1,7 +1,9 @@
 package com.oasisvn.controller.user;
 
 import com.oasisvn.model.dto.user.UserDTO;
+import com.oasisvn.model.dto.user.UserSession;
 import com.oasisvn.model.io.request.user.UserCreateRequest;
+import com.oasisvn.model.io.request.user.UserLoginRequest;
 import com.oasisvn.model.io.response.ErrorResponse;
 import com.oasisvn.model.io.response.OperationStatus;
 import com.oasisvn.model.io.response.SuccessResponse;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -28,9 +31,36 @@ import javax.validation.Valid;
 public class UserController {
 
     private ModelMapper modelMapper = new ModelMapper();
+    private OperationStatus operationStatus = new OperationStatus();
 
     @Autowired
     private IUserService userService;
+
+    @ApiOperation(value = "Login", response = OperationStatus.class)
+    @ApiResponses({
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not found"),
+    })
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid UserLoginRequest loginRequest, HttpServletRequest request) {
+
+        UserSession result = userService.login(loginRequest);
+
+        if (null == result) {
+            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(),false,
+                    ErrorResponse.AUTHENTICATION_FAILED.getErrorMessage(), null);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+        } else {
+            
+            request.getSession().setAttribute("OASIS_SESSION", result);
+
+            operationStatus = new OperationStatus(HttpStatus.OK.value(),true,
+                    SuccessResponse.AUTHENTICATED.getSuccessResponse(), null);
+
+            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+        }
+    }
 
     @ApiOperation(value = "Create a user", response = OperationStatus.class)
     @ApiResponses({
@@ -47,7 +77,7 @@ public class UserController {
         UserDTO createdUser = userService.createUser(userDTO);
 
         if (null == createdUser) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
+            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
                     ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
