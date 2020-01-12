@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -18,21 +19,14 @@ export class ProductDetailComponent implements OnInit {
   };
 
 
-  constructor(private productSerice: ProductService, public activatedRoute: ActivatedRoute) { }
+  constructor(private productSerice: ProductService,
+    public activatedRoute: ActivatedRoute,
+    private SpinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
-
     this.id = this.activatedRoute.snapshot.params.id;
-    this.productSerice.getProductDetail(this.id).subscribe(
-      res => {
-        console.log('productID', this.id);
-        this.product = res.data;
-        console.log('product', res.data.images);
-      }, error => {
-        console.log(error);
-      });
-
     this.getAllProducts();
+    this.getProductById(this.id);
   }
 
   slickInit(e) {
@@ -52,26 +46,32 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getAllProducts() {
+    this.SpinnerService.show();
     this.productSerice.getAllProducts().subscribe(
       res => {
         console.log(res.data);
         this.products = res.data;
+        this.SpinnerService.hide();
       },
       error => {
         console.log(error);
+        this.SpinnerService.hide();
       }
     );
   }
 
 
   getProductById(id) {
+    this.SpinnerService.show();
     this.productSerice.getProductDetail(id).subscribe(
       res => {
         console.log('data', res.data);
         this.product = res.data;
+        this.SpinnerService.hide();
       },
       error => {
         console.log(error);
+        this.SpinnerService.hide();
       }
     );
   }

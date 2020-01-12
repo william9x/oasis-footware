@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -11,6 +12,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class HomepageComponent implements OnInit {
   categories;
   products;
+  category;
 
   slideConfig = {
     slidesToShow: 4, slidesToScroll: 1,
@@ -19,15 +21,14 @@ export class HomepageComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private SpinnerService: NgxSpinnerService,
-    private productSerice: ProductService) {
+    private productSerice: ProductService,
+    private router: Router) {
     this.categories = [];
   }
 
   ngOnInit() {
-    this.SpinnerService.show();
     this.getAllCategories();
     this.getAllProducts();
-    this.SpinnerService.hide();
   }
 
   slickInit(e) {
@@ -44,6 +45,12 @@ export class HomepageComponent implements OnInit {
 
   beforeChange(e) {
     console.log('beforeChange');
+  }
+
+  toAnotherPagesFilter(id) {
+    this.getProductByCategoryId(id);
+    this.router.navigate(['/product/filterByCategory', id]);
+    console.log('categoryId', this.categories);
   }
 
   getAllCategories() {
@@ -68,6 +75,21 @@ export class HomepageComponent implements OnInit {
         console.log(res.data);
         console.log('images', res.data[0].images);
         this.products = res.data;
+        this.SpinnerService.hide();
+      },
+      error => {
+        console.log(error);
+        this.SpinnerService.hide();
+      }
+    );
+  }
+
+  getProductByCategoryId(id) {
+    this.SpinnerService.show();
+    this.categoryService.getItem(id).subscribe(
+      res => {
+        console.log('data', res.data);
+        this.category = res.data.products;
         this.SpinnerService.hide();
       },
       error => {

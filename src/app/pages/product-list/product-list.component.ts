@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +17,8 @@ export class ProductListComponent implements OnInit {
   constructor(private categoryService: CategoryService,
     private productSerice: ProductService,
     public activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.getAllCategories();
@@ -28,27 +30,33 @@ export class ProductListComponent implements OnInit {
   }
 
   getAllCategories() {
+    this.spinner.show();
     this.categoryService.getCategories().subscribe(
       res => {
         console.log(res.data);
         this.categories = res.data;
+        this.spinner.hide();
       },
       error => {
         console.log(error);
+        this.spinner.hide();
       }
     );
   }
 
 
   getAllProducts() {
+    this.spinner.show();
     this.productSerice.getAllProducts().subscribe(
       res => {
         console.log(res.data);
         console.log('images', res.data[0].images)
         this.products = res.data;
+        this.spinner.hide()
       },
       error => {
         console.log(error);
+        this.spinner.hide()
       }
     );
   }
