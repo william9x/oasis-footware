@@ -24,12 +24,10 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.SpinnerService.show();
     this.getAllCategories();
     this.getAllProducts();
-    this.SpinnerService.show();
-    setTimeout(() => {
-      this.SpinnerService.hide();
-    }, 8000);
+    this.SpinnerService.hide();
   }
 
   slickInit(e) {
@@ -49,26 +47,32 @@ export class HomepageComponent implements OnInit {
   }
 
   getAllCategories() {
+    this.SpinnerService.show();
     this.categoryService.getCategories().subscribe(
       res => {
         console.log(res.data);
         this.categories = res.data;
+        this.SpinnerService.hide();
       },
       error => {
         console.log(error);
+        this.SpinnerService.hide();
       }
     );
   }
 
   getAllProducts() {
+    this.SpinnerService.show();
     this.productSerice.getAllProducts().subscribe(
       res => {
         console.log(res.data);
-        console.log('images', res.data[0].images)
+        console.log('images', res.data[0].images);
         this.products = res.data;
+        this.SpinnerService.hide();
       },
       error => {
         console.log(error);
+        this.SpinnerService.hide();
       }
     );
   }

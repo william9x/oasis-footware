@@ -39,7 +39,7 @@ import { ProductFilterByCategoryComponent } from './pages/product-list/product-f
     Select2Module,
     HttpClientModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

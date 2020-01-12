@@ -12,7 +12,7 @@ import { ProductFilterByCategoryComponent } from './pages/product-list/product-f
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'product', component: ProductListComponent },
-  { path: 'product-detail', component: ProductDetailComponent },
+  { path: 'product/:id', component: ProductDetailComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'blog', component: BlogComponent },
