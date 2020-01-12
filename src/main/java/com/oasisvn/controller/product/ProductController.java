@@ -1,13 +1,13 @@
 package com.oasisvn.controller.product;
 
-import com.oasisvn.dto.product.ProductDTO;
-import com.oasisvn.io.request.product.ProductCreateRequest;
-import com.oasisvn.io.request.product.ProductUpdateRequest;
-import com.oasisvn.io.response.ErrorResponse;
-import com.oasisvn.io.response.OperationStatus;
-import com.oasisvn.io.response.SuccessResponse;
-import com.oasisvn.io.response.product.ProductCreateResponse;
-import com.oasisvn.io.response.product.ProductDetailsResponse;
+import com.oasisvn.model.dto.product.ProductDTO;
+import com.oasisvn.model.io.request.product.ProductCreateRequest;
+import com.oasisvn.model.io.request.product.ProductUpdateRequest;
+import com.oasisvn.model.io.response.ErrorResponse;
+import com.oasisvn.model.io.response.OperationStatus;
+import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.model.io.response.product.ProductCreateResponse;
+import com.oasisvn.model.io.response.product.ProductDetailsResponse;
 import com.oasisvn.service.product.IProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

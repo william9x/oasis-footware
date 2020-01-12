@@ -1,6 +1,6 @@
 package com.oasisvn.service.product;
 
-import com.oasisvn.dto.product.ProductDTO;
+import com.oasisvn.model.dto.product.ProductDTO;
 
 import java.util.ArrayList;
 

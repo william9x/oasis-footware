@@ -3,7 +3,9 @@ package com.oasisvn.entity.product;
 import com.oasisvn.entity.BaseEntity;
 import com.oasisvn.entity.category.CategoryEntity;
 import com.oasisvn.entity.invoice.InvoiceEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -17,7 +19,9 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name = "product")
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "products")
 public class ProductEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -2222593543117030062L;

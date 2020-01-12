@@ -1,6 +1,6 @@
 package com.oasisvn.service.category;
 
-import com.oasisvn.dto.category.CategoryDTO;
+import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.entity.category.CategoryEntity;
 import com.oasisvn.repository.category.ICategoryRepository;
 import org.modelmapper.ModelMapper;

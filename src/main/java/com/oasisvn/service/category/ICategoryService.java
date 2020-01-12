@@ -1,6 +1,6 @@
 package com.oasisvn.service.category;
 
-import com.oasisvn.dto.category.CategoryDTO;
+import com.oasisvn.model.dto.category.CategoryDTO;
 
 import java.util.ArrayList;
 

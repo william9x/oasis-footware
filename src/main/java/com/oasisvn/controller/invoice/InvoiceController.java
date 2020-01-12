@@ -1,12 +1,12 @@
 package com.oasisvn.controller.invoice;
 
-import com.oasisvn.dto.invoice.InvoiceDTO;
-import com.oasisvn.io.request.invoice.InvoiceCreateRequest;
-import com.oasisvn.io.request.invoice.InvoiceUpdateRequest;
-import com.oasisvn.io.response.ErrorResponse;
-import com.oasisvn.io.response.OperationStatus;
-import com.oasisvn.io.response.SuccessResponse;
-import com.oasisvn.io.response.invoice.InvoiceDetailsResponse;
+import com.oasisvn.model.dto.invoice.InvoiceDTO;
+import com.oasisvn.model.io.request.invoice.InvoiceCreateRequest;
+import com.oasisvn.model.io.request.invoice.InvoiceUpdateRequest;
+import com.oasisvn.model.io.response.ErrorResponse;
+import com.oasisvn.model.io.response.OperationStatus;
+import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.model.io.response.invoice.InvoiceDetailsResponse;
 import com.oasisvn.service.invoice.IInvoiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

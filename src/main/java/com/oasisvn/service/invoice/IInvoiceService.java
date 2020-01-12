@@ -1,6 +1,6 @@
 package com.oasisvn.service.invoice;
 
-import com.oasisvn.dto.invoice.InvoiceDTO;
+import com.oasisvn.model.dto.invoice.InvoiceDTO;
 
 import java.util.ArrayList;
 

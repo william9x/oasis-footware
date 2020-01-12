@@ -1,13 +1,13 @@
 package com.oasisvn.controller.category;
 
-import com.oasisvn.dto.category.CategoryDTO;
-import com.oasisvn.io.request.category.CategoryCreateRequest;
-import com.oasisvn.io.request.category.CategoryUpdateRequest;
-import com.oasisvn.io.response.ErrorResponse;
-import com.oasisvn.io.response.OperationStatus;
-import com.oasisvn.io.response.SuccessResponse;
-import com.oasisvn.io.response.category.CategoryCreateResponse;
-import com.oasisvn.io.response.category.CategoryDetailsResponse;
+import com.oasisvn.model.dto.category.CategoryDTO;
+import com.oasisvn.model.io.request.category.CategoryCreateRequest;
+import com.oasisvn.model.io.request.category.CategoryUpdateRequest;
+import com.oasisvn.model.io.response.ErrorResponse;
+import com.oasisvn.model.io.response.OperationStatus;
+import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.model.io.response.category.CategoryCreateResponse;
+import com.oasisvn.model.io.response.category.CategoryDetailsResponse;
 import com.oasisvn.service.category.ICategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
