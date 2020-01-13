@@ -52,7 +52,7 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
         } else {
-            
+
             request.getSession().setAttribute("OASIS_SESSION", result);
 
             operationStatus = new OperationStatus(HttpStatus.OK.value(),true,

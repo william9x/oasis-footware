@@ -1,14 +1,13 @@
 package com.oasisvn.service.user;
 
+import com.oasisvn.entity.user.UserEntity;
 import com.oasisvn.middleware.utilities.ICustomUtilities;
 import com.oasisvn.model.dto.user.UserDTO;
-import com.oasisvn.entity.user.UserEntity;
 import com.oasisvn.model.dto.user.UserSession;
 import com.oasisvn.model.io.request.user.UserLoginRequest;
 import com.oasisvn.repository.user.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,7 +49,7 @@ public class UserService implements IUserService {
             UserEntity userEntity = modelMapper.map(userDTO, UserEntity.class);
 
             userEntity.setUserId(utilities.encodeBase64UrlSafe(userEntity.getUsername()));
-            userEntity.setEncryptedPassword(utilities.encodePassword(userDTO.getPassword()));
+            userEntity.setEncryptedPassword(utilities.hashPassword(userDTO.getPassword()));
             userEntity.setRole("ADMIN");
 
             UserEntity createdUser = userRepository.save(userEntity);

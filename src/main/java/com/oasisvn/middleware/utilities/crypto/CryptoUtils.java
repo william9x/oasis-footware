@@ -20,7 +20,7 @@ public class CryptoUtils implements ICustomUtilities {
     }
 
     @Override
-    public String encodePassword(String password) {
+    public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
