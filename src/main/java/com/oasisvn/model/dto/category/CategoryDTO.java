@@ -18,6 +18,7 @@ import java.util.List;
 public class CategoryDTO implements Serializable {
     private static final long serialVersionUID = -2683088575543840719L;
     private long id;
+    private String categoryUID;
     private String title;
     private List<ProductDTO> products = new ArrayList<>();
     private LocalDateTime createdAt;

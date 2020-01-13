@@ -1,6 +1,7 @@
 package com.oasisvn.service.category;
 
 import com.oasisvn.entity.category.CategoryEntity;
+import com.oasisvn.middleware.utilities.ICustomUtilities;
 import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.repository.category.ICategoryRepository;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,9 @@ public class CategoryService implements ICategoryService {
 
     @Autowired
     private ICategoryRepository categoryRepository;
+
+    @Autowired
+    private ICustomUtilities utilities;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -40,10 +44,10 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO getCategory(long id) {
+    public CategoryDTO getCategory(String categoryUID) {
 
         try {
-            CategoryEntity categoryEntity = categoryRepository.findById(id);
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
 
             if (null == categoryEntity) return null;
             else {
@@ -58,9 +62,13 @@ public class CategoryService implements ICategoryService {
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
 
         try {
-            if (isCategoryExist(categoryDTO.getTitle())) return null;
+            String requestTitle = categoryDTO.getTitle();
+
+            if (isCategoryExist(requestTitle)) return null;
             else {
                 CategoryEntity categoryEntity = modelMapper.map(categoryDTO, CategoryEntity.class);
+                categoryEntity.setCategoryUID(utilities.encodeBase64UrlSafe(requestTitle));
+
                 CategoryEntity createdCategory = categoryRepository.save(categoryEntity);
 
                 return modelMapper.map(createdCategory, CategoryDTO.class);
@@ -71,14 +79,14 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
+    public CategoryDTO updateCategory(String categoryUID, CategoryDTO categoryDTO) {
 
         //Update information
         String updateTitle = categoryDTO.getTitle();
 
         try {
             //Old information
-            CategoryEntity categoryEntity = categoryRepository.findById(id);
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
             String oldTitle = categoryEntity.getTitle();
             long oldId = categoryEntity.getId();
 
@@ -89,6 +97,7 @@ public class CategoryService implements ICategoryService {
                 }
 
                 CategoryEntity updateCategory = modelMapper.map(categoryDTO, CategoryEntity.class);
+                updateCategory.setCategoryUID(utilities.encodeBase64UrlSafe(updateTitle));
                 updateCategory.setId(oldId);
 
                 CategoryEntity updatedCategory = categoryRepository.save(updateCategory);
@@ -101,10 +110,10 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public boolean deleteCategory(long id) {
+    public boolean deleteCategory(String categoryUID) {
 
         try {
-            CategoryEntity categoryEntity = categoryRepository.findById(id);
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
 
             if (null == categoryEntity) return false;
             else {

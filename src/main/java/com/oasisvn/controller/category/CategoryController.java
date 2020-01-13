@@ -65,14 +65,14 @@ public class CategoryController {
         }
     }
 
-    @ApiOperation(value = "Get a category by id", response = OperationStatus.class)
+    @ApiOperation(value = "Get a category by uid", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getCategory(@PathVariable long id){
+    public ResponseEntity<?> getCategory(@PathVariable String id){
 
         CategoryDTO categoryDTO = categoryService.getCategory(id);
 
@@ -128,7 +128,7 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
+    public ResponseEntity<?> updateCategory(@PathVariable String id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
 
         CategoryDTO categoryDTO = modelMapper.map(updateRequest, CategoryDTO.class);
         CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
@@ -156,7 +156,7 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable long id){
+    public ResponseEntity<?> deleteCategory(@PathVariable String id){
 
         boolean deletedCategory = categoryService.deleteCategory(id);
 

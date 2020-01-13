@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDetailsResponse {
-    private long id;
+    private String categoryUID;
     private String title;
     private List<ProductDetailsResponse> products = new ArrayList<>();
 }

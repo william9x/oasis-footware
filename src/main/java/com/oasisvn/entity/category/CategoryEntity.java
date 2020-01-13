@@ -25,6 +25,9 @@ public class CategoryEntity extends BaseEntity implements Serializable {
     @GeneratedValue
     private long id;
 
+    @Column(nullable = false, unique = true, name = "category_uid")
+    private String categoryUID;
+
     @Column(nullable = false, unique = true)
     private String title;
 

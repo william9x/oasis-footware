@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryCreateResponse {
-    private long id;
+    private String categoryUID;
     private String title;
 }
