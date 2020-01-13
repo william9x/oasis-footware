@@ -18,6 +18,12 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { ProductFilterByCategoryComponent } from './pages/product-list/product-filter-by-category/product-filter-by-category.component';
+import { CartComponent } from './pages/cart/cart.component';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { reducer } from './reducers/products.reducer';
 
 @NgModule({
   declarations: [
@@ -30,7 +36,8 @@ import { ProductFilterByCategoryComponent } from './pages/product-list/product-f
     AboutComponent,
     ContactComponent,
     BlogComponent,
-    ProductFilterByCategoryComponent
+    ProductFilterByCategoryComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +47,16 @@ import { ProductFilterByCategoryComponent } from './pages/product-list/product-f
     HttpClientModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
+    StoreModule.forRoot(
+      { data: reducer },
+      {
+        runtimeChecks: {
+          strictStateImmutability: true,
+          strictActionImmutability: true
+        }
+      }
+    ),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent]

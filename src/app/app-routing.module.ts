@@ -7,6 +7,7 @@ import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { ProductFilterByCategoryComponent } from './pages/product-list/product-filter-by-category/product-filter-by-category.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'blog', component: BlogComponent },
+  { path: 'cart', component: CartComponent },
   { path: 'product/filterByCategory/:id', component: ProductFilterByCategoryComponent },
 ];
 

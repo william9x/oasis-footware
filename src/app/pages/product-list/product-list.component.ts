@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService } from '../../services/category.service';
-import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
+
+import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service';
+import { Store } from '@ngrx/store';
+import { setProducts } from '../../reducers/products.reducer';
+
 
 @Component({
   selector: 'app-product-list',
@@ -18,7 +22,9 @@ export class ProductListComponent implements OnInit {
     private productSerice: ProductService,
     public activatedRoute: ActivatedRoute,
     private router: Router,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private store: Store<any>
+  ) { }
 
   ngOnInit() {
     this.getAllCategories();
@@ -27,6 +33,11 @@ export class ProductListComponent implements OnInit {
 
   toProductDetailPage(id) {
     this.router.navigate(['/product', id]);
+  }
+
+  addProductsToCart(listProducts) {
+    console.log(listProducts);
+    this.store.dispatch(setProducts({ listProducts }));
   }
 
   getAllCategories() {
@@ -50,13 +61,13 @@ export class ProductListComponent implements OnInit {
     this.productSerice.getAllProducts().subscribe(
       res => {
         console.log(res.data);
-        console.log('images', res.data[0].images)
+        console.log('images', res.data[0].images);
         this.products = res.data;
-        this.spinner.hide()
+        this.spinner.hide();
       },
       error => {
         console.log(error);
-        this.spinner.hide()
+        this.spinner.hide();
       }
     );
   }
