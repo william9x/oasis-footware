@@ -11,4 +11,5 @@ public interface ICategoryRepository extends CrudRepository<CategoryEntity, Long
     ArrayList<CategoryEntity> findAll();
     CategoryEntity findByCategoryUID(String categoryUID);
     Boolean existsByTitle(String title);
+    Boolean existsByCategoryUID(String categoryUID);
 }

@@ -31,6 +31,7 @@ public class ProductController {
     private IProductService productService;
 
     private ModelMapper modelMapper = new ModelMapper();
+    private OperationStatus operationStatus = new OperationStatus();
 
     @ApiOperation(value = "Get all product", response = OperationStatus.class, responseContainer = "List")
     @ApiResponses({
@@ -40,7 +41,6 @@ public class ProductController {
     })
     @GetMapping
     public ResponseEntity<?> getProduct(){
-        OperationStatus operationStatus;
 
         ArrayList<ProductDTO> productDTOS = productService.getProduct();
 
@@ -72,8 +72,7 @@ public class ProductController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getProduct(@PathVariable long id){
-        OperationStatus operationStatus;
+    public ResponseEntity<?> getProduct(@PathVariable String id){
 
         ProductDTO productDTO = productService.getProduct(id);
 
@@ -102,7 +101,6 @@ public class ProductController {
     })
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody @Valid ProductCreateRequest request){
-        OperationStatus operationStatus;
 
         ProductDTO productDTO = modelMapper.map(request, ProductDTO.class);
         ProductDTO createdProduct = productService.createProduct(productDTO);
@@ -130,8 +128,7 @@ public class ProductController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid ProductUpdateRequest updateRequest){
-        OperationStatus operationStatus;
+    public ResponseEntity<?> updateCategory(@PathVariable String id, @RequestBody @Valid ProductUpdateRequest updateRequest){
 
         ProductDTO productDTO = modelMapper.map(updateRequest, ProductDTO.class);
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
@@ -159,7 +156,7 @@ public class ProductController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable long id){
+    public ResponseEntity<?> deleteProduct(@PathVariable String id){
         OperationStatus operationStatus;
 
         boolean deletedProduct = productService.deleteProduct(id);

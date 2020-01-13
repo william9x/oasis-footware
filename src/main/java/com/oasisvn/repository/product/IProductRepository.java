@@ -8,6 +8,6 @@ import java.util.ArrayList;
 public interface IProductRepository extends CrudRepository<ProductEntity, Long> {
     ArrayList<ProductEntity> findAll();
     ProductEntity findById(long id);
+    ProductEntity findByProductUID(String productUID);
     Boolean existsByTitle(String title);
-
 }

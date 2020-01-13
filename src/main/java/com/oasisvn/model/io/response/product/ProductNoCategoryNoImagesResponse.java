@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductNoCategoryNoImagesResponse {
-    private long id;
+    private String productUID;
     private String title;
     private String subTitle;
     private String content;

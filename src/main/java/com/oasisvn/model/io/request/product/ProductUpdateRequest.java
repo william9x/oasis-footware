@@ -17,11 +17,11 @@ import java.util.List;
 public class ProductUpdateRequest {
 
     @ApiModelProperty(
-            example = "1",
+            example = "abc",
             notes = "Category id cannot be empty",
             required = true
     )
-    private long categoryId;
+    private String categoryUID;
 
     @NotBlank(message = "Title required")
     @NotNull(message = "Title required")

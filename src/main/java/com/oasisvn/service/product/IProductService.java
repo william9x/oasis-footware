@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public interface IProductService {
     ArrayList<ProductDTO> getProduct();
-    ProductDTO getProduct(long id);
+    ProductDTO getProduct(String productUID);
     ProductDTO createProduct(ProductDTO productDTO);
-    ProductDTO updateProduct(long id, ProductDTO productDTO);
-    boolean deleteProduct(long id);
+    ProductDTO updateProduct(String productUID, ProductDTO productDTO);
+    boolean deleteProduct(String productUID);
 }

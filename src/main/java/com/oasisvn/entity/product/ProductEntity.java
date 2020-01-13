@@ -12,10 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -29,6 +26,9 @@ public class ProductEntity extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue
     private long id;
+
+    @Column(nullable = false, unique = true, name = "product_uid")
+    private String productUID;
 
     @Column(nullable = false, unique = true)
     private String title;

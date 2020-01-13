@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDetailsResponse {
-    private long id;
+    private String productUID;
     private CategoryCreateResponse category;
     private String title;
     private String subTitle;

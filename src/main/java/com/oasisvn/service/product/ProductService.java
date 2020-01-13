@@ -1,7 +1,9 @@
 package com.oasisvn.service.product;
 
+import com.oasisvn.entity.category.CategoryEntity;
 import com.oasisvn.entity.product.ProductEntity;
 import com.oasisvn.entity.product.ProductImageEntity;
+import com.oasisvn.middleware.utilities.ICustomUtilities;
 import com.oasisvn.model.dto.product.ProductDTO;
 import com.oasisvn.model.dto.product.ProductImageDTO;
 import com.oasisvn.repository.category.ICategoryRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -21,6 +24,9 @@ public class ProductService implements IProductService {
 
     @Autowired
     private ICategoryRepository categoryRepository;
+
+    @Autowired
+    private ICustomUtilities utilities;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -47,10 +53,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO getProduct(long id) {
+    public ProductDTO getProduct(String productUID) {
 
         try {
-            ProductEntity productEntity = productRepository.findById(id);
+            ProductEntity productEntity = productRepository.findByProductUID(productUID);
 
             if (null == productEntity) return null;
             else {
@@ -65,7 +71,12 @@ public class ProductService implements IProductService {
     public ProductDTO createProduct(ProductDTO productDTO) {
 
         try {
-            if (isProductExist(productDTO.getTitle()) || !isCategoryExist(productDTO.getCategory().getId())) return null;
+
+            String requestTitle = productDTO.getTitle();
+            String requestCategoryUID = productDTO.getCategory().getCategoryUID();
+            CategoryEntity requestCategoryEntity = categoryRepository.findByCategoryUID(requestCategoryUID);
+
+            if (isProductExist(requestTitle)) return null;
             else {
 
                 for (ProductImageDTO image : productDTO.getImages()) {
@@ -73,6 +84,9 @@ public class ProductService implements IProductService {
                 }
 
                 ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
+                productEntity.setProductUID(utilities.encodeBase64UrlSafe(requestTitle));
+                productEntity.setCategory(requestCategoryEntity);
+
                 ProductEntity savedProduct = productRepository.save(productEntity);
 
                 return modelMapper.map(savedProduct, ProductDTO.class);
@@ -84,59 +98,55 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO updateProduct(long id, ProductDTO productDTO) {
-
-        //Update information
-        long updateCategoryId = productDTO.getCategory().getId();
-        String updateTitle = productDTO.getTitle();
-        List<ProductImageDTO> updateImages = productDTO.getImages();
+    public ProductDTO updateProduct(String productUID, ProductDTO productDTO) {
 
         try {
+            //Update information
+            String updateTitle = productDTO.getTitle();
+            List<ProductImageDTO> updateImages = productDTO.getImages();
+            String updateCategoryUID = productDTO.getCategory().getCategoryUID();
+            CategoryEntity updateCategory = categoryRepository.findByCategoryUID(updateCategoryUID);
+
             //Old information
-            ProductEntity productEntity = productRepository.findById(id);
-            long oldId = productEntity.getId();
-            long oldCategoryId = productEntity.getCategory().getId();
+            ProductEntity productEntity = productRepository.findByProductUID(productUID);
             String oldTitle = productEntity.getTitle();
+            long oldId = productEntity.getId();
             List<ProductImageEntity> oldImages = productEntity.getImages();
 
-            if (null == productEntity) return null;
-            else {
-                if (false == isCategoryExist(updateCategoryId)) {
-                    throw new RuntimeException("Category does not exist");
+            if (false == updateTitle.equals(oldTitle)) {
+                if (isProductExist(updateTitle)) {
+                    throw new RuntimeException("Product title already exist");
                 }
-                if (false == updateTitle.equals(oldTitle)) {
-                    if (isProductExist(updateTitle)) {
-                        throw new RuntimeException("Product title already exist");
-                    }
-                }
-
-                if (null != updateImages && 0 != updateImages.size()) {
-                        for (ProductImageDTO updateImage : updateImages) {
-                            updateImage.setProduct(productDTO);
-                        }
-                } else {
-                    for (ProductImageEntity oldImage : oldImages) {
-                        updateImages.add(modelMapper.map(oldImage, ProductImageDTO.class));
-                    }
-                }
-
-                ProductEntity updateProduct = modelMapper.map(productDTO, ProductEntity.class);
-                updateProduct.setId(oldId);
-
-                ProductEntity updatedProduct = productRepository.save(updateProduct);
-
-                return modelMapper.map(updatedProduct, ProductDTO.class);
             }
+
+            if (null != updateImages && 0 != updateImages.size()) {
+                for (ProductImageDTO updateImage : updateImages) {
+                    updateImage.setProduct(productDTO);
+                }
+            } else {
+                for (ProductImageEntity oldImage : oldImages) {
+                    updateImages.add(modelMapper.map(oldImage, ProductImageDTO.class));
+                }
+            }
+
+            ProductEntity updateProduct = modelMapper.map(productDTO, ProductEntity.class);
+            updateProduct.setId(oldId);
+            updateProduct.setProductUID(utilities.encodeBase64UrlSafe(updateTitle));
+            updateProduct.setCategory(updateCategory);
+
+            ProductEntity updatedProduct = productRepository.save(updateProduct);
+
+            return modelMapper.map(updatedProduct, ProductDTO.class);
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public boolean deleteProduct(long id) {
+    public boolean deleteProduct(String productUID) {
 
         try {
-            ProductEntity productEntity = productRepository.findById(id);
+            ProductEntity productEntity = productRepository.findByProductUID(productUID);
 
             if (null == productEntity) return false;
             else {
@@ -162,6 +172,15 @@ public class ProductService implements IProductService {
 
         try {
             return categoryRepository.existsById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Boolean isCategoryExist(String categoryUID) {
+
+        try {
+            return categoryRepository.existsByCategoryUID(categoryUID);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
