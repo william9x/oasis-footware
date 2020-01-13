@@ -19,6 +19,7 @@ import java.util.Set;
 public class InvoiceDTO implements Serializable {
     private static final long serialVersionUID = -502636537706339650L;
     private long id;
+    private String invoiceUID;
     private double productValue;
     private double discountValue;
     private double totalValue;
@@ -28,7 +29,7 @@ public class InvoiceDTO implements Serializable {
     private String orderPhone;
     private String orderAddress;
     private Set<ProductDTO> products = new HashSet<>();
-    private List<Integer> productIds;
+    private List<String> productIds;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -6,6 +6,7 @@ import com.oasisvn.model.io.request.invoice.InvoiceUpdateRequest;
 import com.oasisvn.model.io.response.ErrorResponse;
 import com.oasisvn.model.io.response.OperationStatus;
 import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.model.io.response.invoice.InvoiceCreateResponse;
 import com.oasisvn.model.io.response.invoice.InvoiceDetailsResponse;
 import com.oasisvn.service.invoice.IInvoiceService;
 import io.swagger.annotations.Api;
@@ -71,7 +72,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getInvoice(@PathVariable long id){
+    public ResponseEntity<?> getInvoice(@PathVariable String id){
         OperationStatus operationStatus;
 
         InvoiceDTO invoiceDTO = invoiceService.getInvoice(id);
@@ -112,7 +113,7 @@ public class InvoiceController {
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
         } else {
-            InvoiceCreateRequest returnValue = modelMapper.map(createdInvoice, InvoiceCreateRequest.class);
+            InvoiceCreateResponse returnValue = modelMapper.map(createdInvoice, InvoiceCreateResponse.class);
 
             operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
                     SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
@@ -129,7 +130,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateInvoice(@PathVariable long id, @RequestBody @Valid InvoiceUpdateRequest updateRequest){
+    public ResponseEntity<?> updateInvoice(@PathVariable String id, @RequestBody @Valid InvoiceUpdateRequest updateRequest){
         OperationStatus operationStatus;
 
         InvoiceDTO invoiceDTO = modelMapper.map(updateRequest, InvoiceDTO.class);
@@ -159,7 +160,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteInvoice(@PathVariable long id){
+    public ResponseEntity<?> deleteInvoice(@PathVariable String id){
         OperationStatus operationStatus;
 
         boolean deletedProduct = invoiceService.deleteInvoice(id);

@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
+import java.util.UUID;
 
 @Component
 public class CryptoUtils implements ICustomUtilities {
@@ -19,9 +20,15 @@ public class CryptoUtils implements ICustomUtilities {
         return encodedString;
     }
 
+
     @Override
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+
+    @Override
+    public String generateUUID() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     @Override

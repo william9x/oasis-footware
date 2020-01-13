@@ -2,6 +2,7 @@ package com.oasisvn.service.invoice;
 
 import com.oasisvn.entity.invoice.InvoiceEntity;
 import com.oasisvn.entity.product.ProductEntity;
+import com.oasisvn.middleware.utilities.ICustomUtilities;
 import com.oasisvn.model.dto.invoice.InvoiceDTO;
 import com.oasisvn.model.io.response.ErrorResponse;
 import com.oasisvn.repository.invoice.IInvoiceRepository;
@@ -23,7 +24,11 @@ public class InvoiceService implements IInvoiceService {
     @Autowired
     private IProductRepository productRepository;
 
+    @Autowired
+    private ICustomUtilities utilities;
+
     private ModelMapper modelMapper = new ModelMapper();
+
 
     @Override
     public ArrayList<InvoiceDTO> getInvoice() {
@@ -48,15 +53,13 @@ public class InvoiceService implements IInvoiceService {
     }
 
     @Override
-    public InvoiceDTO getInvoice(long id) {
+    public InvoiceDTO getInvoice(String invoiceUID) {
 
         try {
-            InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
 
-            if (null == invoiceEntity) return null;
-            else {
-                return modelMapper.map(invoiceEntity, InvoiceDTO.class);
-            }
+            InvoiceEntity invoiceEntity = invoiceRepository.findByInvoiceUID(invoiceUID);
+            return modelMapper.map(invoiceEntity, InvoiceDTO.class);
+
         } catch (Exception e) {
             return null;
         }
@@ -67,12 +70,13 @@ public class InvoiceService implements IInvoiceService {
 
         try {
             InvoiceEntity invoiceEntity = modelMapper.map(invoiceDTO, InvoiceEntity.class);
+            invoiceEntity.setInvoiceUID(utilities.generateUUID());
 
-            for (Integer id : invoiceDTO.getProductIds()) {
-                ProductEntity product = productRepository.findById(id);
-                if (null == product) throw new RuntimeException(String.valueOf(ErrorResponse.NO_RECORD_FOUND));
+            for (String productUID : invoiceDTO.getProductIds()) {
+                ProductEntity product = productRepository.findByProductUID(productUID);
                 invoiceEntity.addProduct(product);
             }
+
 
             InvoiceEntity createdInvoice = invoiceRepository.save(invoiceEntity);
 
@@ -84,43 +88,25 @@ public class InvoiceService implements IInvoiceService {
     }
 
     @Override
-    public InvoiceDTO updateInvoice(long id, InvoiceDTO invoiceDTO) {
+    public InvoiceDTO updateInvoice(String invoiceUID, InvoiceDTO invoiceDTO) {
 
         try {
-            //Old information
-            InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
-            Set<ProductEntity> oldProducts = invoiceEntity.getProducts();
 
-            if (null == invoiceEntity) return null;
-            else {
+            InvoiceEntity invoiceEntity = invoiceRepository.findByInvoiceUID(invoiceUID);
+            invoiceEntity.setStatus(invoiceDTO.getStatus());
 
-                InvoiceEntity updateInvoice = modelMapper.map(invoiceDTO, InvoiceEntity.class);
-                updateInvoice.setId(invoiceEntity.getId());
+            InvoiceEntity updatedInvoice = invoiceRepository.save(invoiceEntity);
+            return modelMapper.map(updatedInvoice, InvoiceDTO.class);
 
-                List<Integer> updateProductIds = invoiceDTO.getProductIds();
-                if (null != updateProductIds && 0 != updateProductIds.size()) {
-                    for (Integer productId : updateProductIds) {
-                        ProductEntity product = productRepository.findById(productId);
-                        if (null == product) throw new RuntimeException(String.valueOf(ErrorResponse.NO_RECORD_FOUND));
-                        updateInvoice.addProduct(product);
-                    }
-                } else {
-                    updateInvoice.setProducts(oldProducts);
-                }
-
-
-                InvoiceEntity updatedInvoice = invoiceRepository.save(updateInvoice);
-                return modelMapper.map(updatedInvoice, InvoiceDTO.class);
-            }
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public boolean deleteInvoice(long id) {
+    public boolean deleteInvoice(String invoiceUID) {
         try {
-            InvoiceEntity invoiceEntity = invoiceRepository.findById(id);
+            InvoiceEntity invoiceEntity = invoiceRepository.findByInvoiceUID(invoiceUID);
 
             if (null == invoiceEntity) return false;
             else {

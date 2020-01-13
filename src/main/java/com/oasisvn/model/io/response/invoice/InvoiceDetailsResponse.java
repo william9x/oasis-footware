@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvoiceDetailsResponse {
-    private long id;
+    private String invoiceUID;
     private double productValue;
     private double discountValue;
     private double totalValue;

@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public interface IInvoiceRepository extends CrudRepository<InvoiceEntity, Long> {
     ArrayList<InvoiceEntity> findAll();
     InvoiceEntity findById(long id);
+    InvoiceEntity findByInvoiceUID(String invoiceUID);
 }

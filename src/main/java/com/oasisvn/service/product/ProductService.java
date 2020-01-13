@@ -168,22 +168,4 @@ public class ProductService implements IProductService {
         }
     }
 
-    private Boolean isCategoryExist(long id) {
-
-        try {
-            return categoryRepository.existsById(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Boolean isCategoryExist(String categoryUID) {
-
-        try {
-            return categoryRepository.existsByCategoryUID(categoryUID);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

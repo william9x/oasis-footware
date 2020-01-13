@@ -27,6 +27,9 @@ public class InvoiceEntity extends BaseEntity implements Serializable {
     @GeneratedValue
     private long id;
 
+    @Column(nullable = false, unique = true, name = "invoice_uid")
+    private String invoiceUID;
+
     @Column(nullable = false, name = "product_value")
     private double productValue;
 
@@ -38,7 +41,7 @@ public class InvoiceEntity extends BaseEntity implements Serializable {
 
     @Column(nullable = false, length = 1)
     @Min(1)
-    @Max(3)
+    @Max(6)
     private byte status;
 
     @Column(nullable = false, length = 50, name = "order_name")

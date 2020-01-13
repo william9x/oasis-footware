@@ -6,12 +6,8 @@ import java.util.ArrayList;
 
 public interface IInvoiceService {
     ArrayList<InvoiceDTO> getInvoice();
-
-    InvoiceDTO getInvoice(long id);
-
+    InvoiceDTO getInvoice(String invoiceUID);
     InvoiceDTO createInvoice(InvoiceDTO invoiceDTO);
-
-    InvoiceDTO updateInvoice(long id, InvoiceDTO invoiceDTO);
-
-    boolean deleteInvoice(long id);
+    InvoiceDTO updateInvoice(String invoiceUID, InvoiceDTO invoiceDTO);
+    boolean deleteInvoice(String invoiceUID);
 }

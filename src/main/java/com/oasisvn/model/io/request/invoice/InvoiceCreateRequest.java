@@ -93,5 +93,5 @@ public class InvoiceCreateRequest {
     )
     @NotNull(message = "productIds can not be empty")
     @NotEmpty(message = "productIds can not be empty")
-    private List<Integer> productIds;
+    private List<String> productIds;
 }
