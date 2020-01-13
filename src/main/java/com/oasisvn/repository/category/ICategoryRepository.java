@@ -9,6 +9,6 @@ import java.util.ArrayList;
 @Repository
 public interface ICategoryRepository extends CrudRepository<CategoryEntity, Long> {
     ArrayList<CategoryEntity> findAll();
-    CategoryEntity findById(long id);
+    CategoryEntity findByCategoryId(String categoryId);
     Boolean existsByTitle(String title);
 }

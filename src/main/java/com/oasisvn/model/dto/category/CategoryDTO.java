@@ -17,8 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryDTO implements Serializable {
     private static final long serialVersionUID = -2683088575543840719L;
-    private long id;
+    private Long id;
     private String title;
+    private String categoryId;
     private List<ProductDTO> products = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

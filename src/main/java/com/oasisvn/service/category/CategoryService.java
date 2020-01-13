@@ -1,7 +1,9 @@
 package com.oasisvn.service.category;
 
 import com.oasisvn.entity.category.CategoryEntity;
+import com.oasisvn.middleware.utilities.ICustomUtilities;
 import com.oasisvn.model.dto.category.CategoryDTO;
+import com.oasisvn.model.dto.product.ProductDTO;
 import com.oasisvn.repository.category.ICategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class CategoryService implements ICategoryService {
 
     @Autowired
     private ICategoryRepository categoryRepository;
+
+    @Autowired
+    private ICustomUtilities utilities;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -40,10 +45,10 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO getCategory(long id) {
+    public CategoryDTO getCategory(String categoryId) {
 
         try {
-            CategoryEntity categoryEntity = categoryRepository.findById(id);
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryId(categoryId);
 
             if (null == categoryEntity) return null;
             else {
@@ -61,6 +66,8 @@ public class CategoryService implements ICategoryService {
             if (isCategoryExist(categoryDTO.getTitle())) return null;
             else {
                 CategoryEntity categoryEntity = modelMapper.map(categoryDTO, CategoryEntity.class);
+                categoryEntity.setCategoryId(utilities.encodeBase64UrlSafe(categoryEntity.getTitle()));
+
                 CategoryEntity createdCategory = categoryRepository.save(categoryEntity);
 
                 return modelMapper.map(createdCategory, CategoryDTO.class);
@@ -71,46 +78,35 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
-
-        //Update information
-        String updateTitle = categoryDTO.getTitle();
+    public CategoryDTO updateCategory(String categoryId, CategoryDTO categoryDTO) {
 
         try {
-            //Old information
-            CategoryEntity categoryEntity = categoryRepository.findById(id);
-            String oldTitle = categoryEntity.getTitle();
-            long oldId = categoryEntity.getId();
+            //Update information
+            String updateTitle = categoryDTO.getTitle();
 
-            if (null == categoryEntity) return null;
-            else {
-                if (isCategoryExist(updateTitle)) {
-                    categoryDTO.setTitle(oldTitle);
-                }
+            if (isCategoryExist(updateTitle)) throw new RuntimeException("Title existed");
 
-                CategoryEntity updateCategory = modelMapper.map(categoryDTO, CategoryEntity.class);
-                updateCategory.setId(oldId);
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryId(categoryId);
 
-                CategoryEntity updatedCategory = categoryRepository.save(updateCategory);
+            categoryEntity.setTitle(updateTitle);
+            categoryEntity.setCategoryId(utilities.encodeBase64UrlSafe(updateTitle));
 
-                return modelMapper.map(updatedCategory, CategoryDTO.class);
-            }
+            CategoryEntity updatedCategory = categoryRepository.save(categoryEntity);
+
+            return modelMapper.map(updatedCategory, CategoryDTO.class);
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public boolean deleteCategory(long id) {
+    public boolean deleteCategory(String categoryId) {
 
         try {
-            CategoryEntity categoryEntity = categoryRepository.findById(id);
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryId(categoryId);
 
-            if (null == categoryEntity) return false;
-            else {
-                categoryRepository.delete(categoryEntity);
-                return true;
-            }
+            categoryRepository.delete(categoryEntity);
+            return true;
         } catch (Exception e) {
             return false;
         }

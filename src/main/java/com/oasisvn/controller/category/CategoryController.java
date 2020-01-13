@@ -65,16 +65,16 @@ public class CategoryController {
         }
     }
 
-    @ApiOperation(value = "Get a category by id", response = OperationStatus.class)
+    @ApiOperation(value = "Get a category by categoryId", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getCategory(@PathVariable long id){
+    @GetMapping(path = "/{categoryId}")
+    public ResponseEntity<?> getCategory(@PathVariable String categoryId){
 
-        CategoryDTO categoryDTO = categoryService.getCategory(id);
+        CategoryDTO categoryDTO = categoryService.getCategory(categoryId);
 
         if (null == categoryDTO) {
             operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
@@ -127,11 +127,11 @@ public class CategoryController {
             @ApiResponse(code = 415, message = "Unsupported Media Type"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
-    @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
+    @PutMapping(path = "{categoryId}")
+    public ResponseEntity<?> updateCategory(@PathVariable String categoryId, @RequestBody @Valid CategoryUpdateRequest updateRequest){
 
         CategoryDTO categoryDTO = modelMapper.map(updateRequest, CategoryDTO.class);
-        CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
+        CategoryDTO updatedCategory = categoryService.updateCategory(categoryId, categoryDTO);
 
         if (null == updatedCategory) {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
@@ -149,16 +149,16 @@ public class CategoryController {
         }
     }
 
-    @ApiOperation(value = "Delete category by id", response = OperationStatus.class)
+    @ApiOperation(value = "Delete category by categoryId", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
-    @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable long id){
+    @DeleteMapping(path = "{categoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable String categoryId){
 
-        boolean deletedCategory = categoryService.deleteCategory(id);
+        boolean deletedCategory = categoryService.deleteCategory(categoryId);
 
         if (false == deletedCategory) {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,

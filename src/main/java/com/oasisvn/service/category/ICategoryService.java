@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public interface ICategoryService {
     ArrayList<CategoryDTO> getCategory();
-    CategoryDTO getCategory(long id);
+    CategoryDTO getCategory(String categoryId);
     CategoryDTO createCategory(CategoryDTO categoryDTO);
-    CategoryDTO updateCategory(long id, CategoryDTO categoryDTO);
-    boolean deleteCategory(long id);
+    CategoryDTO updateCategory(String categoryId, CategoryDTO categoryDTO);
+    boolean deleteCategory(String categoryId);
 }

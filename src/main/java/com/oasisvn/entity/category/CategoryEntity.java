@@ -28,6 +28,9 @@ public class CategoryEntity extends BaseEntity implements Serializable {
     @Column(nullable = false, unique = true)
     private String title;
 
+    @Column(nullable = false, unique = true, name = "category_id")
+    private String categoryId;
+
     @OneToMany(
             mappedBy = "category",
             cascade = CascadeType.ALL,
