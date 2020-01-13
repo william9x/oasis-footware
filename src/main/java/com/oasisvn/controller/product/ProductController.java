@@ -45,10 +45,9 @@ public class ProductController {
         ArrayList<ProductDTO> productDTOS = productService.getProduct();
 
         if (null == productDTOS) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             ArrayList<ProductDetailsResponse> productResponses = new ArrayList<>();
@@ -58,10 +57,8 @@ public class ProductController {
                 productResponses.add(productResponse);
             }
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), productResponses);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, productResponses));
         }
     }
 
@@ -77,18 +74,15 @@ public class ProductController {
         ProductDTO productDTO = productService.getProduct(id);
 
         if (null == productDTO) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             ProductDetailsResponse productResponse = modelMapper.map(productDTO, ProductDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), productResponse);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, productResponse));
         }
     }
 
@@ -106,17 +100,15 @@ public class ProductController {
         ProductDTO createdProduct = productService.createProduct(productDTO);
 
         if (null == createdProduct) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
-                    ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(1));
+
         } else {
             ProductCreateResponse returnValue = modelMapper.map(createdProduct, ProductCreateResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
-                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(operationStatus.createdStatus(returnValue));
         }
     }
 
@@ -134,18 +126,15 @@ public class ProductController {
         ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
 
         if (null == updatedProduct) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(2));
 
         } else {
             ProductDetailsResponse returnValue = modelMapper.map(updatedProduct, ProductDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(2, returnValue));
         }
     }
 
@@ -157,21 +146,18 @@ public class ProductController {
     })
     @DeleteMapping(path = "{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable String id){
-        OperationStatus operationStatus;
 
         boolean deletedProduct = productService.deleteProduct(id);
 
         if (false == deletedProduct) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(3));
 
         } else {
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.DELETED_RECORD.getSuccessResponse(), null);
 
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(3, null));
         }
     }
 }

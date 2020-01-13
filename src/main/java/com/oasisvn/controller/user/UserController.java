@@ -47,18 +47,16 @@ public class UserController {
         UserSession result = userService.login(loginRequest);
 
         if (null == result) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(),false,
-                    ErrorResponse.AUTHENTICATION_FAILED.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(2));
+
         } else {
 
             request.getSession().setAttribute("OASIS_SESSION", result);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(),true,
-                    SuccessResponse.AUTHENTICATED.getSuccessResponse(), null);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, null));
         }
     }
 
@@ -71,23 +69,20 @@ public class UserController {
     })
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody @Valid UserCreateRequest request) {
-        OperationStatus operationStatus;
 
         UserDTO userDTO = modelMapper.map(request, UserDTO.class);
         UserDTO createdUser = userService.createUser(userDTO);
 
         if (null == createdUser) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(1));
+
         } else {
             UserCreateResponse returnValue = modelMapper.map(createdUser, UserCreateResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
-                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(operationStatus.createdStatus(returnValue));
         }
     }
 }

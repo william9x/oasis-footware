@@ -31,6 +31,7 @@ public class InvoiceController {
     private IInvoiceService invoiceService;
 
     private ModelMapper modelMapper = new ModelMapper();
+    OperationStatus operationStatus = new OperationStatus();
 
     @ApiOperation(value = "Get all product", response = OperationStatus.class, responseContainer = "List")
     @ApiResponses({
@@ -40,15 +41,13 @@ public class InvoiceController {
     })
     @GetMapping
     public ResponseEntity<?> getInvoice(){
-        OperationStatus operationStatus;
 
         ArrayList<InvoiceDTO> invoiceDTOS = invoiceService.getInvoice();
 
         if (null == invoiceDTOS) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             ArrayList<InvoiceDetailsResponse> invoiceResponses = new ArrayList<>();
@@ -58,10 +57,8 @@ public class InvoiceController {
                 invoiceResponses.add(invoiceResponse);
             }
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), invoiceResponses);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, invoiceResponses));
         }
     }
 
@@ -73,23 +70,19 @@ public class InvoiceController {
     })
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getInvoice(@PathVariable String id){
-        OperationStatus operationStatus;
 
         InvoiceDTO invoiceDTO = invoiceService.getInvoice(id);
 
         if (null == invoiceDTO) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             InvoiceDetailsResponse invoiceDetailsResponse = modelMapper.map(invoiceDTO, InvoiceDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), invoiceDetailsResponse);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, invoiceDetailsResponse));
         }
     }
 
@@ -102,23 +95,20 @@ public class InvoiceController {
     })
     @PostMapping
     public ResponseEntity<?> createInvoice(@RequestBody @Valid InvoiceCreateRequest request){
-        OperationStatus operationStatus;
 
         InvoiceDTO invoiceDTO = modelMapper.map(request, InvoiceDTO.class);
         InvoiceDTO createdInvoice = invoiceService.createInvoice(invoiceDTO);
 
         if (null == createdInvoice) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
-                    ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(1));
+
         } else {
             InvoiceCreateResponse returnValue = modelMapper.map(createdInvoice, InvoiceCreateResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
-                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(operationStatus.createdStatus(returnValue));
         }
     }
 
@@ -131,24 +121,20 @@ public class InvoiceController {
     })
     @PutMapping(path = "{id}")
     public ResponseEntity<?> updateInvoice(@PathVariable String id, @RequestBody @Valid InvoiceUpdateRequest updateRequest){
-        OperationStatus operationStatus;
 
         InvoiceDTO invoiceDTO = modelMapper.map(updateRequest, InvoiceDTO.class);
         InvoiceDTO updatedInvoice = invoiceService.updateInvoice(id, invoiceDTO);
 
         if (null == updatedInvoice) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(2));
 
         } else {
             InvoiceDetailsResponse returnValue = modelMapper.map(updatedInvoice, InvoiceDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(2, returnValue));
         }
     }
 
@@ -161,21 +147,18 @@ public class InvoiceController {
     })
     @DeleteMapping(path = "{id}")
     public ResponseEntity<?> deleteInvoice(@PathVariable String id){
-        OperationStatus operationStatus;
 
         boolean deletedProduct = invoiceService.deleteInvoice(id);
 
         if (false == deletedProduct) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(3));
 
         } else {
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.DELETED_RECORD.getSuccessResponse(), null);
 
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(3, null));
         }
     }
 }
