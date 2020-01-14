@@ -20,7 +20,8 @@ public class OasisFootwareApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("api/**")
-                        .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS");
+                        .allowedHeaders("Content-Type")
+                        .allowedMethods("GET", "POST", "DELETE", "PUT");
             }
         };
     }
