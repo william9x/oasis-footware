@@ -51,19 +51,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/invoice/**").permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/invoice").permitAll()
+//                    .antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/api/invoice/**").permitAll()
+//                    .antMatchers(HttpMethod.POST, "/api/invoice").permitAll()
+                    .antMatchers( "/api/user/login").permitAll()
+                    .antMatchers("/api/category/**").permitAll()
+                    .antMatchers("/api/product/**").permitAll()
+                    .antMatchers("/api/invoice/**").permitAll()
+                    .antMatchers( "/api/invoice").permitAll()
                     .antMatchers("/api/user").hasRole("SUDO")
                     .antMatchers(HttpMethod.GET, "/api/user").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new ApiAuthorizationFilter(authenticationManager()))
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .maximumSessions(1);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
