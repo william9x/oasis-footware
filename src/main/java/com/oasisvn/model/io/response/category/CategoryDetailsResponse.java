@@ -1,7 +1,6 @@
 package com.oasisvn.model.io.response.category;
 
 import com.oasisvn.model.io.response.product.ProductDetailsResponse;
-import com.oasisvn.model.io.response.product.ProductNoCategoryResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

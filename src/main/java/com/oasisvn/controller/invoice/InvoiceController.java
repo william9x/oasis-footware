@@ -31,6 +31,7 @@ public class InvoiceController {
     private IInvoiceService invoiceService;
 
     private ModelMapper modelMapper = new ModelMapper();
+    private OperationStatus operationStatus = new OperationStatus();
 
     @ApiOperation(value = "Get all product", response = OperationStatus.class, responseContainer = "List")
     @ApiResponses({
@@ -39,13 +40,11 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping
-    public ResponseEntity<?> getInvoice(){
+    public ResponseEntity<?> getInvoice() {
 
         ArrayList<InvoiceDTO> invoiceDTOS = invoiceService.getInvoice();
 
         if (null == invoiceDTOS) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(operationStatus.notFoundStatus(1));
@@ -58,10 +57,8 @@ public class InvoiceController {
                 invoiceResponses.add(invoiceResponse);
             }
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), invoiceResponses);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, invoiceResponses));
         }
     }
 
@@ -72,7 +69,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getInvoice(@PathVariable String id){
+    public ResponseEntity<?> getInvoice(@PathVariable String id) {
 
         InvoiceDTO invoiceDTO = invoiceService.getInvoice(id);
 
@@ -84,10 +81,8 @@ public class InvoiceController {
         } else {
             InvoiceDetailsResponse invoiceDetailsResponse = modelMapper.map(invoiceDTO, InvoiceDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), invoiceDetailsResponse);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, invoiceDetailsResponse));
         }
     }
 
@@ -99,7 +94,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PostMapping
-    public ResponseEntity<?> createInvoice(@RequestBody @Valid InvoiceCreateRequest request){
+    public ResponseEntity<?> createInvoice(@RequestBody @Valid InvoiceCreateRequest request) {
 
         InvoiceDTO invoiceDTO = modelMapper.map(request, InvoiceDTO.class);
         InvoiceDTO createdInvoice = invoiceService.createInvoice(invoiceDTO);
@@ -112,10 +107,8 @@ public class InvoiceController {
         } else {
             InvoiceCreateResponse returnValue = modelMapper.map(createdInvoice, InvoiceCreateResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
-                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.createdStatus(returnValue));
         }
     }
 
@@ -127,7 +120,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateInvoice(@PathVariable String id, @RequestBody @Valid InvoiceUpdateRequest updateRequest){
+    public ResponseEntity<?> updateInvoice(@PathVariable String id, @RequestBody @Valid InvoiceUpdateRequest updateRequest) {
 
         InvoiceDTO invoiceDTO = modelMapper.map(updateRequest, InvoiceDTO.class);
         InvoiceDTO updatedInvoice = invoiceService.updateInvoice(id, invoiceDTO);
@@ -140,10 +133,8 @@ public class InvoiceController {
         } else {
             InvoiceDetailsResponse returnValue = modelMapper.map(updatedInvoice, InvoiceDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(2, returnValue));
         }
     }
 
@@ -155,7 +146,7 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteInvoice(@PathVariable String id){
+    public ResponseEntity<?> deleteInvoice(@PathVariable String id) {
 
         boolean deletedProduct = invoiceService.deleteInvoice(id);
 
@@ -165,10 +156,9 @@ public class InvoiceController {
                     .body(operationStatus.internalErrorStatus(3));
 
         } else {
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.DELETED_RECORD.getSuccessResponse(), null);
 
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(3, null));
         }
     }
 }

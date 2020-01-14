@@ -3,7 +3,6 @@ package com.oasisvn.controller.category;
 import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.model.io.request.category.CategoryCreateRequest;
 import com.oasisvn.model.io.request.category.CategoryUpdateRequest;
-import com.oasisvn.model.io.response.ErrorResponse;
 import com.oasisvn.model.io.response.OperationStatus;
 import com.oasisvn.model.io.response.SuccessResponse;
 import com.oasisvn.model.io.response.category.CategoryCreateResponse;
@@ -57,10 +56,8 @@ public class CategoryController {
                 categoryResponses.add(categoryResponse);
             }
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponses);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, categoryResponses));
         }
     }
 
@@ -109,10 +106,8 @@ public class CategoryController {
         } else {
             CategoryCreateResponse returnValue = modelMapper.map(createdCategory, CategoryCreateResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
-                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.createdStatus(returnValue));
         }
     }
 
@@ -137,10 +132,8 @@ public class CategoryController {
         } else {
             CategoryDetailsResponse returnValue = modelMapper.map(updatedCategory, CategoryDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(2, returnValue));
         }
     }
 
@@ -161,8 +154,6 @@ public class CategoryController {
                     .body(operationStatus.internalErrorStatus(3));
 
         } else {
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.DELETED_RECORD.getSuccessResponse(), null);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(operationStatus.okStatus(3, null));
