@@ -1,11 +1,12 @@
 package com.oasisvn.controller.user;
 
-import com.oasisvn.middleware.exception.custom.exceptions.UnauthorizedException;
 import com.oasisvn.model.dto.user.UserDTO;
 import com.oasisvn.model.dto.user.UserSession;
 import com.oasisvn.model.io.request.user.UserCreateRequest;
 import com.oasisvn.model.io.request.user.UserLoginRequest;
-import com.oasisvn.middleware.exception.message.OperationStatus;
+import com.oasisvn.model.io.response.ErrorResponse;
+import com.oasisvn.model.io.response.OperationStatus;
+import com.oasisvn.model.io.response.SuccessResponse;
 import com.oasisvn.model.io.response.user.UserCreateResponse;
 import com.oasisvn.service.user.IUserService;
 import io.swagger.annotations.Api;
@@ -49,7 +50,9 @@ public class UserController {
             operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(),false,
                     ErrorResponse.AUTHENTICATION_FAILED.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(2));
+
         } else {
 
             request.getSession().setAttribute("OASIS_SESSION", result);
@@ -79,7 +82,9 @@ public class UserController {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
                     ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(1));
+
         } else {
             UserCreateResponse returnValue = modelMapper.map(createdUser, UserCreateResponse.class);
 

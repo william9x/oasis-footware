@@ -1,4 +1,4 @@
-package com.oasisvn.middleware.exception.message;
+package com.oasisvn.model.io.response;
 
 import lombok.Getter;
 
@@ -14,12 +14,11 @@ public enum ErrorResponse {
     COULD_NOT_UPDATE_RECORD("Could not update record"),
     COULD_NOT_DELETE_RECORD("Could not delete record"),
     UNSUPPORTED_MEDIA_TYPE("Unsupported media type, try adding Content-Type: application header."),
-    INVALID_PATH("Invalid URL request."),
-    CATEGORY_HAS_CHILD("Could not delete category with products");
+    INVALID_PATH("Invalid URL request.");
 
-    private String message;
-    ErrorResponse(String message){
-        this.message = message;
+    private String errorMessage;
+    ErrorResponse(String errorMessage){
+        this.errorMessage = errorMessage;
     }
 
 }

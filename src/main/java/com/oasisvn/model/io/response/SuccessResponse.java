@@ -1,4 +1,4 @@
-package com.oasisvn.middleware.exception.message;
+package com.oasisvn.model.io.response;
 
 import lombok.Getter;
 

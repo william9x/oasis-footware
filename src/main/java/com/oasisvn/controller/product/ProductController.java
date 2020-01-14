@@ -3,7 +3,9 @@ package com.oasisvn.controller.product;
 import com.oasisvn.model.dto.product.ProductDTO;
 import com.oasisvn.model.io.request.product.ProductCreateRequest;
 import com.oasisvn.model.io.request.product.ProductUpdateRequest;
-import com.oasisvn.middleware.exception.message.OperationStatus;
+import com.oasisvn.model.io.response.ErrorResponse;
+import com.oasisvn.model.io.response.OperationStatus;
+import com.oasisvn.model.io.response.SuccessResponse;
 import com.oasisvn.model.io.response.product.ProductCreateResponse;
 import com.oasisvn.model.io.response.product.ProductDetailsResponse;
 import com.oasisvn.service.product.IProductService;
@@ -46,7 +48,8 @@ public class ProductController {
             operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
                     ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             ArrayList<ProductDetailsResponse> productResponses = new ArrayList<>();
@@ -78,7 +81,8 @@ public class ProductController {
             operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
                     ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             ProductDetailsResponse productResponse = modelMapper.map(productDTO, ProductDetailsResponse.class);
@@ -107,7 +111,9 @@ public class ProductController {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
                     ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(1));
+
         } else {
             ProductCreateResponse returnValue = modelMapper.map(createdProduct, ProductCreateResponse.class);
 
@@ -135,7 +141,8 @@ public class ProductController {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
                     ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(2));
 
         } else {
             ProductDetailsResponse returnValue = modelMapper.map(updatedProduct, ProductDetailsResponse.class);
@@ -163,7 +170,8 @@ public class ProductController {
             operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
                     ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(3));
 
         } else {
             operationStatus = new OperationStatus(HttpStatus.OK.value(), true,

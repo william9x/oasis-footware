@@ -1,9 +1,6 @@
 package com.oasisvn.service.category;
 
 import com.oasisvn.entity.category.CategoryEntity;
-import com.oasisvn.middleware.exception.custom.exceptions.DuplicateRecordException;
-import com.oasisvn.middleware.exception.custom.exceptions.InternalServerException;
-import com.oasisvn.middleware.exception.message.ErrorResponse;
 import com.oasisvn.middleware.utilities.ICustomUtilities;
 import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.repository.category.ICategoryRepository;
@@ -119,7 +116,6 @@ public class CategoryService implements ICategoryService {
             CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
 
             if (null == categoryEntity) return false;
-            if (categoryEntity.getProducts().size() > 0) throw new InternalServerException(ErrorResponse.CATEGORY_HAS_CHILD.getMessage());
             else {
                 categoryRepository.delete(categoryEntity);
                 return true;
@@ -134,7 +130,7 @@ public class CategoryService implements ICategoryService {
         try {
             return categoryRepository.existsByTitle(title);
         } catch (Exception e) {
-            throw new DuplicateRecordException(ErrorResponse.RECORD_ALREADY_EXIST.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }
