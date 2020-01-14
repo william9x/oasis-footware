@@ -45,8 +45,7 @@ public class CategoryController {
 
         ArrayList<CategoryDTO> categoryDTOS = categoryService.getCategory();
 
-        if (null == categoryDTOS) throw new RecordNotFoundException();
-        else {
+        if (null == categoryDTOS) {
             ArrayList<CategoryDetailsResponse> categoryResponses = new ArrayList<>();
 
             for (CategoryDTO categoryDTO : categoryDTOS) {
@@ -54,8 +53,10 @@ public class CategoryController {
                 categoryResponses.add(categoryResponse);
             }
 
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(operationStatus.okStatus(1, categoryResponses));
+            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
+                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponses);
+
+            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
         }
     }
 
@@ -70,13 +71,19 @@ public class CategoryController {
 
         CategoryDTO categoryDTO = categoryService.getCategory(id);
 
-        if (null == categoryDTO) throw new RecordNotFoundException();
-        else {
+        if (null == categoryDTO) {
+            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
+                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+
+        } else {
             CategoryDetailsResponse categoryResponse = modelMapper.map(categoryDTO, CategoryDetailsResponse.class);
 
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(operationStatus.okStatus(1, categoryResponse));
+            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
+                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponse);
 
+            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
         }
     }
 
@@ -94,12 +101,17 @@ public class CategoryController {
         CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
 
         if (null == createdCategory) {
-            throw new InternalServerException(ErrorResponse.COULD_NOT_CREATE_RECORD.COULD_NOT_CREATE_RECORD.getMessage());
+            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
+                    ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
         } else {
             CategoryCreateResponse returnValue = modelMapper.map(createdCategory, CategoryCreateResponse.class);
 
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(operationStatus.createdStatus(returnValue));
+            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
+                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
         }
     }
 
@@ -117,12 +129,18 @@ public class CategoryController {
         CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
 
         if (null == updatedCategory) {
-            throw new InternalServerException(ErrorResponse.COULD_NOT_UPDATE_RECORD.getMessage());
+            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
+                    ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+
         } else {
             CategoryDetailsResponse returnValue = modelMapper.map(updatedCategory, CategoryDetailsResponse.class);
 
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(operationStatus.okStatus(2, returnValue));
+            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
+                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
+
+            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
         }
     }
 
@@ -138,11 +156,16 @@ public class CategoryController {
         boolean deletedCategory = categoryService.deleteCategory(id);
 
         if (false == deletedCategory) {
-            throw new InternalServerException(ErrorResponse.COULD_NOT_DELETE_RECORD.getMessage());
-        } else {
+            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
+                    ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(operationStatus.okStatus(3, null));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+
+        } else {
+            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
+                    SuccessResponse.DELETED_RECORD.getSuccessResponse(), null);
+
+            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
         }
     }
 }

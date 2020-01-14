@@ -1,4 +1,4 @@
-package com.oasisvn.middleware.utilities;
+package com.oasisvn.middleware.utilities.crypto;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 @Component
-public class CustomUtilities implements ICustomUtilities {
+public class CryptoUtils implements ICustomUtilities {
 
     @Override
     public String encodeBase64UrlSafe(String string) {

@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductNoCategoryResponse {
+public class ProductNoCategoryNoImagesResponse {
     private String productUID;
     private String title;
     private String subTitle;
@@ -20,5 +17,4 @@ public class ProductNoCategoryResponse {
     private double unitCost;
     private double unitPrice;
     private byte gender;
-    private List<ProductImageResponse> images = new ArrayList<>();
 }

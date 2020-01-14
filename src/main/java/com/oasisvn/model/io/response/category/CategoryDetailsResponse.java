@@ -1,6 +1,6 @@
 package com.oasisvn.model.io.response.category;
 
-import com.oasisvn.model.io.response.product.ProductNoCategoryResponse;
+import com.oasisvn.model.io.response.product.ProductDetailsResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ import java.util.List;
 public class CategoryDetailsResponse {
     private String categoryUID;
     private String title;
-    private List<ProductNoCategoryResponse> products = new ArrayList<>();
+    private List<ProductDetailsResponse> products = new ArrayList<>();
 }
