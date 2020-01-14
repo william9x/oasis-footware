@@ -66,17 +66,4 @@ public class UserService implements IUserService {
             return null;
         }
     }
-
-//    private void createSuperAdmin() {
-//        UserEntity superAdmin = new UserEntity();
-//        superAdmin.setRole("SUDO");
-//        superAdmin.setUserId("superadmin");
-//        superAdmin.setUsername("superadmin");
-//        superAdmin.setEmail("lehoangnam197@gmail.com");
-//        String hash = BCrypt.hashpw("Hnam@11", BCrypt.gensalt(12));
-//        superAdmin.setPassword(hash);
-//        superAdmin.setPhone("0909090909");
-//        superAdmin.setFullName("Nam");
-//        userRepository.save(superAdmin);
-//    }
 }
