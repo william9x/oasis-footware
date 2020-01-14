@@ -55,18 +55,18 @@
                   {{ product.unitPrice }}
                 </td>
                 <td>
-                  {{ product.gender }}
+                  {{ genderFilter(product.gender) }}
                 </td>
                 <td class="text-center">
                   <button
                     class="btn btn-outline-primary btn-round btn-sm mr-1"
-                    [routerLink]="['/product/edit', product.id]"
+                    [routerLink]="['/product/edit', product.productUID]"
                   >
                     <i class="fa fa-pencil-square-o"></i> Edit
                   </button>
                   <button
                     class="btn btn-outline-primary btn-round btn-sm"
-                    (click)="deleteProduct(product.id)"
+                    (click)="deleteProduct(product.productUID)"
                   >
                     <i class="fa fa-trash-o"></i> Delete
                   </button>

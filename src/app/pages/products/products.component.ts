@@ -53,4 +53,12 @@ export class ProductsComponent implements OnInit {
       }
     );
   }
+
+  genderFilter(gender: number) {
+    if (gender === 1) {
+      return 'Male';
+    } else {
+      return 'Female';
+    }
+  }
 }
