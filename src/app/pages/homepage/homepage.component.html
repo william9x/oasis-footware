@@ -56,7 +56,8 @@
           <div class="block1-wrapbtn w-size2">
             <!-- Button -->
             <a
-              (click)="toAnotherPagesFilter(category.id)"
+              style="cursor: pointer"
+              (click)="toAnotherPagesFilter(category.categoryUID)"
               class="flex-c-m size2 m-text2 bg3 hov1 trans-0-4"
             >
               {{ category.title }}
@@ -130,7 +131,8 @@
 
             <div class="block2-txt p-t-20">
               <a
-                routerLink="product-detail"
+                style="cursor: pointer;"
+                (click)="toProductDetailPage(product.productUID)"
                 class="block2-name dis-block s-text3 p-b-5"
               >
                 {{ product.title }}

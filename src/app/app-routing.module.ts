@@ -8,17 +8,20 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { ProductFilterByCategoryComponent } from './pages/product-list/product-filter-by-category/product-filter-by-category.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { CheckOutComponent } from './pages/check-out/check-out.component';
 
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'product', component: ProductListComponent },
   { path: 'product/:id', component: ProductDetailComponent },
+  { path: 'product/filter-by-category/:id', component: ProductFilterByCategoryComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'blog', component: BlogComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'product/filterByCategory/:id', component: ProductFilterByCategoryComponent },
+  { path: 'check-out', component: CheckOutComponent },
+
 ];
 
 @NgModule({

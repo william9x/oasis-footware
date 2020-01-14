@@ -17,6 +17,9 @@ export class ProductService {
         })
     };
 
+    // Header Icon Count
+    productCount = 0;
+
     constructor(private httpClient: HttpClient) { }
 
     // Get All Products
@@ -33,6 +36,46 @@ export class ProductService {
             this.apiURL + 'product/' + id,
             this.httpHeader
         );
+    }
+
+    // Adding new Product to cart db if logged in else localStorage
+    addToCart(product): void {
+        let a: Products[];
+
+        a = JSON.parse(localStorage.getItem('avct_item')) || [];
+
+        a.push(product);
+        // this.toastrService.wait('Adding Product to Cart', 'Product Adding to the cart');
+        // setTimeout(() => {
+        localStorage.setItem('avct_item', JSON.stringify(a));
+        this.calculateLocalCartProdCounts();
+        // }, 500);
+    }
+
+    // Removing cart from local
+    removeLocalCartProduct(product) {
+        const products: Products[] = JSON.parse(localStorage.getItem('avct_item'));
+
+        for (let i = 0; i < products.length; i++) {
+            if (products[i].id === product.id) {
+                products.splice(i, 1);
+                break;
+            }
+        }
+        // ReAdding the products after remove
+        localStorage.setItem('avct_item', JSON.stringify(products));
+        this.calculateLocalCartProdCounts();
+    }
+
+    // Fetching Locat CartsProducts
+    getLocalCartProducts(): Products[] {
+        const products: Products[] = JSON.parse(localStorage.getItem('avct_item')) || [];
+        return products;
+    }
+
+    // returning LocalCarts Product Count
+    calculateLocalCartProdCounts() {
+        this.productCount = this.getLocalCartProducts().length;
     }
 
 }

@@ -26,7 +26,10 @@
             <li class="p-t-4" *ngFor="let category of categories">
               <a
                 class="s-text13 active1"
-                [routerLink]="['/product/filterByCategory', category.id]"
+                [routerLink]="[
+                  '/product/filter-by-category',
+                  category.categoryUID
+                ]"
               >
                 {{ category.title }}
               </a>
@@ -245,7 +248,7 @@
                   <div class="block2-btn-addcart w-size1 trans-0-4">
                     <!-- Button -->
                     <button
-                      (click)="addProductsToCart(product)"
+                      (click)="addProductToCart(product)"
                       class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
                     >
                       Add to Cart
@@ -257,7 +260,7 @@
               <div class="block2-txt p-t-20">
                 <a
                   style="cursor: pointer;"
-                  (click)="toProductDetailPage(product.id)"
+                  (click)="toProductDetailPage(product.productUID)"
                   class="block2-name dis-block s-text3 p-b-5"
                 >
                   {{ product.title }}

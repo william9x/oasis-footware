@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { CategoryService } from '../../../services/category.service';
+import { ProductService } from '../../../services/product.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -10,13 +11,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./product-filter-by-category.component.css']
 })
 export class ProductFilterByCategoryComponent implements OnInit {
-  id: number;
+  id: any;
   categories;
   category;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public categoryService: CategoryService,
+    public productSerice: ProductService,
     private router: Router,
     public SpinnerService: NgxSpinnerService
   ) {
@@ -42,8 +44,13 @@ export class ProductFilterByCategoryComponent implements OnInit {
 
   toAnotherPagesFilter(id) {
     this.getProductByCategoryId(id);
-    this.router.navigate(['/product/filterByCategory', id]);
+    this.router.navigate(['/product/filter-by-category', id]);
     console.log('categoryId', this.categories);
+  }
+
+  addProductToCart(product) {
+    console.log('click button', product)
+    this.productSerice.addToCart(product);
   }
 
   getAllCategories() {

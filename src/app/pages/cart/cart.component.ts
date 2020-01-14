@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Injectable, Component, OnInit } from '@angular/core';
+import { ProductService } from '../../services/product.service';
+import { Products } from '../../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +12,38 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  storeSubscription: Subscription;
-  products;
+  cartProducts: Products[];
+  totalValue = 0;
 
-  constructor(
-    private store: Store<any>
-  ) {
-  }
+  constructor(private productService: ProductService) { }
 
   ngOnInit() {
-    this.storeSubscription = this.store.select('data').subscribe(listProducts => {
-      console.log('productState', listProducts);
-      this.products = listProducts.listProducts;
-      console.log('products', this.products);
-    });
+    this.getCartProduct();
+    this.calculateSum();
+  }
+
+  calculateSum() {
+    this.totalValue = 0;
+
+    for (const product of this.cartProducts) {
+      this.totalValue += product.unitPrice;
+    }
+
+    console.log('cartProduct', this.cartProducts)
+  }
+
+  removeCartProduct(product) {
+    this.productService.removeLocalCartProduct(product);
+    console.log(product);
+    // Recalling
+    this.getCartProduct();
+    this.calculateSum();
+  }
+
+  getCartProduct() {
+    this.cartProducts = this.productService.getLocalCartProducts();
+    console.log(this.cartProducts);
+    this.calculateSum();
   }
 
 }

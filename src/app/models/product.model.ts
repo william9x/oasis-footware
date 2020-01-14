@@ -8,4 +8,6 @@ export class Products {
     unitPrice: number;
     gender: string;
     data: any;
+    images: object;
+    productUID: string;
 }

@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { Store } from '@ngrx/store';
-import { setProducts } from '../../reducers/products.reducer';
+import { Products } from '../../models/product.model';
+import { CartComponent } from '../../pages/cart/cart.component';
+
+@Injectable({
+  providedIn: 'root'
+})
 
 
 @Component({
@@ -23,7 +28,6 @@ export class ProductListComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private store: Store<any>
   ) { }
 
   ngOnInit() {
@@ -35,9 +39,9 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/product', id]);
   }
 
-  addProductsToCart(listProducts) {
-    console.log(listProducts);
-    this.store.dispatch(setProducts({ listProducts }));
+  addProductToCart(product) {
+    console.log('click button', product)
+    this.productSerice.addToCart(product);
   }
 
   getAllCategories() {
@@ -71,5 +75,4 @@ export class ProductListComponent implements OnInit {
       }
     );
   }
-
 }

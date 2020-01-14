@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { Select2Module } from 'ng2-select2';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,11 +20,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { ProductFilterByCategoryComponent } from './pages/product-list/product-filter-by-category/product-filter-by-category.component';
 import { CartComponent } from './pages/cart/cart.component';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { reducer } from './reducers/products.reducer';
+import { CheckOutComponent } from './pages/check-out/check-out.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +34,8 @@ import { reducer } from './reducers/products.reducer';
     ContactComponent,
     BlogComponent,
     ProductFilterByCategoryComponent,
-    CartComponent
+    CartComponent,
+    CheckOutComponent
   ],
   imports: [
     BrowserModule,
@@ -47,16 +45,7 @@ import { reducer } from './reducers/products.reducer';
     HttpClientModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot(
-      { data: reducer },
-      {
-        runtimeChecks: {
-          strictStateImmutability: true,
-          strictActionImmutability: true
-        }
-      }
-    ),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

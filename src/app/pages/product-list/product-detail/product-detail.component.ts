@@ -45,6 +45,11 @@ export class ProductDetailComponent implements OnInit {
     console.log('beforeChange');
   }
 
+  addProductToCart(product) {
+    console.log('click button', product)
+    this.productSerice.addToCart(product);
+  }
+
   getAllProducts() {
     this.SpinnerService.show();
     this.productSerice.getAllProducts().subscribe(

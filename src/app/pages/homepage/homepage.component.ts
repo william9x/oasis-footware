@@ -49,8 +49,13 @@ export class HomepageComponent implements OnInit {
 
   toAnotherPagesFilter(id) {
     this.getProductByCategoryId(id);
-    this.router.navigate(['/product/filterByCategory', id]);
+    this.router.navigate(['/product/filter-by-category', id]);
     console.log('categoryId', this.categories);
+  }
+
+  toProductDetailPage(id) {
+    this.getProductByCategoryId(id);
+    this.router.navigate(['/product', id]);
   }
 
   getAllCategories() {

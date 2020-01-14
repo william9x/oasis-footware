@@ -1,0 +1,160 @@
+<!-- Title Page -->
+<section
+  class="bg-title-page p-t-170 p-b-50 flex-col-c-m"
+  style="background-image: url(assets/images/heading-pages-01.jpg);"
+>
+  <h2 class="l-text2 t-center">
+    Check out
+  </h2>
+</section>
+
+<!-- Cart -->
+<section class="cart bgwhite p-t-70 p-b-100">
+  <div class="container">
+    <!-- Cart item -->
+    <div class="container-table-cart pos-relative">
+      <div class="wrap-table-shopping-cart bgwhite">
+        <table class="table-shopping-cart">
+          <tr class="table-head">
+            <th class="column-1 ">Image</th>
+            <th class="column-2 text-center">Product</th>
+            <th class="column-3 text-center">Gender</th>
+            <th class="column-4 text-center">Describe</th>
+            <th class="column-5 text-center">Price</th>
+          </tr>
+
+          <tr class="table-row" *ngFor="let product of checkoutProducts">
+            <td class="column-1">
+              <div class="cart-img-product b-rad-4 o-f-hidden">
+                <img
+                  *ngFor="let image of product.images"
+                  [src]="image.imageUrl"
+                  alt="IMG-PRODUCT"
+                />
+              </div>
+            </td>
+            <td class="column-2 text-center">{{ product.title }}</td>
+            <td class="column-3 text-center">{{ product.gender }}</td>
+            <td class="column-4 text-center">{{ product.subTitle }}</td>
+            <td class="column-5 text-center">{{ product.unitPrice }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- content page -->
+    <section class="bgwhite p-t-66 p-b-60">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 p-b-30">
+            <div class="p-r-20 p-r-0-lg">
+              <!-- Total -->
+              <div
+                class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 p-lr-15-sm"
+              >
+                <h5 class="m-text20 p-b-24">
+                  Cart Totals
+                </h5>
+
+                <!--  -->
+                <div class="flex-w flex-sb-m p-b-12">
+                  <span class="s-text18 w-size19 w-full-sm">
+                    Subtotal:
+                  </span>
+
+                  <span class="m-text21 w-size20 w-full-sm">
+                    {{ totalPrice }} $
+                  </span>
+                </div>
+
+                <div class="flex-w flex-sb-m p-b-12">
+                  <span class="s-text18 w-size19 w-full-sm">
+                    Tax:
+                  </span>
+
+                  <span class="m-text21 w-size20 w-full-sm">
+                    {{ (totalPrice * 10) / 100 }} $
+                  </span>
+                </div>
+                <hr />
+                <!--  -->
+                <div class="flex-w flex-sb-m">
+                  <span class="m-text22 w-size19 w-full-sm">
+                    Total:
+                  </span>
+
+                  <span class="m-text21 w-size20 w-full-sm" name="totalValue">
+                    {{ totalPrice + (totalPrice * 10) / 100 }} $
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 p-b-30">
+            <form>
+              <h4 class="m-text26 p-b-36 p-t-15">
+                Please fill-full this form to finish ordering!
+              </h4>
+
+              <div class="bo4 of-hidden size15 m-b-20">
+                <input
+                  class="sizefull s-text7 p-l-22 p-r-22"
+                  type="text"
+                  name="name"
+                  placeholder="Full Name"
+                  name="orderName"
+                  [(ngModel)]="invoice.orderName"
+                  name="orderName"
+                />
+              </div>
+
+              <div class="bo4 of-hidden size15 m-b-20">
+                <input
+                  class="sizefull s-text7 p-l-22 p-r-22"
+                  type="text"
+                  name="phone-number"
+                  placeholder="Phone Number"
+                  [(ngModel)]="invoice.orderPhone"
+                  name="orderPhone"
+                />
+              </div>
+
+              <div class="bo4 of-hidden size15 m-b-20">
+                <input
+                  class="sizefull s-text7 p-l-22 p-r-22"
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  [(ngModel)]="invoice.orderEmail"
+                  name="orderEmail"
+                />
+              </div>
+
+              <div class="bo4 of-hidden size15 m-b-20">
+                <input
+                  class="sizefull s-text7 p-l-22 p-r-22"
+                  type="text"
+                  name="address"
+                  placeholder="Address"
+                  [(ngModel)]="invoice.orderAddress"
+                  name="orderAddress"
+                />
+              </div>
+
+              <div class="w-size25">
+                <!-- Button -->
+                <button
+                  class="flex-c-m size12 bg1 bo-rad-23 hov1 m-text3 trans-0-4"
+                  (click)="createInvoice()"
+                >
+                  Confirm Ordering
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
