@@ -46,6 +46,12 @@ public class CategoryController {
         ArrayList<CategoryDTO> categoryDTOS = categoryService.getCategory();
 
         if (null == categoryDTOS) {
+            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
+                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+
+        } else {
             ArrayList<CategoryDetailsResponse> categoryResponses = new ArrayList<>();
 
             for (CategoryDTO categoryDTO : categoryDTOS) {
