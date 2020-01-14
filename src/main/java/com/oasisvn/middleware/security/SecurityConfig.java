@@ -62,8 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new ApiAuthorizationFilter(authenticationManager()))
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .maximumSessions(1);
+                //.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 
     @Override
