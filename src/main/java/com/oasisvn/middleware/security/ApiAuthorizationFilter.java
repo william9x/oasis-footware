@@ -1,6 +1,7 @@
 package com.oasisvn.middleware.security;
 
-import com.oasisvn.model.dto.user.UserSession;
+import com.oasisvn.middleware.utilities.jwt.JwtUltils;
+import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,33 +23,37 @@ public class ApiAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        // Check session
-        UserSession userSession = (UserSession) request.getSession().getAttribute("OASIS_SESSION");
-        if (userSession == null) {
+        //Check token
+        Claims claims = JwtUltils.verifyToken(request);
+        if (null == claims) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Add Authentication to SecurityContext
-        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(userSession);
+        UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(claims);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
         chain.doFilter(request, response);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(UserSession userSession) {
+    private UsernamePasswordAuthenticationToken getAuthentication(Claims claims) {
 
-        String userId = userSession.getUserId();
+        String userId = claims.getSubject();
+
+        ArrayList<String> roles = (ArrayList<String>) claims.get("roles");
 
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + userSession.getRole());
-        authorities.add(authority);
-
-        return new UsernamePasswordAuthenticationToken(userId, userSession, authorities);
+        if (null != roles) {
+            for (String role : roles) {
+                GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+                authorities.add(authority);
+            }
+        }
+        if (null != userId) {
+            return new UsernamePasswordAuthenticationToken(userId, null, authorities);
+        } else {
+            return null;
+        }
     }
 }

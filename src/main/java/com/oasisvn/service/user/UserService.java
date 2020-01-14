@@ -1,13 +1,18 @@
 package com.oasisvn.service.user;
 
 import com.oasisvn.entity.user.UserEntity;
+import com.oasisvn.middleware.security.SecurityConstants;
 import com.oasisvn.middleware.utilities.ICustomUtilities;
+import com.oasisvn.middleware.utilities.jwt.JwtUltils;
 import com.oasisvn.model.dto.user.UserDTO;
 import com.oasisvn.model.dto.user.UserSession;
 import com.oasisvn.model.io.request.user.UserLoginRequest;
+import com.oasisvn.model.io.response.token.TokenResponse;
 import com.oasisvn.repository.user.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,21 +27,22 @@ public class UserService implements IUserService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public UserSession login(UserLoginRequest loginRequest) {
+    public TokenResponse login(UserLoginRequest loginRequest) {
 
         try {
+            // Lấy thông tin user
             UserEntity userEntity = userRepository.findByUsername(loginRequest.getUsername());
-            if (null == userEntity) return null;
-            else {
-                boolean result = utilities.checkPassword(
-                        loginRequest.getPassword(),
-                        userEntity.getEncryptedPassword());
 
-                if (false == result) return null;
-                else {
-                    return modelMapper.map(userEntity, UserSession.class);
-                }
-            }
+            if (null == userEntity) return null;
+
+            boolean isPasswordMatched = utilities.checkPassword(
+                    loginRequest.getPassword(),
+                    userEntity.getEncryptedPassword());
+
+            if (false == isPasswordMatched) return null;
+
+            String token = JwtUltils.generateToken(userEntity);
+            return new TokenResponse(token, SecurityConstants.EXPIRATION);
         } catch (Exception e) {
             return null;
         }

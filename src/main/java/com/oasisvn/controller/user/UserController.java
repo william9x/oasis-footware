@@ -4,9 +4,8 @@ import com.oasisvn.model.dto.user.UserDTO;
 import com.oasisvn.model.dto.user.UserSession;
 import com.oasisvn.model.io.request.user.UserCreateRequest;
 import com.oasisvn.model.io.request.user.UserLoginRequest;
-import com.oasisvn.model.io.response.ErrorResponse;
 import com.oasisvn.model.io.response.OperationStatus;
-import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.model.io.response.token.TokenResponse;
 import com.oasisvn.model.io.response.user.UserCreateResponse;
 import com.oasisvn.service.user.IUserService;
 import io.swagger.annotations.Api;
@@ -44,19 +43,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserLoginRequest loginRequest, HttpServletRequest request) {
 
-        UserSession result = userService.login(loginRequest);
+        TokenResponse result = userService.login(loginRequest);
 
         if (null == result) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(operationStatus.notFoundStatus(2));
-
         } else {
-
-            request.getSession().setAttribute("OASIS_SESSION", result);
-
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(operationStatus.okStatus(4, null));
+                    .body(operationStatus.okStatus(4, result));
         }
     }
 

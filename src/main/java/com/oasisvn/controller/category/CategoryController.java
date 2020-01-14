@@ -4,7 +4,6 @@ import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.model.io.request.category.CategoryCreateRequest;
 import com.oasisvn.model.io.request.category.CategoryUpdateRequest;
 import com.oasisvn.model.io.response.OperationStatus;
-import com.oasisvn.model.io.response.SuccessResponse;
 import com.oasisvn.model.io.response.category.CategoryCreateResponse;
 import com.oasisvn.model.io.response.category.CategoryDetailsResponse;
 import com.oasisvn.service.category.ICategoryService;
