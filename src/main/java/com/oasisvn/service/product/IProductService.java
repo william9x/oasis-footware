@@ -1,13 +1,13 @@
 package com.oasisvn.service.product;
 
-import com.oasisvn.dto.product.ProductDTO;
+import com.oasisvn.model.dto.product.ProductDTO;
 
 import java.util.ArrayList;
 
 public interface IProductService {
     ArrayList<ProductDTO> getProduct();
-    ProductDTO getProduct(long id);
+    ProductDTO getProduct(String productUID);
     ProductDTO createProduct(ProductDTO productDTO);
-    ProductDTO updateProduct(long id, ProductDTO productDTO);
-    boolean deleteProduct(long id);
+    ProductDTO updateProduct(String productUID, ProductDTO productDTO);
+    boolean deleteProduct(String productUID);
 }

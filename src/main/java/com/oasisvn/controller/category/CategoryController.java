@@ -1,19 +1,18 @@
 package com.oasisvn.controller.category;
 
-import com.oasisvn.dto.category.CategoryDTO;
-import com.oasisvn.io.request.category.CategoryCreateRequest;
-import com.oasisvn.io.request.category.CategoryUpdateRequest;
-import com.oasisvn.io.response.SuccessResponse;
-import com.oasisvn.io.response.category.CategoryCreateResponse;
-import com.oasisvn.io.response.ErrorResponse;
-import com.oasisvn.io.response.OperationStatus;
-import com.oasisvn.io.response.category.CategoryDetailsResponse;
+import com.oasisvn.model.dto.category.CategoryDTO;
+import com.oasisvn.model.io.request.category.CategoryCreateRequest;
+import com.oasisvn.model.io.request.category.CategoryUpdateRequest;
+import com.oasisvn.model.io.response.OperationStatus;
+import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.model.io.response.category.CategoryCreateResponse;
+import com.oasisvn.model.io.response.category.CategoryDetailsResponse;
 import com.oasisvn.service.category.ICategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +29,9 @@ public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
 
+    private OperationStatus operationStatus = new OperationStatus();
+    private ModelMapper modelMapper = new ModelMapper();
+
     @ApiOperation(value = "Get all category", response = OperationStatus.class, responseContainer = "List")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
@@ -38,58 +40,48 @@ public class CategoryController {
     })
     @GetMapping
     public ResponseEntity<?> getCategory(){
-        OperationStatus operationStatus;
 
         ArrayList<CategoryDTO> categoryDTOS = categoryService.getCategory();
 
         if (null == categoryDTOS) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
             ArrayList<CategoryDetailsResponse> categoryResponses = new ArrayList<>();
 
             for (CategoryDTO categoryDTO : categoryDTOS) {
-                CategoryDetailsResponse categoryResponse = new CategoryDetailsResponse();
-                BeanUtils.copyProperties(categoryDTO, categoryResponse);
+                CategoryDetailsResponse categoryResponse = modelMapper.map(categoryDTO, CategoryDetailsResponse.class);
                 categoryResponses.add(categoryResponse);
             }
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponses);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, categoryResponses));
         }
     }
 
-    @ApiOperation(value = "Get a category by id", response = OperationStatus.class)
+    @ApiOperation(value = "Get a category by uid", response = OperationStatus.class)
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getCategory(@PathVariable long id){
-        OperationStatus operationStatus;
+    public ResponseEntity<?> getCategory(@PathVariable String id){
 
         CategoryDTO categoryDTO = categoryService.getCategory(id);
 
         if (null == categoryDTO) {
-            operationStatus = new OperationStatus(HttpStatus.NOT_FOUND.value(), false,
-                    ErrorResponse.NO_RECORD_FOUND.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(operationStatus.notFoundStatus(1));
 
         } else {
-            CategoryDetailsResponse categoryResponse = new CategoryDetailsResponse();
-            BeanUtils.copyProperties(categoryDTO, categoryResponse);
+            CategoryDetailsResponse categoryResponse = modelMapper.map(categoryDTO, CategoryDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.FOUND_RECORD.getSuccessResponse(), categoryResponse);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(1, categoryResponse));
         }
     }
 
@@ -102,26 +94,20 @@ public class CategoryController {
     })
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryCreateRequest request){
-        OperationStatus operationStatus;
 
-        CategoryDTO categoryDTO = new CategoryDTO();
-        BeanUtils.copyProperties(request, categoryDTO);
-
+        CategoryDTO categoryDTO = modelMapper.map(request, CategoryDTO.class);
         CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
 
         if (null == createdCategory) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(),false,
-                    ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(1));
+
         } else {
-            CategoryCreateResponse returnValue = new CategoryCreateResponse();
-            BeanUtils.copyProperties(createdCategory, returnValue);
+            CategoryCreateResponse returnValue = modelMapper.map(createdCategory, CategoryCreateResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.CREATED.value(), true,
-                    SuccessResponse.CREATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.createdStatus(returnValue));
         }
     }
 
@@ -133,28 +119,21 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable long id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
-        OperationStatus operationStatus;
+    public ResponseEntity<?> updateCategory(@PathVariable String id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
 
-        CategoryDTO categoryDTO = new CategoryDTO();
-        BeanUtils.copyProperties(updateRequest, categoryDTO);
-
+        CategoryDTO categoryDTO = modelMapper.map(updateRequest, CategoryDTO.class);
         CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
 
         if (null == updatedCategory) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(2));
 
         } else {
-            CategoryDetailsResponse returnValue = new CategoryDetailsResponse();
-            BeanUtils.copyProperties(updatedCategory, returnValue);
+            CategoryDetailsResponse returnValue = modelMapper.map(updatedCategory, CategoryDetailsResponse.class);
 
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.UPDATED_RECORD.getSuccessResponse(), returnValue);
-
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(2, returnValue));
         }
     }
 
@@ -165,22 +144,20 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable long id){
-        OperationStatus operationStatus;
+    public ResponseEntity<?> deleteCategory(@PathVariable String id){
 
         boolean deletedCategory = categoryService.deleteCategory(id);
 
         if (false == deletedCategory) {
-            operationStatus = new OperationStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), false,
-                    ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage(), null);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(operationStatus.internalErrorStatus(3));
 
         } else {
-            operationStatus = new OperationStatus(HttpStatus.OK.value(), true,
-                    SuccessResponse.DELETED_RECORD.getSuccessResponse(), null);
 
-            return ResponseEntity.status(HttpStatus.OK).body(operationStatus);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(operationStatus.okStatus(3, null));
+
         }
     }
 }

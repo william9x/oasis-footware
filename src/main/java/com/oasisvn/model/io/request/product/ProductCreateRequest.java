@@ -1,0 +1,87 @@
+package com.oasisvn.model.io.request.product;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductCreateRequest {
+
+    @ApiModelProperty(
+            example = "abc",
+            notes = "Category uid cannot be empty",
+            required = true
+    )
+    private String categoryUID;
+
+    @NotBlank(message = "Title required")
+    @NotNull(message = "Title required")
+    @Size(max = 100, message = "Title can only have maximum 100 characters")
+    @ApiModelProperty(
+            example = "Leather",
+            notes = "Title cannot be empty",
+            required = true
+    )
+    private String title;
+
+    @NotBlank(message = "Sub title required")
+    @NotNull(message = "Sub title required")
+    @Size(max = 100, message = "Sub title can only have maximum 100 characters")
+    @ApiModelProperty(
+            example = "This product has sub title",
+            notes = "Sub title cannot be empty",
+            required = true
+    )
+    private String subTitle;
+
+    @NotBlank(message = "Content required")
+    @NotNull(message = "Content required")
+    @ApiModelProperty(
+            example = "This product has content",
+            notes = "Content cannot be empty",
+            required = true
+    )
+    private String content;
+
+    @NotNull(message = "Unit cost required")
+    @ApiModelProperty(
+            example = "100",
+            notes = "Unit cost cannot be empty",
+            required = true
+    )
+    private double unitCost;
+
+    @NotNull(message = "Unit price required")
+    @ApiModelProperty(
+            example = "100",
+            notes = "Unit price cannot be empty",
+            required = true
+    )
+    private double unitPrice;
+
+    @ApiModelProperty(
+            example = "1",
+            notes = "1 -> male, 2 -> female",
+            required = true
+    )
+    @Min(1)
+    @Max(2)
+    private byte gender;
+
+    @NotEmpty(message = "images required")
+    @NotNull(message = "images required")
+    @ApiModelProperty(
+            notes = "images cannot be empty",
+            required = true
+    )
+    private List<ProductImagesRequest> images = new ArrayList<>();
+}

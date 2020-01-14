@@ -1,9 +1,10 @@
 package com.oasisvn.service.category;
 
-import com.oasisvn.dto.category.CategoryDTO;
 import com.oasisvn.entity.category.CategoryEntity;
+import com.oasisvn.middleware.utilities.ICustomUtilities;
+import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.repository.category.ICategoryRepository;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,84 +16,121 @@ public class CategoryService implements ICategoryService {
     @Autowired
     private ICategoryRepository categoryRepository;
 
+    @Autowired
+    private ICustomUtilities utilities;
+
+    private ModelMapper modelMapper = new ModelMapper();
+
     @Override
     public ArrayList<CategoryDTO> getCategory() {
-        ArrayList<CategoryEntity> categoryEntities = categoryRepository.findAllByTitleNotNull();
 
-        if (categoryEntities.isEmpty()) return null;
-        else {
-            ArrayList<CategoryDTO> categoryDTOS = new ArrayList<>();
+        try {
+            ArrayList<CategoryEntity> categoryEntities = categoryRepository.findAll();
 
-            for (CategoryEntity categoryEntity : categoryEntities) {
-                CategoryDTO categoryDTO = new CategoryDTO();
-                BeanUtils.copyProperties(categoryEntity, categoryDTO);
-                categoryDTOS.add(categoryDTO);
+            if (categoryEntities.isEmpty()) return null;
+            else {
+                ArrayList<CategoryDTO> categoryDTOS = new ArrayList<>();
+
+                for (CategoryEntity categoryEntity : categoryEntities) {
+                    CategoryDTO categoryDTO = modelMapper.map(categoryEntity, CategoryDTO.class);
+                    categoryDTOS.add(categoryDTO);
+                }
+
+                return categoryDTOS;
             }
-
-            return categoryDTOS;
+        } catch (Exception e) {
+            return null;
         }
     }
 
     @Override
-    public CategoryDTO getCategory(long id) {
+    public CategoryDTO getCategory(String categoryUID) {
 
-        CategoryEntity categoryEntity = categoryRepository.findById(id);
+        try {
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
 
-        if (null == categoryEntity) return null;
-        else {
-            CategoryDTO returnValue = new CategoryDTO();
-            BeanUtils.copyProperties(categoryEntity, returnValue);
-
-            return returnValue;
+            if (null == categoryEntity) return null;
+            else {
+                return modelMapper.map(categoryEntity, CategoryDTO.class);
+            }
+        } catch (Exception e) {
+            return null;
         }
     }
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
 
-        if (isCategoryExist(categoryDTO.getTitle())) return null;
-        else {
-            CategoryEntity categoryEntity = new CategoryEntity();
-            BeanUtils.copyProperties(categoryDTO, categoryEntity);
+        try {
+            String requestTitle = categoryDTO.getTitle();
 
-            CategoryDTO returnValue = new CategoryDTO();
-            BeanUtils.copyProperties(categoryRepository.save(categoryEntity), returnValue);
+            if (isCategoryExist(requestTitle)) return null;
+            else {
+                CategoryEntity categoryEntity = modelMapper.map(categoryDTO, CategoryEntity.class);
+                categoryEntity.setCategoryUID(utilities.encodeBase64UrlSafe(requestTitle));
 
-            return returnValue;
+                CategoryEntity createdCategory = categoryRepository.save(categoryEntity);
+
+                return modelMapper.map(createdCategory, CategoryDTO.class);
+            }
+        } catch (Exception e) {
+            return null;
         }
-
     }
 
     @Override
-    public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
+    public CategoryDTO updateCategory(String categoryUID, CategoryDTO categoryDTO) {
+
+        //Update information
         String updateTitle = categoryDTO.getTitle();
 
-        CategoryEntity categoryEntity = categoryRepository.findById(id);
-        if (null == categoryEntity) return null;
-        else {
-            if (null != updateTitle && !isCategoryExist(updateTitle)) {
-                categoryEntity.setTitle(updateTitle);
+        try {
+            //Old information
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
+            String oldTitle = categoryEntity.getTitle();
+            long oldId = categoryEntity.getId();
+
+            if (null == categoryEntity) return null;
+            else {
+                if (isCategoryExist(updateTitle)) {
+                    categoryDTO.setTitle(oldTitle);
+                }
+
+                CategoryEntity updateCategory = modelMapper.map(categoryDTO, CategoryEntity.class);
+                updateCategory.setCategoryUID(utilities.encodeBase64UrlSafe(updateTitle));
+                updateCategory.setId(oldId);
+
+                CategoryEntity updatedCategory = categoryRepository.save(updateCategory);
+
+                return modelMapper.map(updatedCategory, CategoryDTO.class);
             }
-
-            CategoryDTO returnValue = new CategoryDTO();
-            BeanUtils.copyProperties(categoryRepository.save(categoryEntity), returnValue);
-
-            return returnValue;
+        } catch (Exception e) {
+            return null;
         }
     }
 
     @Override
-    public boolean deleteCategory(long id) {
-        CategoryEntity categoryEntity = categoryRepository.findById(id);
+    public boolean deleteCategory(String categoryUID) {
 
-        if (null == categoryEntity) return false;
-        else {
-            categoryRepository.delete(categoryEntity);
-            return true;
+        try {
+            CategoryEntity categoryEntity = categoryRepository.findByCategoryUID(categoryUID);
+
+            if (null == categoryEntity) return false;
+            else {
+                categoryRepository.delete(categoryEntity);
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
         }
     }
 
     private Boolean isCategoryExist(String title) {
-        return categoryRepository.existsByTitle(title);
+
+        try {
+            return categoryRepository.existsByTitle(title);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
