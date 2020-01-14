@@ -1,11 +1,12 @@
 package com.oasisvn.controller.category;
 
+import com.oasisvn.middleware.exception.custom.exceptions.InternalServerException;
+import com.oasisvn.middleware.exception.custom.exceptions.RecordNotFoundException;
+import com.oasisvn.middleware.exception.message.ErrorResponse;
 import com.oasisvn.model.dto.category.CategoryDTO;
 import com.oasisvn.model.io.request.category.CategoryCreateRequest;
 import com.oasisvn.model.io.request.category.CategoryUpdateRequest;
-import com.oasisvn.model.io.response.ErrorResponse;
-import com.oasisvn.model.io.response.OperationStatus;
-import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.middleware.exception.message.OperationStatus;
 import com.oasisvn.model.io.response.category.CategoryCreateResponse;
 import com.oasisvn.model.io.response.category.CategoryDetailsResponse;
 import com.oasisvn.service.category.ICategoryService;
@@ -40,16 +41,12 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping
-    public ResponseEntity<?> getCategory(){
+    public ResponseEntity<?> getCategory() {
 
         ArrayList<CategoryDTO> categoryDTOS = categoryService.getCategory();
 
-        if (null == categoryDTOS) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(operationStatus.notFoundStatus(1));
-
-        } else {
+        if (null == categoryDTOS) throw new RecordNotFoundException();
+        else {
             ArrayList<CategoryDetailsResponse> categoryResponses = new ArrayList<>();
 
             for (CategoryDTO categoryDTO : categoryDTOS) {
@@ -69,20 +66,17 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getCategory(@PathVariable String id){
+    public ResponseEntity<?> getCategory(@PathVariable String id) {
 
         CategoryDTO categoryDTO = categoryService.getCategory(id);
 
-        if (null == categoryDTO) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(operationStatus.notFoundStatus(1));
-
-        } else {
+        if (null == categoryDTO) throw new RecordNotFoundException();
+        else {
             CategoryDetailsResponse categoryResponse = modelMapper.map(categoryDTO, CategoryDetailsResponse.class);
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(operationStatus.okStatus(1, categoryResponse));
+
         }
     }
 
@@ -94,16 +88,13 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PostMapping
-    public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryCreateRequest request){
+    public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryCreateRequest request) {
 
         CategoryDTO categoryDTO = modelMapper.map(request, CategoryDTO.class);
         CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
 
         if (null == createdCategory) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(1));
-
+            throw new InternalServerException(ErrorResponse.COULD_NOT_CREATE_RECORD.COULD_NOT_CREATE_RECORD.getMessage());
         } else {
             CategoryCreateResponse returnValue = modelMapper.map(createdCategory, CategoryCreateResponse.class);
 
@@ -120,16 +111,13 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable String id, @RequestBody @Valid CategoryUpdateRequest updateRequest){
+    public ResponseEntity<?> updateCategory(@PathVariable String id, @RequestBody @Valid CategoryUpdateRequest updateRequest) {
 
         CategoryDTO categoryDTO = modelMapper.map(updateRequest, CategoryDTO.class);
         CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
 
         if (null == updatedCategory) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(2));
-
+            throw new InternalServerException(ErrorResponse.COULD_NOT_UPDATE_RECORD.getMessage());
         } else {
             CategoryDetailsResponse returnValue = modelMapper.map(updatedCategory, CategoryDetailsResponse.class);
 
@@ -145,20 +133,16 @@ public class CategoryController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable String id){
+    public ResponseEntity<?> deleteCategory(@PathVariable String id) {
 
         boolean deletedCategory = categoryService.deleteCategory(id);
 
         if (false == deletedCategory) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(3));
-
+            throw new InternalServerException(ErrorResponse.COULD_NOT_DELETE_RECORD.getMessage());
         } else {
 
             return ResponseEntity.status(HttpStatus.OK)
                     .body(operationStatus.okStatus(3, null));
-
         }
     }
 }

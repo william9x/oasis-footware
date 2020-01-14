@@ -1,12 +1,11 @@
 package com.oasisvn.controller.user;
 
+import com.oasisvn.middleware.exception.custom.exceptions.UnauthorizedException;
 import com.oasisvn.model.dto.user.UserDTO;
 import com.oasisvn.model.dto.user.UserSession;
 import com.oasisvn.model.io.request.user.UserCreateRequest;
 import com.oasisvn.model.io.request.user.UserLoginRequest;
-import com.oasisvn.model.io.response.ErrorResponse;
-import com.oasisvn.model.io.response.OperationStatus;
-import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.middleware.exception.message.OperationStatus;
 import com.oasisvn.model.io.response.user.UserCreateResponse;
 import com.oasisvn.service.user.IUserService;
 import io.swagger.annotations.Api;
@@ -48,8 +47,7 @@ public class UserController {
 
         if (null == result) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(operationStatus.notFoundStatus(2));
+            throw new UnauthorizedException();
 
         } else {
 
@@ -75,8 +73,10 @@ public class UserController {
 
         if (null == createdUser) {
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(1));
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(operationStatus.internalErrorStatus(1));
+
+            return null;
 
         } else {
             UserCreateResponse returnValue = modelMapper.map(createdUser, UserCreateResponse.class);

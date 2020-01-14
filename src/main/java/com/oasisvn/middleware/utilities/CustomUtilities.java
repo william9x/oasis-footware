@@ -1,6 +1,5 @@
 package com.oasisvn.middleware.utilities;
 
-import com.oasisvn.middleware.utilities.ICustomUtilities;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 

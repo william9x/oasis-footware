@@ -1,4 +1,4 @@
-package com.oasisvn.model.io.response;
+package com.oasisvn.middleware.exception.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,49 +25,49 @@ public class OperationStatus {
         this.data = null;
     }
 
-    public OperationStatus internalErrorStatus(Integer errorCase) {
+//    public OperationStatus internalErrorStatus(Integer errorCase) {
+//
+//        String errorMessage = "";
+//
+//        switch (errorCase) {
+//            case 1:
+//                errorMessage = ErrorResponse.COULD_NOT_CREATE_RECORD.getMessage();
+//                break;
+//            case 2:
+//                errorMessage = ErrorResponse.COULD_NOT_UPDATE_RECORD.getMessage();
+//                break;
+//            case 3:
+//                errorMessage = ErrorResponse.COULD_NOT_DELETE_RECORD.getMessage();
+//                break;
+//        }
+//
+//        return new OperationStatus(
+//                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+//                false,
+//                errorMessage,
+//                null);
+//    }
 
-        String errorMessage = "";
-
-        switch (errorCase) {
-            case 1:
-                errorMessage = ErrorResponse.COULD_NOT_CREATE_RECORD.getErrorMessage();
-                break;
-            case 2:
-                errorMessage = ErrorResponse.COULD_NOT_UPDATE_RECORD.getErrorMessage();
-                break;
-            case 3:
-                errorMessage = ErrorResponse.COULD_NOT_DELETE_RECORD.getErrorMessage();
-                break;
-        }
-
-        return new OperationStatus(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                false,
-                errorMessage,
-                null);
-    }
-
-    public OperationStatus notFoundStatus(Integer errorCase) {
-
-        String errorMessage = "";
-
-        switch (errorCase) {
-            case 1:
-                errorMessage = ErrorResponse.NO_RECORD_FOUND.getErrorMessage();
-                break;
-            case 2:
-                errorMessage = ErrorResponse.AUTHENTICATION_FAILED.getErrorMessage();
-                break;
-        }
-
-        return new OperationStatus(
-                HttpStatus.NOT_FOUND.value(),
-                false,
-                errorMessage,
-                null
-        );
-    }
+//    public OperationStatus notFoundStatus(Integer errorCase) {
+//
+//        String errorMessage = "";
+//
+//        switch (errorCase) {
+//            case 1:
+//                errorMessage = ErrorResponse.NO_RECORD_FOUND.getMessage();
+//                break;
+//            case 2:
+//                errorMessage = ErrorResponse.AUTHENTICATION_FAILED.getMessage();
+//                break;
+//        }
+//
+//        return new OperationStatus(
+//                HttpStatus.NOT_FOUND.value(),
+//                false,
+//                errorMessage,
+//                null
+//        );
+//    }
 
     public OperationStatus okStatus(Integer successCase, Object data){
 

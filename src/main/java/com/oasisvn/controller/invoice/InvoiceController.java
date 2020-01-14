@@ -1,11 +1,12 @@
 package com.oasisvn.controller.invoice;
 
+import com.oasisvn.middleware.exception.custom.exceptions.InternalServerException;
+import com.oasisvn.middleware.exception.custom.exceptions.RecordNotFoundException;
+import com.oasisvn.middleware.exception.message.ErrorResponse;
 import com.oasisvn.model.dto.invoice.InvoiceDTO;
 import com.oasisvn.model.io.request.invoice.InvoiceCreateRequest;
 import com.oasisvn.model.io.request.invoice.InvoiceUpdateRequest;
-import com.oasisvn.model.io.response.ErrorResponse;
-import com.oasisvn.model.io.response.OperationStatus;
-import com.oasisvn.model.io.response.SuccessResponse;
+import com.oasisvn.middleware.exception.message.OperationStatus;
 import com.oasisvn.model.io.response.invoice.InvoiceCreateResponse;
 import com.oasisvn.model.io.response.invoice.InvoiceDetailsResponse;
 import com.oasisvn.service.invoice.IInvoiceService;
@@ -40,14 +41,15 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping
-    public ResponseEntity<?> getInvoice(){
+    public ResponseEntity<?> getInvoice() {
 
         ArrayList<InvoiceDTO> invoiceDTOS = invoiceService.getInvoice();
 
         if (null == invoiceDTOS) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(operationStatus.notFoundStatus(1));
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(operationStatus.notFoundStatus(1));
+            return null;
 
         } else {
             ArrayList<InvoiceDetailsResponse> invoiceResponses = new ArrayList<>();
@@ -69,16 +71,12 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> getInvoice(@PathVariable String id){
+    public ResponseEntity<?> getInvoice(@PathVariable String id) {
 
         InvoiceDTO invoiceDTO = invoiceService.getInvoice(id);
 
-        if (null == invoiceDTO) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(operationStatus.notFoundStatus(1));
-
-        } else {
+        if (null == invoiceDTO) throw new RecordNotFoundException();
+        else {
             InvoiceDetailsResponse invoiceDetailsResponse = modelMapper.map(invoiceDTO, InvoiceDetailsResponse.class);
 
             return ResponseEntity.status(HttpStatus.OK)
@@ -94,16 +92,13 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PostMapping
-    public ResponseEntity<?> createInvoice(@RequestBody @Valid InvoiceCreateRequest request){
+    public ResponseEntity<?> createInvoice(@RequestBody @Valid InvoiceCreateRequest request) {
 
         InvoiceDTO invoiceDTO = modelMapper.map(request, InvoiceDTO.class);
         InvoiceDTO createdInvoice = invoiceService.createInvoice(invoiceDTO);
 
         if (null == createdInvoice) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(1));
-
+            throw new InternalServerException(ErrorResponse.COULD_NOT_CREATE_RECORD.getMessage());
         } else {
             InvoiceCreateResponse returnValue = modelMapper.map(createdInvoice, InvoiceCreateResponse.class);
 
@@ -120,16 +115,13 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @PutMapping(path = "{id}")
-    public ResponseEntity<?> updateInvoice(@PathVariable String id, @RequestBody @Valid InvoiceUpdateRequest updateRequest){
+    public ResponseEntity<?> updateInvoice(@PathVariable String id, @RequestBody @Valid InvoiceUpdateRequest updateRequest) {
 
         InvoiceDTO invoiceDTO = modelMapper.map(updateRequest, InvoiceDTO.class);
         InvoiceDTO updatedInvoice = invoiceService.updateInvoice(id, invoiceDTO);
 
         if (null == updatedInvoice) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(2));
-
+            throw new InternalServerException(ErrorResponse.COULD_NOT_UPDATE_RECORD.getMessage());
         } else {
             InvoiceDetailsResponse returnValue = modelMapper.map(updatedInvoice, InvoiceDetailsResponse.class);
 
@@ -146,15 +138,12 @@ public class InvoiceController {
             @ApiResponse(code = 500, message = "Internal Server Error"),
     })
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> deleteInvoice(@PathVariable String id){
+    public ResponseEntity<?> deleteInvoice(@PathVariable String id) {
 
         boolean deletedProduct = invoiceService.deleteInvoice(id);
 
         if (false == deletedProduct) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(operationStatus.internalErrorStatus(3));
-
+            throw new InternalServerException(ErrorResponse.COULD_NOT_DELETE_RECORD.getMessage());
         } else {
 
             return ResponseEntity.status(HttpStatus.OK)
