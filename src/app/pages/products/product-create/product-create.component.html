@@ -10,7 +10,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Title: </label>
-                <input type="text" class="form-control" placeholder="Product's title"  [(ngModel)]="data.title"  name="title">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Product's title"
+                  [(ngModel)]="data.title"
+                  name="title"
+                />
               </div>
             </div>
           </div>
@@ -18,7 +24,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Subtitle: </label>
-                <input type="text" class="form-control" placeholder="Product's subtitle"  [(ngModel)]="data.subTitle" name="subTitle">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Product's subtitle"
+                  [(ngModel)]="data.subTitle"
+                  name="subTitle"
+                />
               </div>
             </div>
           </div>
@@ -26,7 +38,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description: </label>
-                <input type="text" class="form-control" placeholder="Product's description" [(ngModel)]="data.content" name="content">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Product's description"
+                  [(ngModel)]="data.content"
+                  name="content"
+                />
               </div>
             </div>
           </div>
@@ -34,7 +52,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Cost price: </label>
-                <input type="text" class="form-control" placeholder="Product's cost price" [(ngModel)]="data.unitCost" name="unitCost">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Product's cost price"
+                  [(ngModel)]="data.unitCost"
+                  name="unitCost"
+                />
               </div>
             </div>
           </div>
@@ -42,7 +66,13 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Price: </label>
-                <input type="text" class="form-control" placeholder="Product's price" [(ngModel)]="data.unitPrice"  name="unitPrice">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Product's price"
+                  [(ngModel)]="data.unitPrice"
+                  name="unitPrice"
+                />
               </div>
             </div>
           </div>
@@ -50,10 +80,14 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Gender: </label>
-                <select class="form-control" [(ngModel)]="data.gender" name="gender">
+                <select
+                  class="form-control"
+                  [(ngModel)]="data.gender"
+                  name="gender"
+                >
                   <option selected>Choose...</option>
-                  <option value="Female" >Female</option>
-                  <option value="Male" >Male</option>
+                  <option value="2">Female</option>
+                  <option value="1">Male</option>
                 </select>
               </div>
             </div>
@@ -62,36 +96,41 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Category: </label>
-                <select class="form-control"  [(ngModel)]="data.categoryId" name="categoryId">
+                <select
+                  class="form-control"
+                  [(ngModel)]="data.categoryUID"
+                  name="categoryUID"
+                >
                   <option selected>Choose...</option>
-                  <option value="{{ category.id }}" *ngFor="let category of categories" >{{category.title}}</option>
+                  <option
+                    value="{{ category.categoryUID }}"
+                    *ngFor="let category of categories"
+                    >{{ category.title }}</option
+                  >
                 </select>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-                <label >Image: </label>
-                  <div class="custom-file ">
-                    <input
-                    type="file"
-                    class="custom-file-input"
-                    name = 'image'
-                    (change)="handleFileInput($event.target.files)"
-                  />
-                  <label class="custom-file-label" for="inputGroupFile01"
-                    >Choose file</label>
-                  </div>
-                <!-- <div *ngIf="fileUploadProgress">
-                  Upload progress: {{ fileUploadProgress }}
-                </div> -->
-                <!-- <div class="image-preview mb-3" *ngIf="previewUrl">
-                  <img [src]="previewUrl" height="300" />
-                </div>
-
-                <div class="mb-3" *ngIf="uploadedFilePath">
-                  {{ uploadedFilePath }}
-                </div> -->
+              <label>Image: </label>
+              <div class="custom-file ">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  name="imageUrl"
+                  (change)="handleFileInput($event.target.files)"
+                />
+                <label class="custom-file-label" for="inputGroupFile01"
+                  >Choose file</label
+                >
+              </div>
+              <div class="image-preview mb-3" *ngIf="previewUrl">
+                <img [src]="previewUrl" height="300" />
+              </div>
+              <div class="mb-3" *ngIf="uploadedFilePath">
+                {{ uploadedFilePath }}
+              </div>
             </div>
           </div>
           <div class="row">

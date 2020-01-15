@@ -39,8 +39,8 @@ export class CreateProductService {
   }
 
   // Get Item By Id
-  public getProductDetail(id): Observable<any> {
-    return this.httpClient.get<any>(
+  public getProductDetail(id): Observable<Products> {
+    return this.httpClient.get<Products>(
       this.apiURL + 'product/' + id,
       this.httpHeader
     );
@@ -69,8 +69,8 @@ export class CreateProductService {
   }
 
   // Update Product Detail By Id
-  public updateProductDetail(id: any, item): Observable<any> {
-    return this.httpClient.put(
+  public updateProductDetail(id: any, item): Observable<Products> {
+    return this.httpClient.put<Products>(
       this.apiURL + 'product' + `/${id}`,
       JSON.stringify(item),
       this.httpHeader
@@ -78,8 +78,8 @@ export class CreateProductService {
   }
 
   // Delete Item By Id
-  public deleteProduct(id: any): Observable<any> {
-    return this.httpClient.delete(
+  public deleteProduct(id: any): Observable<Products> {
+    return this.httpClient.delete<Products>(
       this.apiURL + 'product' + `/${id}`,
       this.httpHeader
     );

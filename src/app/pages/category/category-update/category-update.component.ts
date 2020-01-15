@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../category.model';
-import { ApiService } from '../category.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+
+import { ApiService } from '../category.service';
+import { Category } from '../category.model';
+
 
 @Component({
   selector: 'app-category-update',

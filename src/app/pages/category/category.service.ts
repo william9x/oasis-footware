@@ -17,7 +17,7 @@ export class ApiService {
     })
   };
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   // Get All Category
   public getCategories(): Observable<Category> {
@@ -36,16 +36,16 @@ export class ApiService {
   }
 
   // Delete Item By Id
-  public deleteItem(id: any): Observable<any> {
-    return this.httpClient.delete(
+  public deleteItem(id: any): Observable<Category> {
+    return this.httpClient.delete<Category>(
       this.apiURL + 'category' + `/${id}`,
       this.httpOptions
     );
   }
 
   // Update Item By Id
-  public updateItem(id: any, item): Observable<any> {
-    return this.httpClient.put(
+  public updateItem(id: any, item): Observable<Category> {
+    return this.httpClient.put<Category>(
       this.apiURL + 'category' + `/${id}`,
       JSON.stringify(item),
       this.httpOptions

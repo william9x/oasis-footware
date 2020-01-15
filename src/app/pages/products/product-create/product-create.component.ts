@@ -13,6 +13,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class ProductCreateComponent implements OnInit {
   categories;
   data: Products;
+  previewUrl: any = null;
+  uploadedFilePath: string = null;
   fileToUpload: File = null;
 
   constructor(
@@ -20,7 +22,7 @@ export class ProductCreateComponent implements OnInit {
     private createProductSerivce: CreateProductService,
     public router: Router,
     public SpinnerService: NgxSpinnerService) {
-      this.data = new Products();
+    this.data = new Products();
   }
 
   ngOnInit() {
@@ -30,6 +32,21 @@ export class ProductCreateComponent implements OnInit {
   handleFileInput(files: FileList) {
     this.fileToUpload = files.item(0);
     console.log('handle input', this.fileToUpload);
+    this.preview();
+  }
+
+  preview() {
+    // Show preview 
+    const mimeType = this.fileToUpload.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    reader.onload = (event) => {
+      this.previewUrl = reader.result;
+    };
   }
 
   getAllCategories() {
@@ -44,42 +61,30 @@ export class ProductCreateComponent implements OnInit {
     );
   }
 
-  // createProduct() {
-  //   this.SpinnerService.show();
-  //   this.createProductSerivce.createProduct('upload', this.data).subscribe(
-  //     res => {
-  //       console.log(res.data);
-  //       this.getAllCategories();
-  //       this.SpinnerService.hide();
-  //       this.router.navigate(['/product']);
-  //     },
-  //     error => {
-  //       console.log(error);
-  //       this.SpinnerService.hide();
-  //     }
-  //   );
-  // }
-
   createProduct() {
     this.createProductSerivce.uploadImage(this.fileToUpload).subscribe(res => {
-     console.log(res.data.link);
-     this.SpinnerService.show();
-     this.createProductSerivce.createProduct('product', this.data).subscribe(
-          res => {
-            console.log(res.data);
-            this.getAllCategories();
-            this.SpinnerService.hide();
-            this.router.navigate(['/product']);
-          },
-          error => {
-            console.log(error);
-            this.SpinnerService.hide();
-          }
-        );
-      }, error => {
-        console.log(error);
-        this.SpinnerService.hide();
-      });
+      this.data.images[0].imageUrl = res.data.link;
+      this.data.images[0].imageUID = res.data.id;
+
+      console.log(this.data);
+
+      this.SpinnerService.show();
+      this.createProductSerivce.createProduct('product', this.data).subscribe(
+        res => {
+          console.log(res);
+          this.getAllCategories();
+          this.SpinnerService.hide();
+          this.router.navigate(['/product']);
+        },
+        error => {
+          console.log(error);
+          this.SpinnerService.hide();
+        }
+      );
+    }, error => {
+      console.log(error);
+      this.SpinnerService.hide();
+    });
   }
 
 

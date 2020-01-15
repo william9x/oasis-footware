@@ -1,11 +1,21 @@
 export class Products {
-  id: number;
-  categoryId: number;
+  categoryUID: string;
   title: string;
   subTitle: string;
   content: string;
   unitCost: number;
   unitPrice: number;
-  gender: string;
+  gender: number;
   data: any;
+  images: [
+    {
+      imageUID: string,
+      imageUrl: string
+    }
+  ] = [
+      {
+        imageUID: '',
+        imageUrl: ''
+      }
+    ];
 }

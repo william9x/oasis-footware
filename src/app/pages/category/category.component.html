@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title">Category</h4>
+        <h4 class="card-title">Categories Table</h4>
         <button type="button" class="btn btn-primary" (click)="toCreatePage()">
           <i class="fa fa-plus" aria-hidden="true"></i> Add new Category
         </button>
@@ -28,12 +28,17 @@
                 </td>
                 <td class="text-center"></td>
                 <td class="text-center">
-                  <button class="btn btn-outline-primary btn-round btn-sm mr-1"
-                  [routerLink]="['/category/edit',category.id]">
+                  <button
+                    class="btn btn-outline-primary btn-round btn-sm mr-1"
+                    [routerLink]="['/category/edit', category.categoryUID]"
+                  >
                     <i class="fa fa-pencil-square-o"></i> Edit
                   </button>
-                  <button class="btn btn-outline-primary btn-round btn-sm" id="{{ category.id }}"
-                  (click)="deleteCategory(category.id)">
+                  <button
+                    class="btn btn-outline-primary btn-round btn-sm"
+                    id="{{ category.id }}"
+                    (click)="deleteCategory(category.categoryUID)"
+                  >
                     <i class="fa fa-trash-o"></i> Delete
                   </button>
                 </td>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../category/category.model';
+import { Category } from '../category.model';
 import { ApiService } from './create-category.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -20,7 +20,7 @@ export class CreateCategoryComponent implements OnInit {
     this.data = new Category();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   submitForm() {
     this.SpinnerService.show();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Category } from '../category/category.model';
+import { Category } from '../category.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class ApiService {
   // API path
   apiURL = 'https://oasis-footware.herokuapp.com/api/';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   // Http Options
   httpOptions = {
