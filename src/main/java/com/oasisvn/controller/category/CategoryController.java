@@ -105,7 +105,7 @@ public class CategoryController {
         } else {
             CategoryCreateResponse returnValue = modelMapper.map(createdCategory, CategoryCreateResponse.class);
 
-            return ResponseEntity.status(HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.CREATED)
                     .body(operationStatus.createdStatus(returnValue));
         }
     }

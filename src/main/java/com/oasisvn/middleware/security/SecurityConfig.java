@@ -47,9 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Cấu hình user mặc định để thực hiện intergration test
         auth.inMemoryAuthentication()
                 .passwordEncoder(passwordEncoder())
-                .withUser("spring")
-                .password(passwordEncoder().encode("secret"))
-                .roles("USER");
+                .withUser("fakeUser")
+                .password(passwordEncoder().encode("password"))
+                .roles("ADMIN");
     }
 
     @Override
@@ -59,18 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-//                    .antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
-//                    .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
-//                    .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
-//                    .antMatchers(HttpMethod.GET, "/api/invoice/**").permitAll()
-//                    .antMatchers(HttpMethod.POST, "/api/invoice").permitAll()
-                    .antMatchers( "/api/user/login").permitAll()
-                    .antMatchers("/api/category/**").permitAll()
-                    .antMatchers("/api/product/**").permitAll()
-                    .antMatchers("/api/invoice/**").permitAll()
-                    .antMatchers( "/api/invoice").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/invoice/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/invoice").permitAll()
                     .antMatchers("/api/user").hasRole("SUDO")
-                    .antMatchers(HttpMethod.GET, "/api/user").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new ApiAuthorizationFilter(authenticationManager()))

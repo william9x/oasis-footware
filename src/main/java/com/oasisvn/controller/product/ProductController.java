@@ -105,7 +105,7 @@ public class ProductController {
         } else {
             ProductCreateResponse returnValue = modelMapper.map(createdProduct, ProductCreateResponse.class);
 
-            return ResponseEntity.status(HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.CREATED)
                     .body(operationStatus.createdStatus(returnValue));
         }
     }
