@@ -51,6 +51,6 @@ java -jar target/oasis-footwear-1.0.jar
 
 ## Database entity diagram
 
-[![Database diagram](https://i.imgur.com/3G5LejL.png)
+[![Database diagram](https://i.imgur.com/I1iQHfh.png)
 
 2019 © [Hoang Nam](https://github.com/william9x/)
