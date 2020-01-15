@@ -1,5 +1,5 @@
-## Oasis Footwear API
-REST API for building simple e-commerce website.
+## Oasis Footwear Front-end
+Simple for building e-commerce website and cms
 
 ## Tech/framework used
 
