@@ -1,0 +1,6 @@
+com/oasisvn/service/category/CategoryServiceTest.class
+com/oasisvn/service/product/ProductServiceTest.class
+com/oasisvn/controller/product/ProductControllerTest.class
+com/oasisvn/OasisFootwareApplicationTests.class
+com/oasisvn/service/invoice/InvoiceServiceTest.class
+com/oasisvn/controller/category/CategoryControllerTest.class

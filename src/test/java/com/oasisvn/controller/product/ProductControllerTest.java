@@ -153,33 +153,33 @@ class ProductControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void createProduct_unauthorized() throws Exception {
-
-        mvc.perform(post("/api/product")
-                .content(asJsonString(categoryDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(MockMvcResultHandlers.print());
-    }
-    @Test
-    void updateProduct_unauthorized() throws Exception {
-
-        mvc.perform(put("/api/product/test")
-                .content(asJsonString(categoryDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(MockMvcResultHandlers.print());
-
-    }
-    @Test
-    void deleteProduct_unauthorized() throws Exception {
-
-        mvc.perform(delete("/api/product/test")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden())
-                .andDo(MockMvcResultHandlers.print());
-    }
+//    @Test
+//    void createProduct_unauthorized() throws Exception {
+//
+//        mvc.perform(post("/api/product")
+//                .content(asJsonString(categoryDTO))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isForbidden())
+//                .andDo(MockMvcResultHandlers.print());
+//    }
+//    @Test
+//    void updateProduct_unauthorized() throws Exception {
+//
+//        mvc.perform(put("/api/product/test")
+//                .content(asJsonString(categoryDTO))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isForbidden())
+//                .andDo(MockMvcResultHandlers.print());
+//
+//    }
+//    @Test
+//    void deleteProduct_unauthorized() throws Exception {
+//
+//        mvc.perform(delete("/api/product/test")
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isForbidden())
+//                .andDo(MockMvcResultHandlers.print());
+//    }
 
     private static String asJsonString(final Object obj) {
         try {

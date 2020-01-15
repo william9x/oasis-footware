@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.oasisvn.controller.category.CategoryControllerTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.338 s - in com.oasisvn.controller.category.CategoryControllerTest
