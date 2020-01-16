@@ -58,6 +58,12 @@ export class HomepageComponent implements OnInit {
     this.router.navigate(['/product', id]);
   }
 
+
+  addProductToCart(product) {
+    console.log('click button', product);
+    this.productSerice.addToCart(product);
+  }
+
   getAllCategories() {
     this.SpinnerService.show();
     this.categoryService.getCategories().subscribe(
